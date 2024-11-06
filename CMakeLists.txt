@@ -313,7 +313,7 @@ extensions/GUI/CCControlExtension/CCScale9Sprite.cpp
 # samples/Cpp/HelloCpp/Classes/HelloWorldScene.cpp
 )
 
-target_include_directories(cocos2d PRIVATE
+target_include_directories(cocos2d PUBLIC
 external
 
 CocosDenshion/include
@@ -354,3 +354,7 @@ if (MSVC)
 endif()
 # target_compile_definitions(cocos2d PRIVATE HAVE_STRUCT_TIMESPEC CC_ENABLE_BOX2D_INTEGRATION COCOS2D_DEBUG=1)
 target_compile_definitions(cocos2d PRIVATE HAVE_STRUCT_TIMESPEC COCOS2D_DEBUG=1 _USRDLL=1)
+
+if (PROJECT_IS_TOP_LEVEL)
+	add_subdirectory(mat-sample)
+endif()

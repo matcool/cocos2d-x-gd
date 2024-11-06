@@ -42,7 +42,6 @@ THE SOFTWARE.
 #include <cctype>
 #include <queue>
 #include <list>
-#include <iostream>
 
 #if (CC_TARGET_PLATFORM != CC_PLATFORM_WINRT) && (CC_TARGET_PLATFORM != CC_PLATFORM_WP8)
 #include <pthread.h>
@@ -439,7 +438,6 @@ CCTexture2D * CCTextureCache::addImage(const char * path)
                 if (std::string::npos != lowerCase.find(".png"))
                 {
                     eImageFormat = CCImage::kFmtPng;
-                    std::cout << "format is png!" << std::endl;
                 }
                 else if (std::string::npos != lowerCase.find(".jpg") || std::string::npos != lowerCase.find(".jpeg"))
                 {
