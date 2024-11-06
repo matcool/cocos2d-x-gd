@@ -37,7 +37,7 @@ void CCLog(const char * pszFormat, ...)
     vsnprintf(buf, MAX_LEN, pszFormat, args);
     va_end(args);
 	
-	fprintf(stderr, "cocos2d-x debug info %s\n",  buf);
+	fprintf(stderr, "cocos2d-x debug info %s\n", buf);
 }
 
 void CCMessageBox(const char * pszMsg, const char * pszTitle)

@@ -22,6 +22,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 #define __CC_PLATFORM_IMAGE_CPP__
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 #include "platform/CCImageCommon_cpp.h"
 
 NS_CC_BEGIN
@@ -63,7 +67,7 @@ public:
 			wchar_t * pwszBuffer = utf8ToUtf16(m_curFontPath);
 			if (pwszBuffer)
 			{
-				RemoveFontResource(pwszBuffer);
+				RemoveFontResourceW(pwszBuffer);
 				SendMessage( m_hWnd, WM_FONTCHANGE, 0, 0);
 				delete [] pwszBuffer;
 				pwszBuffer = NULL;
@@ -144,7 +148,7 @@ public:
 					wchar_t * pwszBuffer = utf8ToUtf16(m_curFontPath);
 					if (pwszBuffer)
 					{
-						if(RemoveFontResource(pwszBuffer))
+						if(RemoveFontResourceW(pwszBuffer))
 						{
 							SendMessage( m_hWnd, WM_FONTCHANGE, 0, 0);
 						}						
@@ -162,7 +166,7 @@ public:
 					wchar_t * pwszBuffer = utf8ToUtf16(m_curFontPath);
 					if (pwszBuffer)
 					{
-						if(AddFontResource(pwszBuffer))
+						if(AddFontResourceW(pwszBuffer))
 						{
 							SendMessage( m_hWnd, WM_FONTCHANGE, 0, 0);
 						}						

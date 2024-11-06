@@ -83,7 +83,7 @@ public:
  *  @js NA
  *  @lua NA
  */
-class CC_DLL CCPrettyPrinter : public CCDataVisitor
+class CCPrettyPrinter : public CCDataVisitor
 {
 public:
     CCPrettyPrinter(int indentLevel = 0);

@@ -21,59 +21,34 @@ CCScene* HelloWorld::scene()
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
-    //////////////////////////////
-    // 1. super init first
-    if ( !CCLayer::init() )
-    {
+
+    if (!CCLayer::init())
         return false;
-    }
     
     CCSize visibleSize = CCDirector::sharedDirector()->getVisibleSize();
     CCPoint origin = CCDirector::sharedDirector()->getVisibleOrigin();
 
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
+    CCFileUtils::sharedFileUtils()->addSearchPath("Resources");
 
-    // add a "close" icon to exit the progress. it's an autorelease object
-    CCMenuItemImage *pCloseItem = CCMenuItemImage::create(
-                                        "CloseNormal.png",
-                                        "CloseSelected.png",
-                                        this,
-                                        menu_selector(HelloWorld::menuCloseCallback));
-    
-	pCloseItem->setPosition(ccp(origin.x + visibleSize.width - pCloseItem->getContentSize().width/2 ,
-                                origin.y + pCloseItem->getContentSize().height/2));
 
-    // create menu, it's an autorelease object
-    CCMenu* pMenu = CCMenu::create(pCloseItem, NULL);
-    pMenu->setPosition(CCPointZero);
-    this->addChild(pMenu, 1);
+    std::cout << "hello :D" << std::endl;
 
-    /////////////////////////////
-    // 3. add your codes below...
+    auto path = CCFileUtils::sharedFileUtils()->fullPathForFilename("test.png");
+    std::cout << "full path is " << path << std::endl;
 
-    // add a label shows "Hello World"
-    // create and initialize a label
-    
-    CCLabelTTF* pLabel = CCLabelTTF::create("Hello World", "Arial", TITLE_FONT_SIZE);
-    
-    // position the label on the center of the screen
-    pLabel->setPosition(ccp(origin.x + visibleSize.width/2,
-                            origin.y + visibleSize.height - pLabel->getContentSize().height));
+    CCSprite* pSprite = CCSprite::create("GJ_button_01.png");
+    std::cout << pSprite << std::endl;
+    // std::cout << CCSprite::create("test.jpeg") << std::endl;
+    // std::cout << CCSprite::create("test.png") << std::endl;
+    // std::cout << CCSprite::create("test.tiff") << std::endl;
 
-    // add the label as a child to this layer
-    this->addChild(pLabel, 1);
+    if (pSprite) {
+        pSprite->setPosition({100, 100});
+        pSprite->setScale(10.0);
 
-    // add "HelloWorld" splash screen"
-    CCSprite* pSprite = CCSprite::create("HelloWorld.png");
+        this->addChild(pSprite);
+    }
 
-    // position the sprite on the center of the screen
-    pSprite->setPosition(ccp(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
-
-    // add the sprite as a child to this layer
-    this->addChild(pSprite, 0);
-    
     return true;
 }
 

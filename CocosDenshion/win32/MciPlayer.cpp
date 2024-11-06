@@ -3,6 +3,8 @@
 #define WIN_CLASS_NAME        "CocosDenshionCallbackWnd"
 #define BREAK_IF(cond)      if (cond) break;
 
+#include <WinUser.h>
+
 namespace CocosDenshion {
 
 static HINSTANCE s_hInstance;
@@ -56,7 +58,7 @@ MciPlayer::MciPlayer()
         NULL );
     if (m_hWnd)
     {
-        SetWindowLong(m_hWnd, GWL_USERDATA, (LONG)this);
+        SetWindowLong(m_hWnd, -21 /*GWL_USERDATA*/, (LONG)this);
     }
 }
 
@@ -185,7 +187,7 @@ LRESULT WINAPI _SoundPlayProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
     MciPlayer * pPlayer = NULL;
     if (MM_MCINOTIFY == Msg 
         && MCI_NOTIFY_SUCCESSFUL == wParam
-        &&(pPlayer = (MciPlayer *)GetWindowLong(hWnd, GWL_USERDATA)))
+        &&(pPlayer = (MciPlayer *)GetWindowLong(hWnd, -21)))
     {
         if (pPlayer->m_uTimes)
         {

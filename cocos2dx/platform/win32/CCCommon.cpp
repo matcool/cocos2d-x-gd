@@ -23,6 +23,7 @@ THE SOFTWARE.
 ****************************************************************************/
 #include "platform/CCCommon.h"
 #include "CCStdC.h"
+#include <iostream>
 
 NS_CC_BEGIN
 
@@ -44,6 +45,7 @@ void CCLog(const char * pszFormat, ...)
 
     WideCharToMultiByte(CP_ACP, 0, wszBuf, sizeof(wszBuf), szBuf, sizeof(szBuf), NULL, FALSE);
     printf("%s\n", szBuf);
+    std::cout << "[cclog] " << szBuf << std::endl;
 }
 
 void CCMessageBox(const char * pszMsg, const char * pszTitle)

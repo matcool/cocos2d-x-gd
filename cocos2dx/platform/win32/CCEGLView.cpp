@@ -272,7 +272,7 @@ bool CCEGLView::Create()
         CC_BREAK_IF(m_hWnd);
 
         HINSTANCE hInstance = GetModuleHandle( NULL );
-        WNDCLASS  wc;        // Windows Class Structure
+        WNDCLASSW  wc;        // Windows Class Structure
 
         // Redraw On Size, And Own DC For Window.
         wc.style          = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
@@ -286,7 +286,7 @@ bool CCEGLView::Create()
         wc.lpszMenuName   = m_menu;                         //
         wc.lpszClassName  = kWindowClassName;               // Set The Class Name
 
-        CC_BREAK_IF(! RegisterClass(&wc) && 1410 != GetLastError());
+        CC_BREAK_IF(! RegisterClassW(&wc) && 1410 != GetLastError());
 
         // center window position
         RECT rcDesktop;
@@ -296,7 +296,7 @@ bool CCEGLView::Create()
         MultiByteToWideChar(CP_UTF8, 0, m_szViewName, -1, wszBuf, sizeof(wszBuf));
 
         // create window
-        m_hWnd = CreateWindowEx(
+        m_hWnd = CreateWindowExW(
             WS_EX_APPWINDOW | WS_EX_WINDOWEDGE,    // Extended Style For The Window
             kWindowClassName,                                    // Class Name
             wszBuf,                                                // Window Title
@@ -567,7 +567,7 @@ void CCEGLView::end()
         m_hWnd = NULL;
     }
     s_pMainWindow = NULL;
-    UnregisterClass(kWindowClassName, GetModuleHandle(NULL));
+    UnregisterClassW(kWindowClassName, GetModuleHandle(NULL));
     delete this;
 }
 
@@ -590,7 +590,7 @@ void CCEGLView::setMenuResource(LPCWSTR menu)
     m_menu = menu;
     if (m_hWnd != NULL)
     {
-        HMENU hMenu = LoadMenu(GetModuleHandle(NULL), menu);
+        HMENU hMenu = LoadMenuW(GetModuleHandle(NULL), menu);
         SetMenu(m_hWnd, hMenu);
     }
 }
@@ -643,7 +643,7 @@ void CCEGLView::resize(int width, int height)
 #else
         MultiByteToWideChar(CP_UTF8, 0, m_szViewName, -1, wszBuf, sizeof(wszBuf));
 #endif
-        SetWindowText(m_hWnd, wszBuf);
+        SetWindowTextW(m_hWnd, wszBuf);
     }
 
     AdjustWindowRectEx(&rcClient, GetWindowLong(m_hWnd, GWL_STYLE), FALSE, GetWindowLong(m_hWnd, GWL_EXSTYLE));

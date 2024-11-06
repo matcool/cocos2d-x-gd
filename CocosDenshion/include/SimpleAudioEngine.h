@@ -59,7 +59,7 @@ static inline unsigned int getHashCodeByString(const char *key)
 @brief          offer a VERY simple interface to play background music & sound effect
 */
 
-class EXPORT_DLL SimpleAudioEngine : public TypeInfo
+class SimpleAudioEngine : public TypeInfo
 {
 public:
     SimpleAudioEngine();

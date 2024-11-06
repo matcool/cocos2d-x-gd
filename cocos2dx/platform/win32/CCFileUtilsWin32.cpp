@@ -24,6 +24,7 @@ THE SOFTWARE.
 #include "CCFileUtilsWin32.h"
 #include "platform/CCCommon.h"
 #include <Shlobj.h>
+#include <filesystem>
 
 using namespace std;
 
@@ -36,10 +37,15 @@ static void _checkPath()
     if (! s_pszResourcePath[0])
     {
         WCHAR  wszPath[MAX_PATH] = {0};
-        int nNum = WideCharToMultiByte(CP_ACP, 0, wszPath,
-            GetCurrentDirectoryW(sizeof(wszPath), wszPath),
+        int nNum = WideCharToMultiByte(CP_UTF8, 0, wszPath,
+            // GetCurrentDirectoryW(sizeof(wszPath), wszPath),
+            GetModuleFileNameW(GetModuleHandle(NULL), wszPath, sizeof(wszPath)),
             s_pszResourcePath, MAX_PATH, NULL, NULL);
-        s_pszResourcePath[nNum] = '\\';
+        std::filesystem::path cool_path(s_pszResourcePath);
+        auto str = cool_path.parent_path().string();
+        str.push_back('\\');
+        std::memcpy(s_pszResourcePath, str.c_str(), str.size() + 1);
+        // s_pszResourcePath[nNum] = '\\';
     }
 }
 

@@ -1,6 +1,7 @@
 #include "main.h"
 #include "../Classes/AppDelegate.h"
 #include "CCEGLView.h"
+#include <fstream>
 
 USING_NS_CC;
 
@@ -9,8 +10,14 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
                        LPTSTR    lpCmdLine,
                        int       nCmdShow)
 {
-    UNREFERENCED_PARAMETER(hPrevInstance);
-    UNREFERENCED_PARAMETER(lpCmdLine);
+    AllocConsole();
+    static std::ofstream out("CONOUT$", std::ios::out);
+    std::cout.rdbuf(out.rdbuf());
+    std::cerr.rdbuf(out.rdbuf());
+
+    FILE* dummy;
+    freopen_s(&dummy, "CONOUT$", "w", stdout);
+    freopen_s(&dummy, "CONOUT$", "w", stderr);
 
     // create the application instance
     AppDelegate app;

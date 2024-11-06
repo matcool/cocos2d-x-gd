@@ -563,7 +563,7 @@ void CCSprite::draw(void)
     long offset = 0;
     setGLBufferData(&m_sQuad, 4 * kQuadSize, 0);
 #else
-    long offset = (long)&m_sQuad;
+    uintptr_t offset = (uintptr_t)&m_sQuad;
 #endif // EMSCRIPTEN
 
     // vertex

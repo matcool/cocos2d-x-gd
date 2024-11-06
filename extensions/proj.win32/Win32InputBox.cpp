@@ -273,6 +273,8 @@ void CWin32InputBox::InitDialog()
   }
 }
 
+#include <WinUser.h>
+
 // Message handler for about box.
 LRESULT CALLBACK CWin32InputBox::DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {

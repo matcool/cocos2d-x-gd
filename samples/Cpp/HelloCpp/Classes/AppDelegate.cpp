@@ -46,6 +46,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     CCDirector* pDirector = CCDirector::sharedDirector();
     CCEGLView* pEGLView = CCEGLView::sharedOpenGLView();
 
+
     pDirector->setOpenGLView(pEGLView);
 	CCSize frameSize = pEGLView->getFrameSize();
 
@@ -85,6 +86,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
         pDirector->setContentScaleFactor(MIN(smallResource.size.height/designResolutionSize.height, smallResource.size.width/designResolutionSize.width));
     }
+
+    searchPath.push_back("Resources");
 
 
     // set searching path
