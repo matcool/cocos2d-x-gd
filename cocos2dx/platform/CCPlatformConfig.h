@@ -84,7 +84,7 @@ Config of cocos2d-x project, per target platform.
 #endif
 
 // win32
-#if defined(WIN32) && defined(_WINDOWS)
+#if defined(_WIN32)
     #undef  CC_TARGET_PLATFORM
     #define CC_TARGET_PLATFORM         CC_PLATFORM_WIN32
 #endif

@@ -4,7 +4,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(cocos2d VERSION 0.1.0)
 
-add_executable(cocos2d WIN32 
+add_library(cocos2d SHARED
 external/chipmunk/src/chipmunk.c
 external/chipmunk/src/cpArbiter.c
 external/chipmunk/src/cpArray.c
@@ -308,9 +308,9 @@ extensions/GUI/CCControlExtension/CCScale9Sprite.cpp
 # extensions/spine/spine-cocos2dx.cpp
 # extensions/proj.win32/Win32InputBox.cpp
 
-samples/Cpp/HelloCpp/proj.win32/main.cpp
-samples/Cpp/HelloCpp/Classes/AppDelegate.cpp
-samples/Cpp/HelloCpp/Classes/HelloWorldScene.cpp
+# samples/Cpp/HelloCpp/proj.win32/main.cpp
+# samples/Cpp/HelloCpp/Classes/AppDelegate.cpp
+# samples/Cpp/HelloCpp/Classes/HelloWorldScene.cpp
 )
 
 target_include_directories(cocos2d PRIVATE
@@ -353,4 +353,4 @@ if (MSVC)
 	target_compile_options(cocos2d PRIVATE /wd4251 /wd4267 /wd4244 /wd4996 /wd4302 /wd4311 /wd4312)
 endif()
 # target_compile_definitions(cocos2d PRIVATE HAVE_STRUCT_TIMESPEC CC_ENABLE_BOX2D_INTEGRATION COCOS2D_DEBUG=1)
-target_compile_definitions(cocos2d PRIVATE HAVE_STRUCT_TIMESPEC COCOS2D_DEBUG=1)
+target_compile_definitions(cocos2d PRIVATE HAVE_STRUCT_TIMESPEC COCOS2D_DEBUG=1 _USRDLL=1)

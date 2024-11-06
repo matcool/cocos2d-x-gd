@@ -44,8 +44,7 @@ void CCLog(const char * pszFormat, ...)
     OutputDebugStringA("\n");
 
     WideCharToMultiByte(CP_ACP, 0, wszBuf, sizeof(wszBuf), szBuf, sizeof(szBuf), NULL, FALSE);
-    printf("%s\n", szBuf);
-    std::cout << "[cclog] " << szBuf << std::endl;
+    printf("[CCLOG] %s\n", szBuf);
 }
 
 void CCMessageBox(const char * pszMsg, const char * pszTitle)

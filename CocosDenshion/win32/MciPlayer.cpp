@@ -58,7 +58,7 @@ MciPlayer::MciPlayer()
         NULL );
     if (m_hWnd)
     {
-        SetWindowLong(m_hWnd, -21 /*GWL_USERDATA*/, (LONG)this);
+        SetWindowLong(m_hWnd, -21 /*GWL_USERDATA*/, (uintptr_t)this);
     }
 }
 
@@ -87,7 +87,7 @@ void MciPlayer::Open(const char* pFileName, UINT uId)
         mciOpen.lpstrDeviceType = (LPCTSTR)MCI_ALL_DEVICE_ID;
         mciOpen.lpstrElementName = pFileName;
 
-        mciError = mciSendCommand(0,MCI_OPEN, MCI_OPEN_ELEMENT, (DWORD)&mciOpen);
+        mciError = mciSendCommand(0,MCI_OPEN, MCI_OPEN_ELEMENT, (uintptr_t)&mciOpen);
         BREAK_IF(mciError);
 
         m_hDev = mciOpen.wDeviceID;
@@ -104,7 +104,7 @@ void MciPlayer::Play(UINT uTimes /* = 1 */)
     }
     MCI_PLAY_PARMS mciPlay = {0};
     mciPlay.dwCallback = (DWORD_PTR)m_hWnd;
-    s_mciError = mciSendCommand(m_hDev,MCI_PLAY, MCI_FROM|MCI_NOTIFY,(DWORD)&mciPlay);
+    s_mciError = mciSendCommand(m_hDev,MCI_PLAY, MCI_FROM|MCI_NOTIFY,(uintptr_t)&mciPlay);
     if (! s_mciError)
     {
         m_bPlaying = true;
@@ -151,8 +151,8 @@ void MciPlayer::Rewind()
     mciSendCommand(m_hDev, MCI_SEEK, MCI_SEEK_TO_START, 0);
 
     MCI_PLAY_PARMS mciPlay = {0};
-    mciPlay.dwCallback = (DWORD)m_hWnd;
-    m_bPlaying = mciSendCommand(m_hDev, MCI_PLAY, MCI_NOTIFY,(DWORD)&mciPlay) ? false : true;
+    mciPlay.dwCallback = (DWORD_PTR)m_hWnd;
+    m_bPlaying = mciSendCommand(m_hDev, MCI_PLAY, MCI_NOTIFY,(uintptr_t)&mciPlay) ? false : true;
 }
 
 bool MciPlayer::IsPlaying()
@@ -199,8 +199,8 @@ LRESULT WINAPI _SoundPlayProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
             mciSendCommand(lParam, MCI_SEEK, MCI_SEEK_TO_START, 0);
 
             MCI_PLAY_PARMS mciPlay = {0};
-            mciPlay.dwCallback = (DWORD)hWnd;
-            mciSendCommand(lParam, MCI_PLAY, MCI_NOTIFY,(DWORD)&mciPlay);
+            mciPlay.dwCallback = (DWORD_PTR)hWnd;
+            mciSendCommand(lParam, MCI_PLAY, MCI_NOTIFY,(uintptr_t)&mciPlay);
         }
         else
         {
