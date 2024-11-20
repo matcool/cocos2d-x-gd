@@ -172,6 +172,7 @@ cocos2dx/robtop/xml/ObjectDecoder.cpp
 cocos2dx/robtop/xml/DS_Dictionary.cpp
 cocos2dx/robtop/xml/pugixml.cpp
 cocos2dx/robtop/content/CCContentManager.cpp
+cocos2dx/robtop/fmt-0.9.0/format.cc
 
 # extensions/AssetsManager/AssetsManager.cpp
 # extensions/CCBReader/CCBAnimationManager.cpp
