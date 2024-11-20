@@ -396,4 +396,9 @@ void CCArray::acceptVisitor(CCDataVisitor &visitor)
     visitor.visit(this);
 }
 
+CCString* CCArray::stringAtIndex(unsigned int index)
+{
+    return (CCString*)objectAtIndex(index);
+}
+
 NS_CC_END

@@ -358,5 +358,21 @@ void CCMotionStreak::draw()
     CC_INCREMENT_GL_DRAWS(1);
 }
 
+void CCMotionStreak::enableRepeatMode(float) {
+    ROB_UNIMPLEMENTED();
+}
+void CCMotionStreak::resumeStroke(void) {
+    ROB_UNIMPLEMENTED();
+}
+void CCMotionStreak::setStroke(float) {
+    ROB_UNIMPLEMENTED();
+}
+void CCMotionStreak::stopStroke(void) {
+    ROB_UNIMPLEMENTED();
+}
+void CCMotionStreak::updateFade(float) {
+    ROB_UNIMPLEMENTED();
+}
+
 NS_CC_END
 

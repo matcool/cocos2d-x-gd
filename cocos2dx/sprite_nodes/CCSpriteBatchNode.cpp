@@ -776,4 +776,17 @@ CCSpriteBatchNode * CCSpriteBatchNode::addSpriteWithoutQuad(CCSprite*child, unsi
     return this;
 }
 
+int CCSpriteBatchNode::getAtlasCapacity(void) {
+    return m_pobTextureAtlas->getCapacity();
+}
+int CCSpriteBatchNode::getUsedAtlasCapacity(void) {
+    ROB_UNIMPLEMENTED();
+}
+void CCSpriteBatchNode::increaseAtlasCapacity(unsigned int) {
+    ROB_UNIMPLEMENTED();
+}
+void CCSpriteBatchNode::manualSortAllChildren(void) {
+    ROB_UNIMPLEMENTED();
+}
+
 NS_CC_END

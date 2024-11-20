@@ -524,4 +524,17 @@ int cocos2d::CCTouchDelegate::getPreviousPriority(void) {
     return 0;
 }
 
+void CCTouchDispatcher::addPrioTargetedDelegate(class cocos2d::CCTouchDelegate *, int, bool) {
+    ROB_UNIMPLEMENTED();
+}
+bool CCTouchDispatcher::isUsingForcePrio(void) {
+    ROB_UNIMPLEMENTED();
+}
+void CCTouchDispatcher::registerForcePrio(class cocos2d::CCObject *, int) {
+    ROB_UNIMPLEMENTED();
+}
+void CCTouchDispatcher::unregisterForcePrio(class cocos2d::CCObject *) {
+    ROB_UNIMPLEMENTED();
+}
+
 NS_CC_END

@@ -1354,6 +1354,27 @@ void cocos2d::CCParticleSystem::setVisible(bool) {
 void cocos2d::CCParticleSystem::updateEmissionRate(void) {
     ROB_UNIMPLEMENTED();
 }
+bool CCParticleSystem::getStartRadiusEqualToEnd(void) const {
+    ROB_UNIMPLEMENTED();
+}
+bool CCParticleSystem::getStartSizeEqualToEnd(void) const {
+    ROB_UNIMPLEMENTED();
+}
+bool CCParticleSystem::getStartSpinEqualToEnd(void) const {
+    ROB_UNIMPLEMENTED();
+}
+float CCParticleSystem::getTimeElapsed(void) {
+    ROB_UNIMPLEMENTED();
+}
+void CCParticleSystem::loadScaledDefaults(float) {
+    ROB_UNIMPLEMENTED();
+}
+void CCParticleSystem::resumeSystem(void) {
+    ROB_UNIMPLEMENTED();
+}
+void CCParticleSystem::saveDefaults(void) {
+    ROB_UNIMPLEMENTED();
+}
 
 
 NS_CC_END

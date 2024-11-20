@@ -121,6 +121,18 @@ CCParticleSystemQuad * CCParticleSystemQuad::create(const char *plistFile)
     return pRet;
 }
 
+CCParticleSystemQuad * CCParticleSystemQuad::create(const char *plistFile, bool unk)
+{
+    CCParticleSystemQuad *pRet = new CCParticleSystemQuad();
+    if (pRet && pRet->initWithFile(plistFile, unk))
+    {
+        pRet->autorelease();
+        return pRet;
+    }
+    CC_SAFE_DELETE(pRet);
+    return pRet;
+}
+
 CCParticleSystemQuad * CCParticleSystemQuad::createWithTotalParticles(unsigned int numberOfParticles, bool unk) {
     CCParticleSystemQuad *pRet = new CCParticleSystemQuad();
     if (pRet && pRet->initWithTotalParticles(numberOfParticles, unk))

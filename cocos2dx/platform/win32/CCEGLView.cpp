@@ -263,4 +263,23 @@ void CCEGLView::pollEvents() {
     glfwPollEvents();
 }
 
+CCEGLView* CCEGLView::createWithFullScreen(std::string const& name, bool borderless, bool fix) {
+    return CCEGLView::create(name);
+}
+CCSize CCEGLView::getDisplaySize() {
+    ROB_UNIMPLEMENTED();
+}
+void CCEGLView::makeBorderlessTop() {
+    ROB_UNIMPLEMENTED();
+}
+void CCEGLView::showCursor(bool show) {
+    ROB_UNIMPLEMENTED();
+}
+void CCEGLView::toggleFullScreen(bool, bool, bool) {
+    ROB_UNIMPLEMENTED();
+}
+void CCEGLView::toggleLockCursor(bool) {
+    ROB_UNIMPLEMENTED();
+}
+
 NS_CC_END

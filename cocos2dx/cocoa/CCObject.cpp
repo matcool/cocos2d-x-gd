@@ -128,4 +128,9 @@ bool CCObject::canEncode() {
     return false;
 }
 
+CCObject* CCObject::createWithCoder(DS_Dictionary* decoder) {
+    // actual rob impl
+    return NULL;
+}
+
 NS_CC_END

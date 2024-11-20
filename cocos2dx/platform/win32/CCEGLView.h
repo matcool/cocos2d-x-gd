@@ -126,8 +126,8 @@ public:
      */
     static CCEGLView* create(const gd::string&);
 
-    static cocos2d::CCEGLView* createWithFullScreen(gd::string const&, bool);
-	static cocos2d::CCEGLView* createWithFullScreen(gd::string const&, bool, GLFWvidmode const&, GLFWmonitor*);
+    static cocos2d::CCEGLView* createWithFullScreen(gd::string const&, bool fullscreen, bool fix);
+	// static cocos2d::CCEGLView* createWithFullScreen(gd::string const&, bool, GLFWvidmode const&, GLFWmonitor*);
 	static cocos2d::CCEGLView* createWithRect(gd::string const&, cocos2d::CCRect, float);
 
     /**
@@ -178,6 +178,7 @@ public:
 	void updateDesignSize(int, int);
 	void updateFrameSize();
 
+    void makeBorderlessTop();
 
 protected:
     // @note unknown members here

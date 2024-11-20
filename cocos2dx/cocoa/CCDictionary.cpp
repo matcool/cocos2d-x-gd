@@ -425,5 +425,9 @@ bool CCDictionary::writeToFile(const char *fullPath)
     return CCFileUtils::sharedFileUtils()->writeToFile(this, fullPath);
 }
 
+std::string CCDictionary::getFirstKey() {
+    ROB_UNIMPLEMENTED();
+}
+
 
 NS_CC_END

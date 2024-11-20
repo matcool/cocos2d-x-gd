@@ -1489,4 +1489,17 @@ CCNode& CCNode::operator=(CCNode const&) {
     return *this;
 }
 
+void CCNode::qsortAllChildrenWithIndex(void) {
+    ROB_UNIMPLEMENTED();
+}
+void CCNode::resetGlobalOrderOfArrival(void) {
+    ROB_UNIMPLEMENTED();
+}
+void CCNode::setUseChildIndex(bool) {
+    ROB_UNIMPLEMENTED();
+}
+void CCNode::updateChildIndexes(void) {
+    ROB_UNIMPLEMENTED();
+}
+
 NS_CC_END

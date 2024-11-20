@@ -79,4 +79,16 @@ CCScene& CCScene::operator=(const CCScene &scene) {
     return *this;
 }
 
+int CCScene::getHighestChildZ() {
+    int highest = 0;
+    CCObject* obj;
+    CCARRAY_FOREACH(m_pChildren, obj) {
+        CCNode* node = dynamic_cast<CCNode*>(obj);
+        if (node) {
+            highest = std::max(highest, node->getZOrder());
+        }
+    }
+    return highest;
+}
+
 NS_CC_END
