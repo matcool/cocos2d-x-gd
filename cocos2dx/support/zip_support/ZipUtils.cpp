@@ -586,4 +586,18 @@ unsigned char *ZipFile::getFileData(const std::string &fileName, unsigned long *
     return pBuffer;
 }
 
+std::string ZipUtils::base64DecodeEnc(std::string const&, std::string) { ROB_UNIMPLEMENTED(); }
+std::string ZipUtils::base64EncodeEnc(std::string const&, std::string) { ROB_UNIMPLEMENTED(); }
+std::string ZipUtils::base64URLDecode(std::string const&) { ROB_UNIMPLEMENTED(); }
+std::string ZipUtils::base64URLEncode(std::string const&) { ROB_UNIMPLEMENTED(); }
+int ZipUtils::ccDeflateMemory(unsigned char*, unsigned int, unsigned char**) { ROB_UNIMPLEMENTED(); }
+int ZipUtils::ccDeflateMemoryWithHint(unsigned char*, unsigned int, unsigned char**, unsigned int) { ROB_UNIMPLEMENTED(); }
+std::string ZipUtils::compressString(std::string const&, bool, int) { ROB_UNIMPLEMENTED(); }
+std::string ZipUtils::decompressString(std::string const&, bool, int) { ROB_UNIMPLEMENTED(); }
+std::string ZipUtils::decompressString2(unsigned char*, bool, int, int) { ROB_UNIMPLEMENTED(); }
+std::string ZipUtils::encryptDecrypt(std::string const&, int) { ROB_UNIMPLEMENTED(); }
+std::string ZipUtils::encryptDecryptWKey(std::string const&, std::string) { ROB_UNIMPLEMENTED(); }
+unsigned char ZipUtils::hexToChar(const std::string&) { ROB_UNIMPLEMENTED(); }
+std::string ZipUtils::urlDecode(const std::string&) { ROB_UNIMPLEMENTED(); }
+
 NS_CC_END

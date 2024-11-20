@@ -150,6 +150,8 @@ namespace cocos2d
         */
         static void ccSetPvrEncryptionKey(unsigned int keyPart1, unsigned int keyPart2, unsigned int keyPart3, unsigned int keyPart4);
 
+        // @note: Robtop additions
+
         static gd::string base64DecodeEnc(gd::string const&, gd::string);
         static gd::string base64EncodeEnc(gd::string const&, gd::string);
         static gd::string base64URLDecode(gd::string const&);
