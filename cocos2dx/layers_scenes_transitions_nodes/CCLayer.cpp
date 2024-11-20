@@ -808,6 +808,13 @@ void CCLayerColor::setOpacity(GLubyte opacity)
     updateColor();
 }
 
+void CCLayerColor::addToVertices(CCPoint, CCPoint, CCPoint) {
+    ROB_UNIMPLEMENTED();
+}
+void CCLayerColor::setVertices(CCPoint, CCPoint, CCPoint) {
+    ROB_UNIMPLEMENTED();
+}
+
 //
 // CCLayerGradient
 // 
@@ -994,6 +1001,14 @@ void CCLayerGradient::setCompressedInterpolation(bool compress)
 {
     m_bCompressedInterpolation = compress;
     updateColor();
+}
+
+void CCLayerGradient::setValues(_ccColor3B const &, unsigned char, _ccColor3B const &, unsigned char, CCPoint const &) {
+    ROB_UNIMPLEMENTED();
+}
+
+void CCLayerGradient::visit() {
+    ROB_UNIMPLEMENTED();
 }
 
 /// MultiplexLayer

@@ -788,5 +788,15 @@ void CCSpriteBatchNode::increaseAtlasCapacity(unsigned int) {
 void CCSpriteBatchNode::manualSortAllChildren(void) {
     ROB_UNIMPLEMENTED();
 }
+void CCSpriteBatchNode::setManualSortChildren(bool) {
+    ROB_UNIMPLEMENTED();
+    m_bManualSortChildren = true;
+}
+bool CCSpriteBatchNode::getManualSortChildren(void)const {
+    ROB_UNIMPLEMENTED();
+    return m_bManualSortChildren;
+}
+
+
 
 NS_CC_END

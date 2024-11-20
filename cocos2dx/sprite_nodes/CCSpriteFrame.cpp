@@ -186,5 +186,12 @@ CCTexture2D* CCSpriteFrame::getTexture(void)
     return NULL;
 }
 
+std::string CCSpriteFrame::getFrameName(void) const {
+    return m_strFrameName;
+}
+void CCSpriteFrame::setFrameName(std::string s) {
+    m_strFrameName = s;
+}
+
 NS_CC_END
 

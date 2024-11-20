@@ -712,4 +712,8 @@ CCImage* CCRenderTexture::newCCImage(bool flipImage)
     return pImage;
 }
 
+void CCRenderTexture::updateInternalScale(float, float) {
+    ROB_UNIMPLEMENTED();
+}
+
 NS_CC_END

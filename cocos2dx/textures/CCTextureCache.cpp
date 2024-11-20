@@ -391,6 +391,10 @@ void CCTextureCache::addImageAsyncCallBack(float dt)
     }
 }
 
+void CCTextureCache::prepareAsyncLoading(void) {
+    ROB_UNIMPLEMENTED();
+}
+
 CCTexture2D * CCTextureCache::addImage(const char * path, bool)
 {
     CCAssert(path != NULL, "TextureCache: fileimage MUST not be NULL");

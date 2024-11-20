@@ -1244,4 +1244,11 @@ void CCLabelBMFont::draw()
 
 #endif // CC_LABELBMFONT_DEBUG_DRAW
 
+CCLabelBMFont* CCLabelBMFont::createBatched(char const *, char const *, CCArray *, int) {
+    ROB_UNIMPLEMENTED();
+}
+void CCLabelBMFont::limitLabelWidth(float, float, float) {
+    ROB_UNIMPLEMENTED();
+}
+
 NS_CC_END

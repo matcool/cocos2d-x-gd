@@ -561,6 +561,16 @@ void CCGLProgram::setUniformLocationWithMatrix4fv(GLint location, GLfloat* matri
     }
 }
 
+void CCGLProgram::setUniformLocationWithMatrix3fv(int location, float* matrix, unsigned int number) {
+    bool updated =  updateUniformLocation(location, matrix, sizeof(float)*9*number);
+
+    if( updated )
+    {
+        glUniformMatrix3fv((GLint)location, (GLsizei)number, GL_FALSE, matrix);
+    }
+}
+
+
 void CCGLProgram::setUniformsForBuiltins()
 {
     kmMat4 matrixP;
