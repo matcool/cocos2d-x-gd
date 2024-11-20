@@ -1081,6 +1081,11 @@ void CCDirector::updateScreenScale(CCSize size) {
 
 void CCDirector::updateContentScale(TextureQuality qual) {
     m_eTextureQuality = qual;
+    if (qual == kTextureQualityHigh) {
+        m_fContentScaleFactor = 4.0f;
+    } else {
+        m_fContentScaleFactor = 1.0f;
+    }
 }
 
 /***************************************************

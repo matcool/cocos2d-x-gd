@@ -13,25 +13,17 @@ void AppDelegate::setupGLView() {
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {
-	// initialize director
-    CCDirector* pDirector = CCDirector::sharedDirector();
-    pDirector->setAlphaBlending(true);
+    auto* director = CCDirector::sharedDirector();
+    director->setAlphaBlending(true);
 
-    // set searching path
     auto cwd = std::filesystem::current_path();
     CCFileUtils::sharedFileUtils()->addSearchPath((cwd / "Resources").string().c_str());
 	
-    // turn on display FPS
-    pDirector->setDisplayStats(true);
+    director->setDisplayStats(true);
+    director->setAnimationInterval(1.0 / 60);
 
-    // set FPS. the default value is 1.0/60 if you don't call this
-    pDirector->setAnimationInterval(1.0 / 60);
-
-    // create a scene. it's an autorelease object
-    CCScene *pScene = HelloWorld::scene();
-
-    // run
-    pDirector->runWithScene(pScene);
+    auto* scene = HelloWorld::scene();
+    director->runWithScene(scene);
 
     return true;
 }
