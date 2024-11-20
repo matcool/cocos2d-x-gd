@@ -114,3 +114,4 @@ tools/jenkins_scripts/mac/android/userconf.ini
 tags
 
 .vscode/
+dlls/cocos2d.dll

@@ -51,60 +51,7 @@ int CCApplication::run()
 
     dir->end();
 
-    // // Main message loop:
-    // MSG msg;
-    // LARGE_INTEGER nFreq;
-    // LARGE_INTEGER nLast;
-    // LARGE_INTEGER nNow;
-
-    // QueryPerformanceFrequency(&nFreq);
-    // QueryPerformanceCounter(&nLast);
-
-    // // Initialize instance and cocos2d.
-    // if (!applicationDidFinishLaunching())
-    // {
-    //     return 0;
-    // }
-
-    // CCEGLView* pMainWnd = CCEGLView::sharedOpenGLView();
-    // pMainWnd->centerWindow();
-    // // ShowWindow(pMainWnd->getHWnd(), SW_SHOW);
-
-    // while (1)
-    // {
-    //     if (! PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-    //     {
-    //         // Get current time tick.
-    //         QueryPerformanceCounter(&nNow);
-
-    //         // If it's the time to draw next frame, draw it, else sleep a while.
-    //         if (nNow.QuadPart - nLast.QuadPart > m_nAnimationInterval.QuadPart)
-    //         {
-    //             nLast.QuadPart = nNow.QuadPart;
-    //             // CCDirector::sharedDirector()->mainLoop();
-    //         }
-    //         else
-    //         {
-    //             Sleep(0);
-    //         }
-    //         continue;
-    //     }
-
-    //     if (WM_QUIT == msg.message)
-    //     {
-    //         // Quit message loop.
-    //         break;
-    //     }
-
-    //     // Deal with windows message.
-    //     if (! m_hAccelTable || ! TranslateAccelerator(msg.hwnd, m_hAccelTable, &msg))
-    //     {
-    //         TranslateMessage(&msg);
-    //         DispatchMessage(&msg);
-    //     }
-    // }
-
-    // return (int) msg.wParam;
+    return 0;
 }
 
 void CCApplication::setAnimationInterval(double interval)

@@ -9,7 +9,7 @@ void AppDelegate::setupGLView() {
 	auto* glView = CCEGLView::createWithRect("Hello!", CCRect(0, 0, 1280, 720), 1.0f);
 	director->setOpenGLView(glView);
 
-	// director->setupScreenScale({480, 320}, {1280, 720}, TextureQuality::kTextureQualityHigh);
+	director->setupScreenScale({480, 320}, {1280, 720}, TextureQuality::kTextureQualityHigh);
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {

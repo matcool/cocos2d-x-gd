@@ -1068,6 +1068,21 @@ CCMouseDispatcher* CCDirector::getMouseDispatcher() {
     return m_pMouseDispatcher;
 }
 
+void CCDirector::setupScreenScale(CCSize someSize, CCSize pixelSize, TextureQuality qual) {
+    m_obScaleFactor = someSize;
+    this->updateScreenScale(pixelSize);
+    this->updateContentScale(qual);
+}
+
+void CCDirector::updateScreenScale(CCSize size) {
+    m_obResolutionInPixels = size;
+    m_pobOpenGLView->setDesignResolutionSize(m_obScaleFactor.width, m_obScaleFactor.height, kResolutionNoBorder);
+}
+
+void CCDirector::updateContentScale(TextureQuality qual) {
+    m_eTextureQuality = qual;
+}
+
 /***************************************************
 * implementation of DisplayLinkDirector
 **************************************************/

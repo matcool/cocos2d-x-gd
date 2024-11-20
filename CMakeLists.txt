@@ -367,4 +367,6 @@ target_link_options(cocos2d PRIVATE -Wl,/errorlimit:0)
 
 if (PROJECT_IS_TOP_LEVEL)
 	add_subdirectory(mat-sample)
+
+	install(TARGETS cocos2d RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/dlls)
 endif()

@@ -227,6 +227,8 @@ bool CCEGLView::initWithRect(const std::string& name, cocos2d::CCRect rect, floa
     if (!m_pMainWindow) {
         return false;
     }
+    this->setFrameSize(rect.size.width, rect.size.height);
+    // this->setFrameZoomFactor(unk);
 
     glfwMakeContextCurrent(m_pMainWindow);
 
@@ -249,9 +251,7 @@ bool CCEGLView::initGlew() {
 
 void CCEGLView::updateFrameSize() {
     if (m_pMainWindow) {
-        glfwSetWindowSize(m_pMainWindow,
-            m_obScreenSize.width,
-            m_obScreenSize.height);
+        glfwSetWindowSize(m_pMainWindow, m_obScreenSize.width, m_obScreenSize.height);
     }
 }
 
