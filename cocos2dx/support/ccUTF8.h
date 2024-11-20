@@ -38,8 +38,9 @@ CC_DLL bool isspace_unicode(unsigned short ch);
  *
  * Return value: the length of the string in characters
  **/
-CC_DLL long
-cc_utf8_strlen (const char * p, int max);
+CC_DLL long cc_utf8_strlen (const char * p, int max);
+
+CC_DLL long cc_utf8_strlen (const char * p);
 
 /*
  * @str:    the string to search through.

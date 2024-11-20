@@ -247,6 +247,10 @@ cc_utf8_strlen (const char * p, int max)
     return len;
 }
 
+long cc_utf8_strlen (const char * p) {
+    return cc_utf8_strlen(p, -1);
+}
+
 /*
  * g_utf8_get_char:
  * @p: a pointer to Unicode character encoded as UTF-8
