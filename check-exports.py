@@ -4,8 +4,12 @@ import subprocess
 with open("gd-cocos-imports.txt") as file:
     gd_symbols = set(x.strip() for x in file.readlines())
 
+# symbols that libExtension.dll imports
+with open("gd-extension-imports.txt") as file:
+    gd_symbols = gd_symbols.union(set(x.strip() for x in file.readlines()))
+
 # symbols that we export
-output = subprocess.run(["dumpbin", "/exports", "build/cocos2d.dll", "/nologo"], capture_output=True).stdout.decode("utf-8")
+output = subprocess.run(["dumpbin", "/exports", "build/libcocos2d.dll", "/nologo"], capture_output=True).stdout.decode("utf-8")
 
 symbols = output.splitlines()[16:-11]
 symbols = set(x.split()[3] for x in symbols)

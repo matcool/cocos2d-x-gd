@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.25.0)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-project(cocos2d VERSION 0.1.0)
+project(libcocos2d VERSION 0.1.0)
 
-add_library(cocos2d SHARED
+add_library(libcocos2d SHARED
 external/chipmunk/src/chipmunk.c
 external/chipmunk/src/cpArbiter.c
 external/chipmunk/src/cpArray.c
@@ -321,7 +321,7 @@ extensions/GUI/CCControlExtension/CCScale9Sprite.cpp
 # samples/Cpp/HelloCpp/Classes/HelloWorldScene.cpp
 )
 
-target_include_directories(cocos2d PUBLIC
+target_include_directories(libcocos2d PUBLIC
 external
 
 CocosDenshion/include
@@ -344,7 +344,7 @@ cocos2dx/platform/third_party/win32/libwebp
 extensions
 )
 
-target_link_libraries(cocos2d PRIVATE
+target_link_libraries(libcocos2d PRIVATE
 opengl32
 ${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/glew32.lib
 ${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/libwebp.lib
@@ -359,27 +359,27 @@ Winmm.lib
 
 # disable the "needs to have dll-interface" warning
 if (MSVC)
-	target_compile_options(cocos2d PRIVATE /wd4251 /wd4267 /wd4244 /wd4996 /wd4302 /wd4311 /wd4312)
+	target_compile_options(libcocos2d PRIVATE /wd4251 /wd4267 /wd4244 /wd4996 /wd4302 /wd4311 /wd4312)
 else()
-	target_compile_options(cocos2d PRIVATE -Wno-deprecated-declarations)
+	target_compile_options(libcocos2d PRIVATE -Wno-deprecated-declarations)
 endif()
-# target_compile_definitions(cocos2d PRIVATE HAVE_STRUCT_TIMESPEC CC_ENABLE_BOX2D_INTEGRATION COCOS2D_DEBUG=1)
-target_compile_definitions(cocos2d PUBLIC
+# target_compile_definitions(libcocos2d PRIVATE HAVE_STRUCT_TIMESPEC CC_ENABLE_BOX2D_INTEGRATION COCOS2D_DEBUG=1)
+target_compile_definitions(libcocos2d PUBLIC
 	CC_TARGET_OS_WIN32=1
 	GEODE_IS_MEMBER_TEST=1
 	GEODE_COMP_GD_VERSION=22074
 )
 
-target_compile_definitions(cocos2d PRIVATE
+target_compile_definitions(libcocos2d PRIVATE
 	HAVE_STRUCT_TIMESPEC
 	COCOS2D_DEBUG=1
 	_USRDLL=1
 )
 
-target_link_options(cocos2d PRIVATE -Wl,/errorlimit:0)
+target_link_options(libcocos2d PRIVATE -Wl,/errorlimit:0)
 
 if (PROJECT_IS_TOP_LEVEL)
 	add_subdirectory(mat-sample)
 
-	install(TARGETS cocos2d RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/dlls)
+	install(TARGETS libcocos2d RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/dlls)
 endif()

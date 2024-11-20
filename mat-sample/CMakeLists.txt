@@ -4,4 +4,4 @@ add_executable(matapp
     HelloWorldScene.cpp
 )
 
-target_link_libraries(matapp cocos2d)
+target_link_libraries(matapp libcocos2d)
