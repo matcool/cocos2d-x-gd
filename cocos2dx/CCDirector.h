@@ -352,10 +352,8 @@ public:
     /** enables/disables OpenGL depth test */
     void setDepthTest(bool bOn);
 
-protected:
     virtual void mainLoop(void) {}
 
-public:
     /** The size in pixels of the surface. It could be different than the screen size.
     High-res devices might have a higher surface size than the screen size.
     Only available when compiled using SDK >= 4.0.

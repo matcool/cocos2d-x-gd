@@ -134,6 +134,7 @@ void CCEGLView::end()
         glfwDestroyWindow(m_pMainWindow);
         m_pMainWindow = NULL;
     }
+    // glfwTerminate();
     delete this;
 }
 
@@ -252,6 +253,14 @@ void CCEGLView::updateFrameSize() {
             m_obScreenSize.width,
             m_obScreenSize.height);
     }
+}
+
+bool CCEGLView::windowShouldClose() {
+    return m_pMainWindow ? glfwWindowShouldClose(m_pMainWindow) : true;
+}
+
+void CCEGLView::pollEvents() {
+    glfwPollEvents();
 }
 
 NS_CC_END

@@ -121,18 +121,8 @@ CCString* CCString::createWithData(const unsigned char* pData, unsigned long nLe
     CCString* pRet = NULL;
     if (pData != NULL)
     {
-        char* pStr = (char*)malloc(nLen+1);
-        if (pStr != NULL)
-        {
-            pStr[nLen] = '\0';
-            if (nLen > 0)
-            {
-                memcpy(pStr, pData, nLen);
-            }
-            
-            pRet = CCString::create(pStr);
-            free(pStr);
-        }
+        pRet = new CCString(std::string((char*)pData, nLen));
+        pRet->autorelease();
     }
     return pRet;
 }

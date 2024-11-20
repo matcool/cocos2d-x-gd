@@ -3,24 +3,19 @@
 
 #include <filesystem>
 
-// void AppDelegate::setupGLView() {
-// 	auto* director = CCDirector::sharedDirector();
+void AppDelegate::setupGLView() {
+	auto* director = CCDirector::sharedDirector();
 
-// 	auto* glView = CCEGLView::createWithRect("Hello!", CCRect(0, 0, 1280, 720), 1.0f);
-// 	director->setOpenGLView(glView);
+	auto* glView = CCEGLView::createWithRect("Hello!", CCRect(0, 0, 1280, 720), 1.0f);
+	director->setOpenGLView(glView);
 
-// 	director->setupScreenScale({480, 320}, {1280, 720}, TextureQuality::kTextureQualityHigh);
-// }
+	// director->setupScreenScale({480, 320}, {1280, 720}, TextureQuality::kTextureQualityHigh);
+}
 
 bool AppDelegate::applicationDidFinishLaunching() {
 	// initialize director
     CCDirector* pDirector = CCDirector::sharedDirector();
-    CCEGLView* pEGLView = CCEGLView::sharedOpenGLView();
-
-    pDirector->setOpenGLView(pEGLView);
-	CCSize frameSize = pEGLView->getFrameSize();
-
-    // pEGLView->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, kResolutionNoBorder);
+    pDirector->setAlphaBlending(true);
 
     // set searching path
     auto cwd = std::filesystem::current_path();

@@ -14,4 +14,6 @@ public:
 	void applicationDidEnterBackground() override;
 
 	void applicationWillEnterForeground() override;
+
+	void setupGLView() override;
 };

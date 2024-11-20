@@ -32,62 +32,78 @@ CCApplication::~CCApplication()
 
 int CCApplication::run()
 {
-    PVRFrameEnableControlWindow(false);
+    this->setupGLView();
 
-    // Main message loop:
-    MSG msg;
-    LARGE_INTEGER nFreq;
-    LARGE_INTEGER nLast;
-    LARGE_INTEGER nNow;
+    this->setupVerticalSync();
+    this->updateVerticalSync();
 
-    QueryPerformanceFrequency(&nFreq);
-    QueryPerformanceCounter(&nLast);
+    auto* egl = CCEGLView::sharedOpenGLView();
+    auto* dir = CCDirector::sharedDirector();
 
-    // Initialize instance and cocos2d.
-    if (!applicationDidFinishLaunching())
-    {
-        return 0;
+    glfwSwapInterval(1);
+
+    while (!egl->windowShouldClose()) {
+        egl->pollEvents();
+        dir->mainLoop();
     }
 
-    CCEGLView* pMainWnd = CCEGLView::sharedOpenGLView();
-    pMainWnd->centerWindow();
-    // ShowWindow(pMainWnd->getHWnd(), SW_SHOW);
+    dir->end();
+    egl->end();
 
-    while (1)
-    {
-        if (! PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-        {
-            // Get current time tick.
-            QueryPerformanceCounter(&nNow);
+    // // Main message loop:
+    // MSG msg;
+    // LARGE_INTEGER nFreq;
+    // LARGE_INTEGER nLast;
+    // LARGE_INTEGER nNow;
 
-            // If it's the time to draw next frame, draw it, else sleep a while.
-            if (nNow.QuadPart - nLast.QuadPart > m_nAnimationInterval.QuadPart)
-            {
-                nLast.QuadPart = nNow.QuadPart;
-                // CCDirector::sharedDirector()->mainLoop();
-            }
-            else
-            {
-                Sleep(0);
-            }
-            continue;
-        }
+    // QueryPerformanceFrequency(&nFreq);
+    // QueryPerformanceCounter(&nLast);
 
-        if (WM_QUIT == msg.message)
-        {
-            // Quit message loop.
-            break;
-        }
+    // // Initialize instance and cocos2d.
+    // if (!applicationDidFinishLaunching())
+    // {
+    //     return 0;
+    // }
 
-        // Deal with windows message.
-        if (! m_hAccelTable || ! TranslateAccelerator(msg.hwnd, m_hAccelTable, &msg))
-        {
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
-    }
+    // CCEGLView* pMainWnd = CCEGLView::sharedOpenGLView();
+    // pMainWnd->centerWindow();
+    // // ShowWindow(pMainWnd->getHWnd(), SW_SHOW);
 
-    return (int) msg.wParam;
+    // while (1)
+    // {
+    //     if (! PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+    //     {
+    //         // Get current time tick.
+    //         QueryPerformanceCounter(&nNow);
+
+    //         // If it's the time to draw next frame, draw it, else sleep a while.
+    //         if (nNow.QuadPart - nLast.QuadPart > m_nAnimationInterval.QuadPart)
+    //         {
+    //             nLast.QuadPart = nNow.QuadPart;
+    //             // CCDirector::sharedDirector()->mainLoop();
+    //         }
+    //         else
+    //         {
+    //             Sleep(0);
+    //         }
+    //         continue;
+    //     }
+
+    //     if (WM_QUIT == msg.message)
+    //     {
+    //         // Quit message loop.
+    //         break;
+    //     }
+
+    //     // Deal with windows message.
+    //     if (! m_hAccelTable || ! TranslateAccelerator(msg.hwnd, m_hAccelTable, &msg))
+    //     {
+    //         TranslateMessage(&msg);
+    //         DispatchMessage(&msg);
+    //     }
+    // }
+
+    // return (int) msg.wParam;
 }
 
 void CCApplication::setAnimationInterval(double interval)
@@ -201,6 +217,18 @@ void cocos2d::CCApplication::setupGLView(void) {
 }
 void cocos2d::CCApplication::platformShutdown(void) {
     // FIXME: unimplemented
+}
+
+void CCApplication::setupVerticalSync() {
+    // glfwSwapInterval(1);
+}
+
+void CCApplication::updateVerticalSync() {
+
+}
+
+void CCApplication::toggleVerticalSync(bool) {
+    this->updateVerticalSync();
 }
 
 NS_CC_END
