@@ -1126,4 +1126,30 @@ void CCLayerMultiplex::switchToAndReleaseMe(unsigned int n)
     this->addChild((CCNode*)m_pLayers->objectAtIndex(n));
 }
 
+bool cocos2d::CCLayer::isKeyboardEnabled(void) {
+    // FIXME: unimplemented
+    return false;
+}
+void cocos2d::CCLayer::setKeyboardEnabled(bool) {
+    // FIXME: unimplemented
+
+}
+bool cocos2d::CCLayer::isMouseEnabled(void) {
+    // FIXME: unimplemented
+    return false;
+}
+void cocos2d::CCLayer::setMouseEnabled(bool) {
+    // FIXME: unimplemented
+}
+void cocos2d::CCLayer::setPreviousPriority(int) {
+    // FIXME: unimplemented
+}
+int cocos2d::CCLayer::getPreviousPriority(void) {
+    // FIXME: unimplemented
+    return 0;
+}
+void cocos2d::CCLayer::keyDown(cocos2d::enumKeyCodes) {
+    // FIXME: unimplemented
+}
+
 NS_CC_END

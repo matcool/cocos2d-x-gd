@@ -251,7 +251,7 @@ CCDictionary* CCTextureCache::snapshotTextures()
     return pRet;
 }
 
-void CCTextureCache::addImageAsync(const char *path, CCObject *target, SEL_CallFuncO selector)
+void CCTextureCache::addImageAsync(const char *path, CCObject *target, SEL_CallFuncO selector, int, CCTexture2DPixelFormat)
 {
 #ifdef EMSCRIPTEN
     CCLOGWARN("Cannot load image %s asynchronously in Emscripten builds.", path);
@@ -391,7 +391,7 @@ void CCTextureCache::addImageAsyncCallBack(float dt)
     }
 }
 
-CCTexture2D * CCTextureCache::addImage(const char * path)
+CCTexture2D * CCTextureCache::addImage(const char * path, bool)
 {
     CCAssert(path != NULL, "TextureCache: fileimage MUST not be NULL");
 

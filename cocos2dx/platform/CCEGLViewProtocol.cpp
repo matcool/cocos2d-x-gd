@@ -356,4 +356,9 @@ float CCEGLViewProtocol::getScaleY() const
     return m_fScaleY;
 }
 
+void cocos2d::CCEGLViewProtocol::pollInputEvents(void) {
+    // FIXME: unimplemented
+}
+
+
 NS_CC_END

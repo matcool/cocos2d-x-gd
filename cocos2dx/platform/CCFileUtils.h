@@ -165,7 +165,7 @@ public:
      @since v2.1
      @note Robtop Addition: added a bool parameter
      */
-    virtual gd::string fullPathForFilename(const char* pszFileName, bool skipSuffix);
+    virtual gd::string fullPathForFilename(const char* pszFileName, bool skipSuffix = false);
     
     // @note RobTop Addition
     virtual void removeFullPath(const char* path);

@@ -89,7 +89,7 @@ public:
 	GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCStandardTouchHandler, CCTouchHandler)
 	inline CCStandardTouchHandler() = default;
 
-    ~CCStandardTouchHandler(void);
+    ~CCStandardTouchHandler() {}
     
     /** initializes a TouchHandler with a delegate and a priority */
     virtual bool initWithDelegate(CCTouchDelegate *pDelegate, int nPriority);

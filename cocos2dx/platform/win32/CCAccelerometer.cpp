@@ -165,17 +165,17 @@ void CCAccelerometer::setDelegate(CCAccelerometerDelegate* pDelegate)
     // Enable/disable the accelerometer.
     // Well, there isn't one on Win32 so we don't do anything other than register
     // and deregister ourselves from the Windows Key handler.
-    if (pDelegate)
-    {
-        // Register our handler
-        CCEGLView::sharedOpenGLView()->setAccelerometerKeyHook( &myAccelerometerKeyHook );
-    }
-    else
-    {
-        // De-register our handler
-        CCEGLView::sharedOpenGLView()->setAccelerometerKeyHook( NULL );
-        resetAccelerometer();
-    }
+    // if (pDelegate)
+    // {
+    //     // Register our handler
+    //     CCEGLView::sharedOpenGLView()->setAccelerometerKeyHook( &myAccelerometerKeyHook );
+    // }
+    // else
+    // {
+    //     // De-register our handler
+    //     CCEGLView::sharedOpenGLView()->setAccelerometerKeyHook( NULL );
+    //     resetAccelerometer();
+    // }
 }
 
 void CCAccelerometer::setAccelerometerInterval(float interval)

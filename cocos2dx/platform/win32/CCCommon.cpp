@@ -24,6 +24,7 @@ THE SOFTWARE.
 #include "platform/CCCommon.h"
 #include "CCStdC.h"
 #include <iostream>
+#include <Windows.h>
 
 NS_CC_BEGIN
 

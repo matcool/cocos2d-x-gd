@@ -169,7 +169,7 @@ bool CCTextFieldTTF::canDetachWithIME()
     return (m_pDelegate) ? (! m_pDelegate->onTextFieldDetachWithIME(this)) : true;
 }
 
-void CCTextFieldTTF::insertText(const char * text, int len)
+void CCTextFieldTTF::insertText(const char * text, int len, cocos2d::enumKeyCodes key)
 {
     std::string sInsert(text, len);
 
@@ -183,7 +183,7 @@ void CCTextFieldTTF::insertText(const char * text, int len)
 
     if (len > 0)
     {
-        if (m_pDelegate && m_pDelegate->onTextFieldInsertText(this, sInsert.c_str(), len))
+        if (m_pDelegate && m_pDelegate->onTextFieldInsertText(this, sInsert.c_str(), len, key))
         {
             // delegate doesn't want to insert text
             return;
@@ -200,7 +200,7 @@ void CCTextFieldTTF::insertText(const char * text, int len)
     }
 
     // '\n' inserted, let delegate process first
-    if (m_pDelegate && m_pDelegate->onTextFieldInsertText(this, "\n", 1))
+    if (m_pDelegate && m_pDelegate->onTextFieldInsertText(this, "\n", 1, key))
     {
         return;
     }

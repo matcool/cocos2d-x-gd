@@ -30,13 +30,6 @@ THE SOFTWARE.
 
 NS_CC_BEGIN
 
-CCObject* CCCopying::copyWithZone(CCZone *pZone)
-{
-    CC_UNUSED_PARAM(pZone);
-    CCAssert(0, "not implement");
-    return 0;
-}
-
 CCObject::CCObject(void)
 : m_nLuaID(0)
 , m_uReference(1) // when the object is created, the reference count of it is 1
@@ -105,11 +98,6 @@ bool CCObject::isSingleReference(void) const
     return m_uReference == 1;
 }
 
-unsigned int CCObject::retainCount(void) const
-{
-    return m_uReference;
-}
-
 bool CCObject::isEqual(const CCObject *pObject)
 {
     return this == pObject;
@@ -118,6 +106,26 @@ bool CCObject::isEqual(const CCObject *pObject)
 void CCObject::acceptVisitor(CCDataVisitor &visitor)
 {
     visitor.visitObject(this);
+}
+
+int CCObject::getTag() const
+{
+    return m_nTag;
+}
+
+void CCObject::setTag(int var)
+{
+    m_nTag = var;
+}
+
+void CCObject::encodeWithCoder(DS_Dictionary* encoder)
+{
+    // FIXME: unimplemented
+}
+
+bool CCObject::canEncode() {
+    // FIXME: unimplemented
+    return false;
 }
 
 NS_CC_END

@@ -166,7 +166,8 @@ bool CCImage::initWithImageData(void * pData,
                                 EImageFormat eFmt/* = eSrcFmtPng*/, 
                                 int nWidth/* = 0*/,
                                 int nHeight/* = 0*/,
-                                int nBitsPerComponent/* = 8*/)
+                                int nBitsPerComponent/* = 8*/,
+                                int whoknows)
 {
     bool bRet = false;
     do 
@@ -630,72 +631,8 @@ static void _tiffUnmapProc(thandle_t fd, void* base, toff_t size)
 
 bool CCImage::_initWithTiffData(void* pData, int nDataLen)
 {
-    bool bRet = false;
-    do 
-    {
-        // set the read call back function
-        tImageSource imageSource;
-        imageSource.data    = (unsigned char*)pData;
-        imageSource.size    = nDataLen;
-        imageSource.offset  = 0;
-
-        TIFF* tif = TIFFClientOpen("file.tif", "r", (thandle_t)&imageSource, 
-            _tiffReadProc, _tiffWriteProc,
-            _tiffSeekProc, _tiffCloseProc, _tiffSizeProc,
-            _tiffMapProc,
-            _tiffUnmapProc);
-
-        CC_BREAK_IF(NULL == tif);
-
-        uint32 w = 0, h = 0;
-        uint16 bitsPerSample = 0, samplePerPixel = 0, planarConfig = 0;
-        size_t npixels = 0;
-        
-        TIFFGetField(tif, TIFFTAG_IMAGEWIDTH, &w);
-        TIFFGetField(tif, TIFFTAG_IMAGELENGTH, &h);
-        TIFFGetField(tif, TIFFTAG_BITSPERSAMPLE, &bitsPerSample);
-        TIFFGetField(tif, TIFFTAG_SAMPLESPERPIXEL, &samplePerPixel);
-        TIFFGetField(tif, TIFFTAG_PLANARCONFIG, &planarConfig);
-
-        npixels = w * h;
-        
-        m_bHasAlpha = true;
-        m_nWidth = w;
-        m_nHeight = h;
-        m_nBitsPerComponent = 8;
-
-        m_pData = new unsigned char[npixels * sizeof (uint32)];
-
-        uint32* raster = (uint32*) _TIFFmalloc(npixels * sizeof (uint32));
-        if (raster != NULL) 
-        {
-           if (TIFFReadRGBAImageOriented(tif, w, h, raster, ORIENTATION_TOPLEFT, 0))
-           {
-                /* the raster data is pre-multiplied by the alpha component 
-                   after invoking TIFFReadRGBAImageOriented
-                unsigned char* src = (unsigned char*)raster;
-                unsigned int* tmp = (unsigned int*)m_pData;
-
-                for(int j = 0; j < m_nWidth * m_nHeight * 4; j += 4)
-                {
-                    *tmp++ = CC_RGB_PREMULTIPLY_ALPHA( src[j], src[j + 1], 
-                        src[j + 2], src[j + 3] );
-                }
-                */
-                m_bPreMulti = true;
-
-               memcpy(m_pData, raster, npixels*sizeof (uint32));
-           }
-
-          _TIFFfree(raster);
-        }
-        
-
-        TIFFClose(tif);
-
-        bRet = true;
-    } while (0);
-    return bRet;
+    // FIXME: unimplemented
+    std::abort();
 }
 
 bool CCImage::_initWithRawData(void * pData, int nDatalen, int nWidth, int nHeight, int nBitsPerComponent, bool bPreMulti)

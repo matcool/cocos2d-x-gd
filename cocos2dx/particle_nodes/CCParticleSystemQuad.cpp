@@ -45,10 +45,10 @@ NS_CC_BEGIN
 
 //implementation CCParticleSystemQuad
 // overriding the init method
-bool CCParticleSystemQuad::initWithTotalParticles(unsigned int numberOfParticles)
+bool CCParticleSystemQuad::initWithTotalParticles(unsigned int numberOfParticles, bool unk)
 {
     // base initialization
-    if( CCParticleSystem::initWithTotalParticles(numberOfParticles) ) 
+    if( CCParticleSystem::initWithTotalParticles(numberOfParticles, unk) ) 
     {
         // allocating data space
         if( ! this->allocMemory() ) {
@@ -121,9 +121,9 @@ CCParticleSystemQuad * CCParticleSystemQuad::create(const char *plistFile)
     return pRet;
 }
 
-CCParticleSystemQuad * CCParticleSystemQuad::createWithTotalParticles(unsigned int numberOfParticles) {
+CCParticleSystemQuad * CCParticleSystemQuad::createWithTotalParticles(unsigned int numberOfParticles, bool unk) {
     CCParticleSystemQuad *pRet = new CCParticleSystemQuad();
-    if (pRet && pRet->initWithTotalParticles(numberOfParticles))
+    if (pRet && pRet->initWithTotalParticles(numberOfParticles, unk))
     {
         pRet->autorelease();
         return pRet;

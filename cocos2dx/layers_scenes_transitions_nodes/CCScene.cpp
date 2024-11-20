@@ -69,4 +69,14 @@ CCScene *CCScene::create()
     }
 }
 
+CCScene::CCScene(const CCScene &scene) {
+    // FIXME: unimplemented
+    // CCNode::operator=(scene);
+}
+
+CCScene& CCScene::operator=(const CCScene &scene) {
+    // FIXME: unimplemented
+    return *this;
+}
+
 NS_CC_END

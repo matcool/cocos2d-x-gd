@@ -140,7 +140,9 @@ public:
 		return id;
     }
 
-    static GEODE_DLL CCDirector* get();
+    static CCDirector* get() {
+        return CCDirector::sharedDirector();
+    }
 
     // attribute
 

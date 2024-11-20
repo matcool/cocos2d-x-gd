@@ -213,7 +213,7 @@ void CCIMEDispatcher::removeDelegate(CCIMEDelegate* pDelegate)
 // dispatch text message
 //////////////////////////////////////////////////////////////////////////
 
-void CCIMEDispatcher::dispatchInsertText(const char * pText, int nLen)
+void CCIMEDispatcher::dispatchInsertText(const char * pText, int nLen, cocos2d::enumKeyCodes key)
 {
     do 
     {
@@ -222,7 +222,7 @@ void CCIMEDispatcher::dispatchInsertText(const char * pText, int nLen)
         // there is no delegate attached to IME
         CC_BREAK_IF(! m_pImpl->m_DelegateWithIme);
 
-        m_pImpl->m_DelegateWithIme->insertText(pText, nLen);
+        m_pImpl->m_DelegateWithIme->insertText(pText, nLen, key);
     } while (0);
 }
 

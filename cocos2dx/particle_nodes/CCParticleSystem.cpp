@@ -165,7 +165,7 @@ bool CCParticleSystem::init()
     return initWithTotalParticles(150);
 }
 
-bool CCParticleSystem::initWithFile(const char *plistFile)
+bool CCParticleSystem::initWithFile(const char *plistFile, bool unk)
 {
     bool bRet = false;
     m_sPlistFile = CCFileUtils::sharedFileUtils()->fullPathForFilename(plistFile);
@@ -178,11 +178,11 @@ bool CCParticleSystem::initWithFile(const char *plistFile)
     if (listFilePath.find('/') != string::npos)
     {
         listFilePath = listFilePath.substr(0, listFilePath.rfind('/') + 1);
-        bRet = this->initWithDictionary(dict, listFilePath.c_str());
+        bRet = this->initWithDictionary(dict, listFilePath.c_str(), unk);
     }
     else
     {
-        bRet = this->initWithDictionary(dict, "");
+        bRet = this->initWithDictionary(dict, "", unk);
     }
     
     dict->release();
@@ -190,12 +190,12 @@ bool CCParticleSystem::initWithFile(const char *plistFile)
     return bRet;
 }
 
-bool CCParticleSystem::initWithDictionary(CCDictionary *dictionary)
+bool CCParticleSystem::initWithDictionary(CCDictionary *dictionary, bool unk)
 {
-    return initWithDictionary(dictionary, "");
+    return initWithDictionary(dictionary, "", unk);
 }
 
-bool CCParticleSystem::initWithDictionary(CCDictionary *dictionary, const char *dirname)
+bool CCParticleSystem::initWithDictionary(CCDictionary *dictionary, const char *dirname, bool unk)
 {
     bool bRet = false;
     unsigned char *buffer = NULL;
@@ -205,7 +205,7 @@ bool CCParticleSystem::initWithDictionary(CCDictionary *dictionary, const char *
     {
         int maxParticles = dictionary->valueForKey("maxParticles")->intValue();
         // self, not super
-        if(this->initWithTotalParticles(maxParticles))
+        if(this->initWithTotalParticles(maxParticles, unk))
         {
             // angle
             m_fAngle = dictionary->valueForKey("angle")->floatValue();
@@ -359,24 +359,24 @@ bool CCParticleSystem::initWithDictionary(CCDictionary *dictionary, const char *
                     int dataLen = strlen(textureData);
                     if(dataLen != 0)
                     {
-                        // if it fails, try to get it from the base64-gzipped data    
-                        int decodeLen = base64Decode((unsigned char*)textureData, (unsigned int)dataLen, &buffer);
-                        CCAssert( buffer != NULL, "CCParticleSystem: error decoding textureImageData");
-                        CC_BREAK_IF(!buffer);
+                        // // if it fails, try to get it from the base64-gzipped data    
+                        // int decodeLen = base64Decode((unsigned char*)textureData, (unsigned int)dataLen, &buffer);
+                        // CCAssert( buffer != NULL, "CCParticleSystem: error decoding textureImageData");
+                        // CC_BREAK_IF(!buffer);
                         
-                        int deflatedLen = ZipUtils::ccInflateMemory(buffer, decodeLen, &deflated);
-                        CCAssert( deflated != NULL, "CCParticleSystem: error ungzipping textureImageData");
-                        CC_BREAK_IF(!deflated);
+                        // int deflatedLen = ZipUtils::ccInflateMemory(buffer, decodeLen, &deflated);
+                        // CCAssert( deflated != NULL, "CCParticleSystem: error ungzipping textureImageData");
+                        // CC_BREAK_IF(!deflated);
                         
-                        // For android, we should retain it in VolatileTexture::addCCImage which invoked in CCTextureCache::sharedTextureCache()->addUIImage()
-                        image = new CCImage();
-                        bool isOK = image->initWithImageData(deflated, deflatedLen);
-                        CCAssert(isOK, "CCParticleSystem: error init image with Data");
-                        CC_BREAK_IF(!isOK);
+                        // // For android, we should retain it in VolatileTexture::addCCImage which invoked in CCTextureCache::sharedTextureCache()->addUIImage()
+                        // image = new CCImage();
+                        // bool isOK = image->initWithImageData(deflated, deflatedLen);
+                        // CCAssert(isOK, "CCParticleSystem: error init image with Data");
+                        // CC_BREAK_IF(!isOK);
                         
-                        setTexture(CCTextureCache::sharedTextureCache()->addUIImage(image, textureName.c_str()));
+                        // setTexture(CCTextureCache::sharedTextureCache()->addUIImage(image, textureName.c_str()));
 
-                        image->release();
+                        // image->release();
                     }
                 }
                 CCAssert( this->m_pTexture != NULL, "CCParticleSystem: error loading the texture");
@@ -389,7 +389,7 @@ bool CCParticleSystem::initWithDictionary(CCDictionary *dictionary, const char *
     return bRet;
 }
 
-bool CCParticleSystem::initWithTotalParticles(unsigned int numberOfParticles)
+bool CCParticleSystem::initWithTotalParticles(unsigned int numberOfParticles, bool unk)
 {
     m_uTotalParticles = numberOfParticles;
 
@@ -1346,6 +1346,13 @@ void CCParticleSystem::setScaleY(float newScaleY)
 {
     m_bTransformSystemDirty = true;
     CCNode::setScaleY(newScaleY);
+}
+
+void cocos2d::CCParticleSystem::setVisible(bool) {
+    // FIXME: unimplemented
+}
+void cocos2d::CCParticleSystem::updateEmissionRate(void) {
+    // FIXME: unimplemented
 }
 
 

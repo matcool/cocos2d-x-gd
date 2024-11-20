@@ -594,7 +594,7 @@ std::string CCFileUtils::getPathForFilename(const std::string& filename, const s
 }
 
 
-std::string CCFileUtils::fullPathForFilename(const char* pszFileName)
+std::string CCFileUtils::fullPathForFilename(const char* pszFileName, bool skipSuffix)
 {
     CCAssert(pszFileName != NULL, "CCFileUtils: Invalid path");
     
@@ -818,6 +818,22 @@ void CCFileUtils::setPopupNotify(bool bNotify)
 bool CCFileUtils::isPopupNotify()
 {
     return s_bPopupNotify;
+}
+
+void cocos2d::CCFileUtils::removeFullPath(char const *) {
+    // FIXME: unimplemented
+}
+std::string cocos2d::CCFileUtils::getWritablePath2(void) {
+    // FIXME: unimplemented
+    std::abort();
+}
+bool cocos2d::CCFileUtils::shouldUseHD(void) {
+    // FIXME: unimplemented
+    return true;
+}
+std::string cocos2d::CCFileUtils::addSuffix(std::string, std::string) {
+    // FIXME: unimplemented
+    std::abort();
 }
 
 NS_CC_END

@@ -69,17 +69,14 @@ CCNode::CCNode(void)
 // children (lazy allocs)
 // lazy alloc
 , m_pGrid(NULL)
-, m_nZOrder(0)
 , m_pChildren(NULL)
 , m_pParent(NULL)
 // "whole screen" objects. like Scenes and Layers, should set m_bIgnoreAnchorPointForPosition to true
-, m_nTag(kCCNodeTagInvalid)
 // userData is always inited as nil
 , m_pUserData(NULL)
 , m_pUserObject(NULL)
 , m_pShaderProgram(NULL)
 , m_eGLServerState(ccGLServerState(0))
-, m_uOrderOfArrival(0)
 , m_bRunning(false)
 , m_bTransformDirty(true)
 , m_bInverseDirty(true)
@@ -453,18 +450,6 @@ void CCNode::ignoreAnchorPointForPosition(bool newValue)
 		m_bIgnoreAnchorPointForPosition = newValue;
 		m_bTransformDirty = m_bInverseDirty = true;
 	}
-}
-
-/// tag getter
-int CCNode::getTag() const
-{
-    return m_nTag;
-}
-
-/// tag setter
-void CCNode::setTag(int var)
-{
-    m_nTag = var;
 }
 
 /// userData getter
@@ -1143,7 +1128,7 @@ void CCNode::update(float fDelta)
     }
 }
 
-CCAffineTransform CCNode::nodeToParentTransform(void)
+const CCAffineTransform CCNode::nodeToParentTransform(void)
 {
     if (m_bTransformDirty) 
     {
@@ -1226,7 +1211,7 @@ void CCNode::setAdditionalTransform(const CCAffineTransform& additionalTransform
     m_bAdditionalTransformDirty = true;
 }
 
-CCAffineTransform CCNode::parentToNodeTransform(void)
+const CCAffineTransform CCNode::parentToNodeTransform(void)
 {
     if ( m_bInverseDirty ) {
         m_sInverse = CCAffineTransformInvert(this->nodeToParentTransform());
@@ -1471,6 +1456,37 @@ bool CCNodeRGBA::isCascadeColorEnabled(void)
 void CCNodeRGBA::setCascadeColorEnabled(bool cascadeColorEnabled)
 {
     _cascadeColorEnabled = cascadeColorEnabled;
+}
+
+CCSize CCNode::getScaledContentSize() {
+    return m_obContentSize * m_fScaleX;
+}
+
+void CCNode::removeMeAndCleanup() {
+    // FIXME: unimplemented
+    removeFromParentAndCleanup(true);
+}
+
+const CCAffineTransform CCNode::nodeToParentTransformFast() {
+    // FIXME: unimplemented
+    return {};
+}
+
+CCAffineTransform CCNode::nodeToWorldTransformFast() {
+    // FIXME: unimplemented
+    return {};
+}
+
+void cocos2d::CCNode::updateTweenAction(float, char const *) {
+    // FIXME: unimplemented
+}
+void cocos2d::CCNode::updateTweenActionInt(float, int) {
+    // FIXME: unimplemented
+}
+
+CCNode& CCNode::operator=(CCNode const&) {
+    // FIXME: unimplemented
+    return *this;
 }
 
 NS_CC_END

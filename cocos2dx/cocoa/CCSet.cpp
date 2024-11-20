@@ -33,22 +33,22 @@ CCSet::CCSet(void)
     m_pSet = new set<CCObject *>;
 }
 
-CCSet::CCSet(const CCSet &rSetObject)
-{
-    m_pSet = new set<CCObject *>(*rSetObject.m_pSet);
+// CCSet::CCSet(const CCSet &rSetObject)
+// {
+//     m_pSet = new set<CCObject *>(*rSetObject.m_pSet);
 
-    // call retain of members
-    CCSetIterator iter;
-    for (iter = m_pSet->begin(); iter != m_pSet->end(); ++iter)
-    {
-        if (! (*iter))
-        {
-            break;
-        }
+//     // call retain of members
+//     CCSetIterator iter;
+//     for (iter = m_pSet->begin(); iter != m_pSet->end(); ++iter)
+//     {
+//         if (! (*iter))
+//         {
+//             break;
+//         }
 
-        (*iter)->retain();
-    }
-}
+//         (*iter)->retain();
+//     }
+// }
 
 CCSet::~CCSet(void)
 {

@@ -8,45 +8,11 @@ NS_CC_BEGIN
 
 #define kMaxStringLen (1024*100)
 
-CCString::CCString()
-    :m_sString("")
-{}
-
-CCString::CCString(const char * str)
-    :m_sString(str)
-{}
-
-CCString::CCString(const std::string& str)
-    :m_sString(str)
-{}
-
-CCString::CCString(const CCString& str)
-    :m_sString(str.getCString())
-{}
-
-CCString::~CCString()
-{ 
-    m_sString.clear();
-}
 
 CCString& CCString::operator= (const CCString& other)
 {
     m_sString = other.m_sString;
     return *this;
-}
-
-bool CCString::initWithFormatAndValist(const char* format, va_list ap)
-{
-    bool bRet = false;
-    char* pBuf = (char*)malloc(kMaxStringLen);
-    if (pBuf != NULL)
-    {
-        vsnprintf(pBuf, kMaxStringLen, format, ap);
-        m_sString = pBuf;
-        free(pBuf);
-        bRet = true;
-    }
-    return bRet;
 }
 
 bool CCString::initWithFormat(const char* format, ...)
@@ -150,13 +116,6 @@ bool CCString::isEqual(const CCObject* pObject)
     return bRet;
 }
 
-CCString* CCString::create(const std::string& str)
-{
-    CCString* pRet = new CCString(str);
-    pRet->autorelease();
-    return pRet;
-}
-
 CCString* CCString::createWithData(const unsigned char* pData, unsigned long nLen)
 {
     CCString* pRet = NULL;
@@ -175,17 +134,6 @@ CCString* CCString::createWithData(const unsigned char* pData, unsigned long nLe
             free(pStr);
         }
     }
-    return pRet;
-}
-
-CCString* CCString::createWithFormat(const char* format, ...)
-{
-    CCString* pRet = CCString::create("");
-    va_list ap;
-    va_start(ap, format);
-    pRet->initWithFormatAndValist(format, ap);
-    va_end(ap);
-
     return pRet;
 }
 

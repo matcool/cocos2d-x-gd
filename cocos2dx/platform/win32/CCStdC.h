@@ -47,8 +47,16 @@ THE SOFTWARE.
 // for MIN MAX and sys/time.h on win32 platform
 #ifndef __MINGW32__
 
-#define MIN     min
-#define MAX     max
+// #define MIN     min
+// #define MAX     max
+
+#ifndef MIN
+#define MIN(x,y) (((x) > (y)) ? (y) : (x))
+#endif  // MIN
+
+#ifndef MAX
+#define MAX(x,y) (((x) < (y)) ? (y) : (x))
+#endif  // MAX
 
 #else // __MINGW32__
 

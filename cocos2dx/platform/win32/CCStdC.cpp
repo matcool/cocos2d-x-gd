@@ -23,6 +23,7 @@ THE SOFTWARE.
 ****************************************************************************/
 
 #include "CCStdC.h"
+#include <Windows.h>
 
 #ifndef __MINGW32__
 

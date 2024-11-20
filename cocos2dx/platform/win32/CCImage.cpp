@@ -23,10 +23,13 @@ THE SOFTWARE.
 ****************************************************************************/
 #define __CC_PLATFORM_IMAGE_CPP__
 
+#include <Windows.h>
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
 #include "platform/CCImageCommon_cpp.h"
+
 
 NS_CC_BEGIN
 

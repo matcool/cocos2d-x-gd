@@ -51,7 +51,7 @@ int CCApplication::run()
 
     CCEGLView* pMainWnd = CCEGLView::sharedOpenGLView();
     pMainWnd->centerWindow();
-    ShowWindow(pMainWnd->getHWnd(), SW_SHOW);
+    // ShowWindow(pMainWnd->getHWnd(), SW_SHOW);
 
     while (1)
     {
@@ -64,7 +64,7 @@ int CCApplication::run()
             if (nNow.QuadPart - nLast.QuadPart > m_nAnimationInterval.QuadPart)
             {
                 nLast.QuadPart = nNow.QuadPart;
-                CCDirector::sharedDirector()->mainLoop();
+                // CCDirector::sharedDirector()->mainLoop();
             }
             else
             {
@@ -187,6 +187,20 @@ void CCApplication::setStartupScriptFilename(const std::string& startupScriptFil
 {
     m_startupScriptFilename = startupScriptFile;
     std::replace(m_startupScriptFilename.begin(), m_startupScriptFilename.end(), '\\', '/');
+}
+
+void cocos2d::CCApplication::gameDidSave(void) {
+    // FIXME: unimplemented
+}
+void cocos2d::CCApplication::openURL(char const *) {
+    // FIXME: unimplemented
+}
+void cocos2d::CCApplication::setupGLView(void) {
+    auto* glview = CCEGLView::create("Try again");
+    CCDirector::sharedDirector()->setOpenGLView(glview);
+}
+void cocos2d::CCApplication::platformShutdown(void) {
+    // FIXME: unimplemented
 }
 
 NS_CC_END

@@ -516,4 +516,12 @@ void CCTouchDispatcher::touchesCancelled(CCSet *touches, CCEvent *pEvent)
     }
 }
 
+void cocos2d::CCTouchDelegate::setPreviousPriority(int) {
+    // FIXME: unimplemented
+}
+int cocos2d::CCTouchDelegate::getPreviousPriority(void) {
+    // FIXME: unimplemented
+    return 0;
+}
+
 NS_CC_END

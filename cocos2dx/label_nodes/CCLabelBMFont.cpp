@@ -126,11 +126,6 @@ bool CCBMFontConfiguration::initWithFNTfile(const char *FNTfile)
     return true;
 }
 
-std::set<unsigned int>* CCBMFontConfiguration::getCharacterSet() const
-{
-    return m_pCharacterSet;
-}
-
 CCBMFontConfiguration::CCBMFontConfiguration()
 : m_pFontDefDictionary(NULL)
 , m_nCommonHeight(0)
@@ -1199,12 +1194,12 @@ void CCLabelBMFont::setScaleY(float scaleY)
     updateLabel();
 }
 
-float CCLabelBMFont::getLetterPosXLeft( CCSprite* sp )
+float CCLabelBMFont::getLetterPosXLeft( CCSprite* sp, float, bool )
 {
     return sp->getPosition().x * m_fScaleX - (sp->getContentSize().width * m_fScaleX * sp->getAnchorPoint().x);
 }
 
-float CCLabelBMFont::getLetterPosXRight( CCSprite* sp )
+float CCLabelBMFont::getLetterPosXRight( CCSprite* sp, float, bool )
 {
     return sp->getPosition().x * m_fScaleX + (sp->getContentSize().width * m_fScaleX * sp->getAnchorPoint().x);
 }
@@ -1232,11 +1227,6 @@ void CCLabelBMFont::setFntFile(const char* fntFile)
 const char* CCLabelBMFont::getFntFile()
 {
     return m_sFntFile.c_str();
-}
-
-CCBMFontConfiguration* CCLabelBMFont::getConfiguration() const
-{
-	return m_pConfiguration;
 }
 
 //LabelBMFont - Debug draw

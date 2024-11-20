@@ -5,14 +5,10 @@
 #include <string.h>
 #endif
 
-
-
 #if defined(_USRDLL)
-    #define CC_DLL
-    #define ACTUAL_CC_DLL
-#else         // use a DLL library 
-    #define CC_DLL
-    #define ACTUAL_CC_DLL __declspec(dllimport)
+    #define CC_DLL     __declspec(dllexport)
+#else         /* use a DLL library */
+    #define CC_DLL     __declspec(dllimport)
 #endif
 
 #include <assert.h>

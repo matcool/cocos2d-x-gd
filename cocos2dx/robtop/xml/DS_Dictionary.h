@@ -7,7 +7,7 @@
 
 class CC_DLL DS_Dictionary {
 public:
-	pugi::xml_document doc;
+	// pugi::xml_document doc;
 	gd::vector<pugi::xml_node> dictTree;
 	bool compatible;
 

@@ -1,5 +1,6 @@
 #include "platform/CCDevice.h"
 #include "CCStdC.h"
+#include <Windows.h>
 
 NS_CC_BEGIN
 

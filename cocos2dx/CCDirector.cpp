@@ -64,6 +64,8 @@ THE SOFTWARE.
 #include "platform/CCImage.h"
 #include "CCEGLView.h"
 #include "CCConfiguration.h"
+#include "robtop/keyboard_dispatcher/CCKeyboardDispatcher.h"
+#include "robtop/mouse_dispatcher/CCMouseDispatcher.h"
 
 
 
@@ -350,8 +352,8 @@ void CCDirector::setOpenGLView(CCEGLView *pobOpenGLView)
 		conf->dumpInfo();
 
         // EAGLView is not a CCObject
-        if(m_pobOpenGLView)
-            delete m_pobOpenGLView; // [openGLView_ release]
+        // if(m_pobOpenGLView)
+        //     delete m_pobOpenGLView; // [openGLView_ release]
         m_pobOpenGLView = pobOpenGLView;
 
         // set size
@@ -605,7 +607,7 @@ void CCDirector::runWithScene(CCScene *pScene)
     startAnimation();
 }
 
-void CCDirector::replaceScene(CCScene *pScene)
+bool CCDirector::replaceScene(CCScene *pScene)
 {
     CCAssert(m_pRunningScene, "Use runWithScene: instead to start the director");
     CCAssert(pScene != NULL, "the scene should not be null");
@@ -616,9 +618,11 @@ void CCDirector::replaceScene(CCScene *pScene)
     m_pobScenesStack->replaceObjectAtIndex(index - 1, pScene);
 
     m_pNextScene = pScene;
+
+    return true;
 }
 
-void CCDirector::pushScene(CCScene *pScene)
+bool CCDirector::pushScene(CCScene *pScene)
 {
     CCAssert(pScene, "the scene should not null");
 
@@ -626,6 +630,8 @@ void CCDirector::pushScene(CCScene *pScene)
 
     m_pobScenesStack->addObject(pScene);
     m_pNextScene = pScene;
+
+    return true;
 }
 
 void CCDirector::popScene(void)
@@ -938,11 +944,6 @@ void CCDirector::createStatsLabel()
     m_pFPSLabel->setPosition(CC_DIRECTOR_STATS_POSITION);
 }
 
-float CCDirector::getContentScaleFactor(void)
-{
-    return m_fContentScaleFactor;
-}
-
 void CCDirector::setContentScaleFactor(float scaleFactor)
 {
     if (scaleFactor != m_fContentScaleFactor)
@@ -1043,6 +1044,28 @@ void CCDirector::setAccelerometer(CCAccelerometer* pAccelerometer)
 CCAccelerometer* CCDirector::getAccelerometer()
 {
     return m_pAccelerometer;
+}
+
+void CCDirector::setKeyboardDispatcher(CCKeyboardDispatcher* pKeyboardDispatcher)
+{
+    CC_SAFE_RETAIN(pKeyboardDispatcher);
+    CC_SAFE_RELEASE(m_pKeyboardDispatcher);
+    m_pKeyboardDispatcher = pKeyboardDispatcher;
+}
+
+CCKeyboardDispatcher* CCDirector::getKeyboardDispatcher() {
+    return m_pKeyboardDispatcher;
+}
+
+void CCDirector::setMouseDispatcher(CCMouseDispatcher* pMouseDispatcher)
+{
+    CC_SAFE_RETAIN(pMouseDispatcher);
+    CC_SAFE_RELEASE(m_pMouseDispatcher);
+    m_pMouseDispatcher = pMouseDispatcher;
+}
+
+CCMouseDispatcher* CCDirector::getMouseDispatcher() {
+    return m_pMouseDispatcher;
 }
 
 /***************************************************

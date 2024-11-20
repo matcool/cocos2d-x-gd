@@ -35,8 +35,8 @@ external/chipmunk/src/constraints/cpRotaryLimitJoint.c
 external/chipmunk/src/constraints/cpSimpleMotor.c
 external/chipmunk/src/constraints/cpSlideJoint.c
 
-CocosDenshion/win32/MciPlayer.cpp
-CocosDenshion/win32/SimpleAudioEngine.cpp
+# CocosDenshion/win32/MciPlayer.cpp
+# CocosDenshion/win32/SimpleAudioEngine.cpp
 
 cocos2dx/base_nodes/CCAtlasNode.cpp
 cocos2dx/base_nodes/CCNode.cpp
@@ -165,6 +165,10 @@ cocos2dx/CCConfiguration.cpp
 cocos2dx/CCDirector.cpp
 cocos2dx/CCScheduler.cpp
 cocos2dx/cocos2d.cpp
+
+cocos2dx/robtop/keyboard_dispatcher/CCKeyboardDispatcher.cpp
+cocos2dx/robtop/mouse_dispatcher/CCMouseDispatcher.cpp
+cocos2dx/robtop/xml/ObjectDecoder.cpp
 
 # extensions/AssetsManager/AssetsManager.cpp
 # extensions/CCBReader/CCBAnimationManager.cpp
@@ -344,6 +348,7 @@ ${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/pthrea
 ${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/zlibstatic.lib
 ${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/libpng16_static.lib
 ${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/jpeg.lib
+${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/glfw3.lib
 
 Winmm.lib
 )
@@ -351,9 +356,14 @@ Winmm.lib
 # disable the "needs to have dll-interface" warning
 if (MSVC)
 	target_compile_options(cocos2d PRIVATE /wd4251 /wd4267 /wd4244 /wd4996 /wd4302 /wd4311 /wd4312)
+else()
+	target_compile_options(cocos2d PRIVATE -Wno-deprecated-declarations)
 endif()
 # target_compile_definitions(cocos2d PRIVATE HAVE_STRUCT_TIMESPEC CC_ENABLE_BOX2D_INTEGRATION COCOS2D_DEBUG=1)
-target_compile_definitions(cocos2d PRIVATE HAVE_STRUCT_TIMESPEC COCOS2D_DEBUG=1 _USRDLL=1 CC_TARGET_OS_WIN32=1 GEODE_IS_MEMBER_TEST=1)
+target_compile_definitions(cocos2d PUBLIC CC_TARGET_OS_WIN32=1 GEODE_IS_MEMBER_TEST=1)
+target_compile_definitions(cocos2d PRIVATE HAVE_STRUCT_TIMESPEC COCOS2D_DEBUG=1 _USRDLL=1 CC_TARGET_OS_WIN32=1 GEODE_IS_MEMBER_TEST=1 _AMD64_=1)
+
+target_link_options(cocos2d PRIVATE -Wl,/errorlimit:0)
 
 if (PROJECT_IS_TOP_LEVEL)
 	add_subdirectory(mat-sample)

@@ -365,9 +365,9 @@ void CCSprite::setVertexRect(const CCRect& rect)
     m_obRect = rect;
 }
 
-void CCSprite::setTextureCoords(CCRect rect)
+void CCSprite::setTextureCoords(const CCRect& recta)
 {
-    rect = CC_RECT_POINTS_TO_PIXELS(rect);
+    auto rect = CC_RECT_POINTS_TO_PIXELS(recta);
 
     CCTexture2D *tex = m_pobBatchNode ? m_pobTextureAtlas->getTexture() : m_pobTexture;
     if (! tex)
@@ -1124,6 +1124,16 @@ void CCSprite::setTexture(CCTexture2D *texture)
 CCTexture2D* CCSprite::getTexture(void)
 {
     return m_pobTexture;
+}
+
+void cocos2d::CCSprite::setChildColor(struct cocos2d::_ccColor3B const &) {
+    // FIXME: unimplemented
+}
+void cocos2d::CCSprite::setChildOpacity(unsigned char) {
+    // FIXME: unimplemented
+}
+void cocos2d::CCSprite::refreshTextureRect(void) {
+    // FIXME: unimplemented
 }
 
 NS_CC_END

@@ -46,7 +46,7 @@ class CC_DLL CCFileUtilsWin32 : public CCFileUtils
     CCFileUtilsWin32();
 public:
     /* override funtions */
-    bool init();
+    // bool init();
     virtual void addSearchPath(const char* path);
     virtual void removeSearchPath(const char* path);
     virtual gd::string getWritablePath();

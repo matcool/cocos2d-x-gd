@@ -291,8 +291,8 @@ public:
 private:
     char * atlasNameFromFntFile(const char *fntFile);
     int kerningAmountForFirst(unsigned short first, unsigned short second);
-    float getLetterPosXLeft( CCSprite* characterSprite, float, bool);
-    float getLetterPosXRight( CCSprite* characterSprite, float, bool);
+    float getLetterPosXLeft( CCSprite* characterSprite, float unknownFloat = 0.f, bool unknownBool = false);
+    float getLetterPosXRight( CCSprite* characterSprite, float unknownFloat = 0.f, bool unknownBool = false);
 
 protected:
     virtual void setString(unsigned short *newString, bool needUpdateLabel);

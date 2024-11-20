@@ -69,24 +69,12 @@ public:
     virtual CCObject* copyWithZone(CCZone* pZone)  { return 0; }
 };
 
-/**
- * This class is used to fix the problem of destructor recursion.
- */
-class CCDestructor : public CCCopying {
-private:
-	static std::unordered_map<void*, bool>& destructorLock();
-public:
-	static bool& globalLock();
-	static bool& lock(void* self);
-	~CCDestructor();
-};
-
 #pragma warning(push)
 #pragma warning(disable: 4275)
 /**
  * @js NA
  */
-class CC_DLL CCObject : public CCDestructor
+class CC_DLL CCObject : public CCCopying
 {
     GEODE_FRIEND_MODIFY
 public:
@@ -96,7 +84,7 @@ public:
     int                 m_nLuaID;
 protected:
     // the object's tag
-    int m_nTag;
+    int m_nTag = -1;
     // count of references
     unsigned int        m_uReference;
     // count of autorelease
@@ -110,8 +98,8 @@ protected:
 
     int m_uUnknown; // -1 by default
     int m_unknown2;
-    int m_nZOrder; // moved from CCNode, why rob
-    int m_uOrderOfArrival; // moved from CCNode, why rob
+    int m_nZOrder = 0; // moved from CCNode, why rob
+    int m_uOrderOfArrival = 0; // moved from CCNode, why rob
     int m_unknown5;
 public:
 	GEODE_CUSTOM_CONSTRUCTOR_BEGIN(CCObject)

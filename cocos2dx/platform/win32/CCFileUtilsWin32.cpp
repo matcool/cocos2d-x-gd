@@ -190,4 +190,9 @@ std::string CCFileUtilsWin32::getPathForFilename(const std::string& filename, co
 
 	return CCFileUtils::getPathForFilename(filenameAscii, resolutionDirectoryAscii, rearchPathAscii);
 }
+
+std::string CCFileUtilsWin32::getWritablePath2() {
+    // FIXME: unimplemented
+    std::abort();
+}
 NS_CC_END

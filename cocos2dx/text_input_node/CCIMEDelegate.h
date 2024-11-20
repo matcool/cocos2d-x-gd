@@ -26,6 +26,7 @@ THE SOFTWARE.
 #define __CC_IME_DELEGATE_H__
 
 #include "../cocoa/CCGeometry.h"
+#include "../robtop/keyboard_dispatcher/CCKeyboardDelegate.h"
 
 NS_CC_BEGIN
 
@@ -103,7 +104,7 @@ protected:
     virtual void keyboardWillHide(CCIMEKeyboardNotificationInfo& info)   {CC_UNUSED_PARAM(info);}
     virtual void keyboardDidHide(CCIMEKeyboardNotificationInfo& info)    {CC_UNUSED_PARAM(info);}
 
-	virtual void deleteForward();
+	virtual void deleteForward() {}
 
 protected:
     CCIMEDelegate();

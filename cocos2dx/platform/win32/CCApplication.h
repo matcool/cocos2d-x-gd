@@ -5,8 +5,10 @@
 #include "CCStdC.h"
 #include "../CCCommon.h"
 #include "../CCApplicationProtocol.h"
+#include <Windows.h>
 #include "CXBOXController.h"
 #include <string>
+#include "../../cocoa/CCGeometry.h"
 
 NS_CC_BEGIN
 

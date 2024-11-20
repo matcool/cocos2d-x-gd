@@ -449,20 +449,20 @@ public:
     http://particledesigner.71squared.com/
     @since v0.99.3
     */
-    bool initWithFile(const char *plistFile, bool);
+    bool initWithFile(const char *plistFile, bool unk = false);
 
     /** initializes a CCQuadParticleSystem from a CCDictionary.
     @since v0.99.3
     */
-    bool initWithDictionary(CCDictionary *dictionary, bool);
+    bool initWithDictionary(CCDictionary *dictionary, bool unk = false);
     
     /** initializes a particle system from a NSDictionary and the path from where to load the png
      @since v2.1
      */
-    bool initWithDictionary(CCDictionary *dictionary, const char *dirname, bool);
+    bool initWithDictionary(CCDictionary *dictionary, const char *dirname, bool unk = false);
 
     //! Initializes a system with a fixed number of particles
-    virtual bool initWithTotalParticles(unsigned int numberOfParticles, bool);
+    virtual bool initWithTotalParticles(unsigned int numberOfParticles, bool unk = false);
     //! Add a particle to the emitter
     bool addParticle();
     //! Initializes a particle

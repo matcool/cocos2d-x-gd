@@ -30,6 +30,7 @@ THE SOFTWARE.
 #include "../../cocoa/CCGeometry.h"
 #include "../CCEGLViewProtocol.h"
 
+#include <Windows.h>
 #include "../../robtop/glfw/glfw3.h"
 
 NS_CC_BEGIN
@@ -47,6 +48,7 @@ protected:
 public:
     CCEGLView();
 
+#ifndef GEODE_IS_MEMBER_TEST
     CCEGLView(geode::ZeroConstructorType, size_t fill) :
         CCEGLViewProtocol(geode::ZeroConstructor, fill),
         CCObject(geode::ZeroConstructor, fill - sizeof(CCEGLViewProtocol)) {}
@@ -56,6 +58,7 @@ public:
         CCObject(geode::ZeroConstructor, sizeof(CCEGLView) - sizeof(CCEGLViewProtocol)) {}
 
     CCEGLView(geode::CutoffConstructorType, size_t fill) : CCEGLView() {}
+#endif
 
     /* override functions */
     virtual bool isOpenGLReady();
@@ -67,9 +70,6 @@ public:
     virtual void setIMEKeyboardState(bool bOpen);
     void updateWindow(int width, int height);
     void pollEvents(void);
-
-    void setMenuResource(LPCWSTR menu);
-    void setWndProc(CUSTOM_WND_PROC proc);
 
 protected:
     // Robtop Removal
@@ -87,14 +87,13 @@ public:
     // Robtop Removal
     // virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 
-	void setHWnd(HWND hWnd);
     // win32 platform function
     // Robtop Removal
     // HWND getHWnd();
     // Robtop Removal
     // virtual void resize(int width, int height);
     // @note RobTop Addition
-     void resizeWindow(int width, int height);
+    void resizeWindow(int width, int height);
 	
     /* 
      * Set zoom factor for frame. This method is for debugging big resolution (e.g.new ipad) app on desktop.
@@ -108,9 +107,6 @@ public:
     // @note RobTop Addition
     void showCursor(bool state);
 	    
-    typedef void (*LPFN_ACCELEROMETER_KEYHOOK)( UINT message,WPARAM wParam, LPARAM lParam );
-    void setAccelerometerKeyHook( LPFN_ACCELEROMETER_KEYHOOK lpfnAccelerometerKeyHook );
-
     virtual void setViewPortInPoints(float x , float y , float w , float h);
     virtual void setScissorInPoints(float x , float y , float w , float h);
     
@@ -184,7 +180,6 @@ public:
 
 
 protected:
-	static CCEGLView* s_pEglView;
     // @note unknown members here
     uint8_t m_unkPad[8];
     bool m_bCaptured;
