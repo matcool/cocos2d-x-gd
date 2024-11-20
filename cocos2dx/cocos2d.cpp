@@ -35,3 +35,28 @@ const char* cocos2dVersion()
 
 NS_CC_END
 
+#include <fstream>
+
+namespace matdash {
+    struct Console {
+        std::ofstream out, in;
+        Console() {
+            AllocConsole();
+            out = decltype(out)("CONOUT$", std::ios::out);
+            in = decltype(in)("CONIN$", std::ios::in);
+            std::cout.rdbuf(out.rdbuf());
+            std::cerr.rdbuf(out.rdbuf());
+            std::cin.rdbuf(in.rdbuf());
+
+            FILE* dummy;
+            freopen_s(&dummy, "CONOUT$", "w", stdout);
+            freopen_s(&dummy, "CONOUT$", "w", stderr);
+        }
+        ~Console() {
+            out.close();
+            in.close();
+        }
+    };
+}
+
+static matdash::Console console;
