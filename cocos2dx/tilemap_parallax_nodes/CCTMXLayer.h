@@ -27,8 +27,8 @@ THE SOFTWARE.
 #define __CCTMX_LAYER_H__
 
 #include "CCTMXObjectGroup.h"
-#include "base_nodes/CCAtlasNode.h"
-#include "sprite_nodes/CCSpriteBatchNode.h"
+#include "../base_nodes/CCAtlasNode.h"
+#include "../sprite_nodes/CCSpriteBatchNode.h"
 #include "CCTMXXMLParser.h"
 NS_CC_BEGIN
 
@@ -73,6 +73,7 @@ Tiles can have tile flags for additional properties. At the moment only flip hor
 
 class CC_DLL CCTMXLayer : public CCSpriteBatchNode
 {
+    GEODE_FRIEND_MODIFY
     /** size of the layer in tiles */
     CC_SYNTHESIZE_PASS_BY_REF(CCSize, m_tLayerSize, LayerSize);
     /** size of the map's tile (could be different from the tile's size) */
@@ -201,7 +202,7 @@ private:
     unsigned int atlasIndexForNewZ(int z);
 protected:
     //! name of the layer
-    std::string m_sLayerName;
+    gd::string m_sLayerName;
     //! TMX Layer supports opacity
     unsigned char        m_cOpacity;
 

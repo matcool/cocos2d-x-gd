@@ -25,7 +25,7 @@
 #ifndef __CCDATAVISITOR_H__
 #define __CCDATAVISITOR_H__
 
-#include "platform/CCPlatformMacros.h"
+#include "../platform/CCPlatformMacros.h"
 #include <string>
 
 NS_CC_BEGIN
@@ -63,6 +63,7 @@ class CCSet;
  */
 class CC_DLL CCDataVisitor
 {
+    GEODE_FRIEND_MODIFY
 public:
     virtual ~CCDataVisitor() {}
 
@@ -83,13 +84,14 @@ public:
  *  @js NA
  *  @lua NA
  */
-class CCPrettyPrinter : public CCDataVisitor
+class CC_DLL CCPrettyPrinter : public CCDataVisitor
 {
+    GEODE_FRIEND_MODIFY
 public:
     CCPrettyPrinter(int indentLevel = 0);
     
     virtual void clear();
-    virtual std::string getResult();
+    virtual gd::string getResult();
     
     virtual void visitObject(const CCObject *p);
     virtual void visit(const CCBool * p);
@@ -103,8 +105,8 @@ public:
 private:
     void setIndentLevel(int indentLevel);
     int _indentLevel;
-    std::string _indentStr;
-    std::string _result;
+    gd::string _indentStr;
+    gd::string _result;
 };
 
 // end of data_structure group

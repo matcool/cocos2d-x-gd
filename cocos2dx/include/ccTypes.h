@@ -28,8 +28,8 @@ THE SOFTWARE.
 #define __CCTYPES_H__
 
 #include <string>
-#include "cocoa/CCGeometry.h"
-#include "CCGL.h"
+#include "../cocoa/CCGeometry.h"
+#include "../platform/CCGL.h"
 
 
 NS_CC_BEGIN
@@ -43,6 +43,31 @@ typedef struct _ccColor3B
     GLubyte g;
     GLubyte b;
 } ccColor3B;
+
+typedef struct _ccHSVValue
+{
+    float h, s, v;
+    bool absoluteSaturation;
+    bool absoluteBrightness;
+} ccHSVValue;
+
+static inline ccHSVValue
+cchsv(const float vh, const float vs, const float vv, const bool as, const bool ab)
+{
+    ccHSVValue hsv;
+    hsv.h = vh;
+    hsv.s = vs;
+    hsv.v = vv;
+    hsv.absoluteSaturation = as;
+    hsv.absoluteBrightness = ab;
+    return hsv;
+}
+
+static inline bool hsv_geta(ccHSVValue hsv, bool brightOrSaturation)
+{
+    if (brightOrSaturation) return static_cast<bool>(hsv.absoluteSaturation);
+    return static_cast<bool>(hsv.absoluteBrightness);
+}
 
 //! helper macro that creates an ccColor3B type
 static inline ccColor3B
@@ -417,7 +442,7 @@ public:
     { m_dimensions = CCSizeMake(0,0); }
     
     // font name
-    std::string             m_fontName;
+    gd::string             m_fontName;
     // font size
     int                     m_fontSize;
     // horizontal alignment

@@ -28,7 +28,7 @@ THE SOFTWARE.
 #define __CCTRANSITION_H__
 
 #include "CCScene.h"
-#include "ccTypes.h"
+#include "../include/ccTypes.h"
 
 NS_CC_BEGIN
 
@@ -49,6 +49,7 @@ class CCNode;
 */
 class CC_DLL CCTransitionEaseScene// : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
     /** returns the Ease action that will be performed on a linear action.
     @since v0.8.2
@@ -79,6 +80,7 @@ typedef enum {
 */
 class CC_DLL CCTransitionScene : public CCScene
 {
+    GEODE_FRIEND_MODIFY
 
 protected:
     CCScene    * m_pInScene;
@@ -88,6 +90,7 @@ protected:
     bool    m_bIsSendCleanupToScene;
 
 public:
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTransitionScene, CCScene)
     /**
      *  @js ctor
      */
@@ -134,7 +137,10 @@ private:
 */
 class CC_DLL CCTransitionSceneOriented : public CCTransitionScene
 {
+    GEODE_FRIEND_MODIFY
 protected:
+
+
     tOrientation m_eOrientation;
 
 public:
@@ -142,6 +148,7 @@ public:
      *  @js ctor
      */
     CCTransitionSceneOriented();
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTransitionSceneOriented, CCTransitionScene)
     /**
      *  @js NA
      *  @lua NA
@@ -160,11 +167,13 @@ Rotate and zoom out the outgoing scene, and then rotate and zoom in the incoming
 */
 class CC_DLL CCTransitionRotoZoom : public CCTransitionScene
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
      */
     CCTransitionRotoZoom();
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTransitionRotoZoom, CCTransitionScene)
     /**
      *  @js NA
      *  @lua NA
@@ -184,6 +193,7 @@ Zoom out and jump the outgoing scene, and then jump and zoom in the incoming
 */
 class CC_DLL CCTransitionJumpZoom : public CCTransitionScene
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -208,6 +218,7 @@ Move in from to the left the incoming scene.
 */
 class CC_DLL CCTransitionMoveInL : public CCTransitionScene, public CCTransitionEaseScene
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -238,6 +249,7 @@ Move in from to the right the incoming scene.
 */
 class CC_DLL CCTransitionMoveInR : public CCTransitionMoveInL
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -258,6 +270,7 @@ Move in from to the top the incoming scene.
 */
 class CC_DLL CCTransitionMoveInT : public CCTransitionMoveInL 
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -278,6 +291,7 @@ Move in from to the bottom the incoming scene.
 */
 class CC_DLL CCTransitionMoveInB : public CCTransitionMoveInL
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -298,6 +312,7 @@ Slide in the incoming scene from the left border.
 */
 class CC_DLL CCTransitionSlideInL : public CCTransitionScene, public CCTransitionEaseScene
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -331,6 +346,7 @@ Slide in the incoming scene from the right border.
 */
 class CC_DLL CCTransitionSlideInR : public CCTransitionSlideInL 
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -357,6 +373,7 @@ Slide in the incoming scene from the bottom border.
 */
 class CC_DLL CCTransitionSlideInB : public CCTransitionSlideInL
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -383,6 +400,7 @@ Slide in the incoming scene from the top border.
 */
 class CC_DLL CCTransitionSlideInT : public CCTransitionSlideInL
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -409,6 +427,7 @@ protected:
 */
 class CC_DLL CCTransitionShrinkGrow : public CCTransitionScene , public CCTransitionEaseScene
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -435,6 +454,7 @@ The front face is the outgoing scene and the back face is the incoming scene.
 */
 class CC_DLL CCTransitionFlipX : public CCTransitionSceneOriented
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -461,6 +481,7 @@ The front face is the outgoing scene and the back face is the incoming scene.
 */
 class CC_DLL CCTransitionFlipY : public CCTransitionSceneOriented
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -487,6 +508,7 @@ The front face is the outgoing scene and the back face is the incoming scene.
 */
 class CC_DLL CCTransitionFlipAngular : public CCTransitionSceneOriented
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -513,6 +535,7 @@ The front face is the outgoing scene and the back face is the incoming scene.
 */
 class CC_DLL CCTransitionZoomFlipX : public CCTransitionSceneOriented
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -539,6 +562,7 @@ The front face is the outgoing scene and the back face is the incoming scene.
 */
 class CC_DLL CCTransitionZoomFlipY : public CCTransitionSceneOriented
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -565,6 +589,7 @@ The front face is the outgoing scene and the back face is the incoming scene.
 */
 class CC_DLL CCTransitionZoomFlipAngular : public CCTransitionSceneOriented
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -590,7 +615,10 @@ Fade out the outgoing scene and then fade in the incoming scene.'''
 */
 class CC_DLL CCTransitionFade : public CCTransitionScene
 {
+    GEODE_FRIEND_MODIFY
 protected:
+
+
     ccColor4B    m_tColor;
 
 public:
@@ -598,6 +626,7 @@ public:
      *  @js ctor
      */
     CCTransitionFade();
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTransitionFade, CCTransitionScene)
     /**
      *  @js NA
      *  @lua NA
@@ -633,6 +662,7 @@ Cross fades two scenes using the CCRenderTexture object.
 */
 class CC_DLL CCTransitionCrossFade : public CCTransitionScene
 {
+    GEODE_FRIEND_MODIFY
 public :
     /**
      *  @js ctor
@@ -665,6 +695,7 @@ Turn off the tiles of the outgoing scene in random order
 */
 class CC_DLL CCTransitionTurnOffTiles : public CCTransitionScene ,public CCTransitionEaseScene
 {
+    GEODE_FRIEND_MODIFY
 public :
     /**
      *  @js ctor
@@ -693,6 +724,7 @@ The odd columns goes upwards while the even columns goes downwards.
 */
 class CC_DLL CCTransitionSplitCols : public CCTransitionScene , public CCTransitionEaseScene
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -722,6 +754,7 @@ The odd rows goes to the left while the even rows goes to the right.
 */
 class CC_DLL CCTransitionSplitRows : public CCTransitionSplitCols
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -745,6 +778,7 @@ Fade the tiles of the outgoing scene from the left-bottom corner the to top-righ
 */
 class CC_DLL CCTransitionFadeTR : public CCTransitionScene , public CCTransitionEaseScene
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -775,6 +809,7 @@ Fade the tiles of the outgoing scene from the top-right corner to the bottom-lef
 */
 class CC_DLL CCTransitionFadeBL : public CCTransitionFadeTR
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -797,6 +832,7 @@ public:
 */
 class CC_DLL CCTransitionFadeUp : public CCTransitionFadeTR
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -819,6 +855,7 @@ public:
 */
 class CC_DLL CCTransitionFadeDown : public CCTransitionFadeTR
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor

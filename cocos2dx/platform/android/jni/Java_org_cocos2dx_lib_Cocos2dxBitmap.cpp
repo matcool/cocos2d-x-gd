@@ -2,7 +2,7 @@
 #include <string.h>
 #include "CCDirector.h"
 #include "../CCApplication.h"
-#include "platform/CCFileUtils.h"
+#include "../platform/CCFileUtils.h"
 #include "CCEventType.h"
 #include "support/CCNotificationCenter.h"
 #include <jni.h>
@@ -22,8 +22,8 @@ int getFontSizeAccordingHeightJni(int height) {
     return ret;
 }
 
-std::string getStringWithEllipsisJni(const char* pszText, float width, float fontSize) {
-    std::string ret;
+gd::string getStringWithEllipsisJni(const char* pszText, float width, float fontSize) {
+    gd::string ret;
     JniMethodInfo t;
 
     if (JniHelper::getStaticMethodInfo(t, "org/cocos2dx/lib/Cocos2dxBitmap", "getStringWithEllipsis", "(Ljava/lang/String;FF)Ljava/lang/String;")) {

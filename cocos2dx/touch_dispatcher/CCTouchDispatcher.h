@@ -27,8 +27,8 @@ THE SOFTWARE.
 #define __TOUCH_DISPATCHER_CCTOUCH_DISPATCHER_H__
 
 #include "CCTouchDelegateProtocol.h"
-#include "cocoa/CCObject.h"
-#include "cocoa/CCArray.h"
+#include "../cocoa/CCObject.h"
+#include "../cocoa/CCArray.h"
 
 NS_CC_BEGIN
 
@@ -47,13 +47,13 @@ typedef enum
 } ccTouchSelectorFlag;
 
 
-enum {
-    CCTOUCHBEGAN,
-    CCTOUCHMOVED,
-    CCTOUCHENDED,
-    CCTOUCHCANCELLED,
+enum ccTouchType {
+    CCTOUCHBEGAN = 0,
+    CCTOUCHMOVED = 1,
+    CCTOUCHENDED = 2,
+    CCTOUCHCANCELLED = 3,
     
-    ccTouchMax,
+    ccTouchMax = 4,
 };
 
 class CCSet;
@@ -71,6 +71,7 @@ struct ccTouchHandlerHelperData {
  */
 class CC_DLL EGLTouchDelegate
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @lua NA
@@ -115,6 +116,7 @@ struct _ccCArray;
  */
 class CC_DLL CCTouchDispatcher : public CCObject, public EGLTouchDelegate
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @lua NA
@@ -136,6 +138,8 @@ public:
     {}
 
 public:
+    static GEODE_DLL CCTouchDispatcher* get();
+
     /** Whether or not the events are going to be dispatched. Default: true */
     bool isDispatchEvents(void);
     void setDispatchEvents(bool bDispatchEvents);
@@ -196,6 +200,21 @@ public:
      * @lua NA
      */
     CCTouchHandler* findHandler(CCTouchDelegate *pDelegate);
+
+    // @note RobTop Addition
+	void addPrioTargetedDelegate(cocos2d::CCTouchDelegate*, int, bool);
+	// @note RobTop Addition
+    bool isUsingForcePrio();
+	// @note RobTop Addition
+    void registerForcePrio(cocos2d::CCObject*, int);
+	// @note RobTop Addition
+    void unregisterForcePrio(cocos2d::CCObject*);
+
+private:
+    // @note RobTop Addition
+    void incrementForcePrio(int priority);
+    // @note RobTop Addition
+    void decrementForcePrio(int priority);
 protected:
     void forceRemoveDelegate(CCTouchDelegate *pDelegate);
     void forceAddHandler(CCTouchHandler *pHandler, CCArray* pArray);
@@ -203,20 +222,31 @@ protected:
     void rearrangeHandlers(CCArray* pArray);
     CCTouchHandler* findHandler(CCArray* pArray, CCTouchDelegate *pDelegate);
 
-protected:
-     CCArray* m_pTargetedHandlers;
-     CCArray* m_pStandardHandlers;
+public:
+    CCArray* m_pTargetedHandlers;
+    CCArray* m_pStandardHandlers;
 
     bool m_bLocked;
     bool m_bToAdd;
     bool m_bToRemove;
-     CCArray* m_pHandlersToAdd;
+    CCArray* m_pHandlersToAdd;
     struct _ccCArray *m_pHandlersToRemove;
     bool m_bToQuit;
     bool m_bDispatchEvents;
 
     // 4, 1 for each type of event
     struct ccTouchHandlerHelperData m_sHandlerHelperData[ccTouchMax];
+
+protected:
+
+    // 2.2 changes
+
+    // @note RobTop Addition
+    CC_SYNTHESIZE_NV(int, m_forcePrio, ForcePrio);
+    // @note RobTop Addition
+    void* m_unknown;
+    // @note RobTop Addition
+    CC_SYNTHESIZE_NV(int, m_targetPrio, TargetPrio);
 };
 
 // end of input group

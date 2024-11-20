@@ -26,8 +26,8 @@ THE SOFTWARE.
 #ifndef __TOUCH_DISPATHCHER_CCTOUCH_DELEGATE_PROTOCOL_H__
 #define __TOUCH_DISPATHCHER_CCTOUCH_DELEGATE_PROTOCOL_H__
 
-#include "cocoa/CCObject.h"
-#include "ccConfig.h"
+#include "../cocoa/CCObject.h"
+#include "../include/ccConfig.h"
 
 NS_CC_BEGIN
 
@@ -45,6 +45,7 @@ class CCTouchDispatcher;
 
 class CC_DLL CCTouchDelegate
 {
+    GEODE_FRIEND_MODIFY
 public:
 
     CCTouchDelegate() {}
@@ -65,6 +66,10 @@ public:
      virtual void ccTouchesMoved(CCSet *pTouches, CCEvent *pEvent) {CC_UNUSED_PARAM(pTouches); CC_UNUSED_PARAM(pEvent);}
      virtual void ccTouchesEnded(CCSet *pTouches, CCEvent *pEvent) {CC_UNUSED_PARAM(pTouches); CC_UNUSED_PARAM(pEvent);}
      virtual void ccTouchesCancelled(CCSet *pTouches, CCEvent *pEvent) {CC_UNUSED_PARAM(pTouches); CC_UNUSED_PARAM(pEvent);}
+
+	virtual void setPreviousPriority(int);
+	virtual int getPreviousPriority();
+
 
 };
 /**

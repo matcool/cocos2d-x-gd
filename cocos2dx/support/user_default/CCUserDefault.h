@@ -24,7 +24,7 @@ THE SOFTWARE.
 #ifndef __SUPPORT_CCUSERDEFAULT_H__
 #define __SUPPORT_CCUSERDEFAULT_H__
 
-#include "platform/CCPlatformMacros.h"
+#include "../../platform/CCPlatformMacros.h"
 #include <string>
 
 NS_CC_BEGIN
@@ -44,6 +44,7 @@ NS_CC_BEGIN
  */
 class CC_DLL CCUserDefault
 {
+    GEODE_FRIEND_MODIFY
 public:
     ~CCUserDefault();
 
@@ -77,8 +78,8 @@ public:
     @brief Get string value by key, if the key doesn't exist, a default value will return.
     You can set the default value, or it is "".
     */
-    std::string getStringForKey(const char* pKey);
-    std::string getStringForKey(const char* pKey, const std::string & defaultValue);
+    gd::string getStringForKey(const char* pKey);
+    gd::string getStringForKey(const char* pKey, const gd::string & defaultValue);
 
     // set value methods
 
@@ -101,7 +102,7 @@ public:
     /**
     @brief Set string value by key.
     */
-    void    setStringForKey(const char* pKey, const std::string & value);
+    void    setStringForKey(const char* pKey, const gd::string & value);
     /**
      @brief Save content to xml file
      */
@@ -109,7 +110,7 @@ public:
 
     static CCUserDefault* sharedUserDefault();
     static void purgeSharedUserDefault();
-    const static std::string& getXMLFilePath();
+    const static gd::string& getXMLFilePath();
     static bool isXMLFileExist();
 
 private:
@@ -118,7 +119,7 @@ private:
     static void initXMLFilePath();
     
     static CCUserDefault* m_spUserDefault;
-    static std::string m_sFilePath;
+    static gd::string m_sFilePath;
     static bool m_sbIsFilePathInitialized;
 };
 

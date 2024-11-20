@@ -28,8 +28,8 @@
 #ifndef __MISCNODE_CCCLIPPING_NODE_H__
 #define __MISCNODE_CCCLIPPING_NODE_H__
 
-#include "base_nodes/CCNode.h"
-#include "CCGL.h"
+#include "../base_nodes/CCNode.h"
+#include "../platform/CCGL.h"
 
 NS_CC_BEGIN
 
@@ -40,7 +40,10 @@ NS_CC_BEGIN
  */
 class CC_DLL CCClippingNode : public CCNode
 {
+    GEODE_FRIEND_MODIFY
 protected:
+
+
     CCNode* m_pStencil;
     GLfloat m_fAlphaThreshold;
     bool    m_bInverted;
@@ -112,6 +115,8 @@ public:
     bool isInverted() const;
     void setInverted(bool bInverted);
     
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCClippingNode, CCNode);
+
 protected:
     CCClippingNode();
 };

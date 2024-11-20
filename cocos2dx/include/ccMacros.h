@@ -31,8 +31,8 @@ THE SOFTWARE.
 #define _USE_MATH_DEFINES
 #endif
 
-#include "platform/CCCommon.h"
-#include "CCStdC.h"
+#include "../platform/CCCommon.h"
+#include "../platform/CCStdC.h"
 
 #ifndef CCAssert
 #if COCOS2D_DEBUG > 0
@@ -245,7 +245,7 @@ It should work same as apples CFSwapInt32LittleToHost(..)
  Increments the GL Draws counts by one.
  The number of calls per frame are displayed on the screen when the CCDirector's stats are enabled.
  */
-extern unsigned int CC_DLL g_uNumberOfDraws;
+extern unsigned int ACTUAL_CC_DLL g_uNumberOfDraws;
 #define CC_INCREMENT_GL_DRAWS(__n__) g_uNumberOfDraws += __n__
 
 /*******************/
@@ -255,5 +255,37 @@ extern unsigned int CC_DLL g_uNumberOfDraws;
  Notification name when a CCSpriteFrame is displayed
  */
 #define CCAnimationFrameDisplayedNotification "CCAnimationFrameDisplayedNotification"
+
+/**********************/
+/** Modding-specific **/
+/**********************/
+/** __AS_STR__(str)
+* Use token as a C string.
+* Useful for multi-layer macros.
+* Don't use this.
+*/
+#define __AS_STR__(str) #str
+
+/** __STR_CAT__(str)
+* Concatenate 2 tokens. Don't use this.
+*/
+#define __STR_CAT___(str1, str2) str1##str2
+#define __STR_CAT__(str1, str2) __STR_CAT___(str1, str2)
+
+
+
+/** PAD
+* Add padding to a class / struct. For shifting classes /
+* structs to be aligned, if too lazy to fully reverse.
+* 
+* Based on line number, to be standard C / C++ compatible.
+*/
+#define PAD(size) char __STR_CAT__(pad, __LINE__)[size] = {};
+
+/** STUB
+* Stub class. Not complete: use with caution.
+*/
+#define STUB(className)\
+[[deprecated(__STR_CAT__("incompletely reversed class ", __AS_STR__(className)))]] className
 
 #endif // __CCMACROS_H__

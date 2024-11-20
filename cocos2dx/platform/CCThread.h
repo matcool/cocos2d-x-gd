@@ -42,6 +42,7 @@ NS_CC_BEGIN
  */
 class CC_DLL CCThread
 {
+    GEODE_FRIEND_MODIFY
 public:
     CCThread() : m_pAutoreasePool(0) {}
     ~CCThread();

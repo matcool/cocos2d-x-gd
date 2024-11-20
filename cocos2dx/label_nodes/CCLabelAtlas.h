@@ -26,7 +26,7 @@ THE SOFTWARE.
 #ifndef __CCLABEL_ATLAS_H__
 #define __CCLABEL_ATLAS_H__
 
-#include "base_nodes/CCAtlasNode.h"
+#include "../base_nodes/CCAtlasNode.h"
 
 NS_CC_BEGIN
 
@@ -50,6 +50,7 @@ A more flexible class is CCLabelBMFont. It supports variable width characters an
 */
 class CC_DLL CCLabelAtlas : public CCAtlasNode, public CCLabelProtocol
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -64,7 +65,7 @@ public:
      */
     virtual ~CCLabelAtlas()
     { 
-        m_sString.clear(); 
+        m_sString = ""; 
     }
 
     /** creates the CCLabelAtlas with a string, a char map file(the atlas), the width and height of each element and the starting char of the atlas */
@@ -98,7 +99,7 @@ public:
 
 protected:
     // string to render
-    std::string m_sString;
+    gd::string m_sString;
     // the first char in the charmap
     unsigned int m_uMapStartChar;
 };

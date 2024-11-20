@@ -28,8 +28,8 @@ THE SOFTWARE.
 #define __CCATLAS_NODE_H__
 
 #include "CCNode.h"
-#include "CCProtocols.h"
-#include "ccTypes.h"
+#include "../include/CCProtocols.h"
+#include "../include/ccTypes.h"
 
 NS_CC_BEGIN
 
@@ -50,6 +50,7 @@ All features from CCNode are valid, plus the following features:
 */
 class CC_DLL CCAtlasNode : public CCNodeRGBA, public CCTextureProtocol
 {
+    GEODE_FRIEND_MODIFY
 protected:
 
     //! chars per row

@@ -27,10 +27,10 @@ THE SOFTWARE.
 #ifndef __CCTMX_OBJECT_GROUP_H__
 #define __CCTMX_OBJECT_GROUP_H__
 
-#include "cocoa/CCGeometry.h"
-#include "cocoa/CCString.h"
-#include "cocoa/CCArray.h"
-#include "cocoa/CCDictionary.h"
+#include "../cocoa/CCGeometry.h"
+#include "../cocoa/CCString.h"
+#include "../cocoa/CCArray.h"
+#include "../cocoa/CCDictionary.h"
 
 NS_CC_BEGIN
 
@@ -44,6 +44,7 @@ NS_CC_BEGIN
 */
 class CC_DLL CCTMXObjectGroup : public CCObject
 {
+    GEODE_FRIEND_MODIFY
     /** offset position of child objects */
     CC_SYNTHESIZE_PASS_BY_REF(CCPoint, m_tPositionOffset, PositionOffset);
     /** list of properties stored in a dictionary */
@@ -73,7 +74,7 @@ public:
     CCDictionary* objectNamed(const char *objectName);
 protected:    
     /** name of the group */
-    std::string m_sGroupName;
+    gd::string m_sGroupName;
 };
 
 // end of tilemap_parallax_nodes group

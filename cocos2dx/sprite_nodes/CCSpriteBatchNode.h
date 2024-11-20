@@ -28,11 +28,11 @@ THE SOFTWARE.
 #ifndef __CC_SPRITE_BATCH_NODE_H__
 #define __CC_SPRITE_BATCH_NODE_H__
 
-#include "base_nodes/CCNode.h"
-#include "CCProtocols.h"
-#include "textures/CCTextureAtlas.h"
-#include "ccMacros.h"
-#include "cocoa/CCArray.h"
+#include "../base_nodes/CCNode.h"
+#include "../include/CCProtocols.h"
+#include "../textures/CCTextureAtlas.h"
+#include "../include/ccMacros.h"
+#include "../cocoa/CCArray.h"
 
 NS_CC_BEGIN
 
@@ -62,11 +62,13 @@ class CCSprite;
 */
 class CC_DLL CCSpriteBatchNode : public CCNode, public CCTextureProtocol
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
      */
     CCSpriteBatchNode();
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCSpriteBatchNode, CCNode)
     /**
      * @js NA
      * @lua NA
@@ -116,8 +118,6 @@ public:
     */
     bool initWithFile(const char* fileImage, unsigned int capacity);
     bool init();
-
-    void increaseAtlasCapacity();
 
     /** removes a child given a certain index. It will also cleanup the running actions depending on the cleanup parameter.
     @warning Removing a child from a CCSpriteBatchNode is very slow
@@ -170,6 +170,23 @@ protected:
     */
     CCSpriteBatchNode * addSpriteWithoutQuad(CCSprite*child, unsigned int z, int aTag);
 
+    // @note RobTop Addition
+    bool getManualSortChildren(void)const;
+    // @note RobTop Addition
+    int getAtlasCapacity(void);
+public:
+    // @note RobTop Addition
+    int getUsedAtlasCapacity(void);
+    // @note RobTop Addition
+    void increaseAtlasCapacity(unsigned int);
+    // @note RobTop Addition
+    void increaseAtlasCapacity();
+protected:
+    // @note RobTop Addition
+    void manualSortAllChildren(void);
+    // @note RobTop Addition
+    void setManualSortChildren(bool);
+
 private:
     void updateAtlasIndex(CCSprite* sprite, int* curIndex);
     void swap(int oldIndex, int newIndex);
@@ -181,6 +198,11 @@ protected:
 
     // all descendants: children, gran children, etc...
     CCArray* m_pobDescendants;
+
+    // @note RobTop Addition
+    bool m_bManualSortChildren;
+    // @note RobTop Addition
+    bool m_bManualSortAllChildrenDirty;
 };
 
 // end of sprite_nodes group

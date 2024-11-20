@@ -25,7 +25,7 @@ THE SOFTWARE.
 #ifndef __CC_FRAMEWORK_COMCONTAINER_H__
 #define __CC_FRAMEWORK_COMCONTAINER_H__
 
-#include "cocoa/CCDictionary.h"
+#include "../../cocoa/CCDictionary.h"
 
 NS_CC_BEGIN
 
@@ -37,7 +37,10 @@ class CCNode;
  */
 class CC_DLL CCComponentContainer
 {
+    GEODE_FRIEND_MODIFY
 protected:
+
+
     CCComponentContainer(CCNode *pNode);
     
 public:

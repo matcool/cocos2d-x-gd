@@ -30,8 +30,8 @@
 #ifndef __CCDRAWNODES_CCDRAW_NODE_H__
 #define __CCDRAWNODES_CCDRAW_NODE_H__
 
-#include "base_nodes/CCNode.h"
-#include "ccTypes.h"
+#include "../base_nodes/CCNode.h"
+#include "../include/ccTypes.h"
 
 NS_CC_BEGIN
 
@@ -42,9 +42,11 @@ NS_CC_BEGIN
  @since v2.1
  @lua NA
  */
-class CC_DLL CCDrawNode : public CCNode
+class CC_DLL CCDrawNode : public CCNodeRGBA
 {
+    GEODE_FRIEND_MODIFY
 protected:
+
     GLuint      m_uVao;
     GLuint      m_uVbo;
     
@@ -56,6 +58,20 @@ protected:
     
     bool            m_bDirty;
     
+
+    // @note RobTop Addition
+    bool            m_bUseArea;
+    // @note RobTop Addition
+    CCRect          m_rDrawArea;
+    // @note RobTop Addition
+    float           m_fMinAreaX;
+    // @note RobTop Addition
+    float           m_fMaxAreaX;
+    // @note RobTop Addition
+    float           m_fMaxAreaY;
+    // @note RobTop Addition
+    float           m_fMinAreaY;
+
 public:
     static CCDrawNode* create();
     virtual ~CCDrawNode();
@@ -63,6 +79,30 @@ public:
     virtual bool init();
     virtual void draw();
     
+#if GEODE_COMP_GD_VERSION > 22000
+    /** draw a dot at a position, with a given radius and color */
+    bool drawDot(const CCPoint &pos, float radius, const ccColor4F &color);
+    
+    /** draw a segment with a radius and color */
+    bool drawSegment(const CCPoint &from, const CCPoint &to, float radius, const ccColor4F &color);
+    
+    /** draw a polygon with a fill color and line color 
+     * @code
+     * when this funciton bound to js,the input params are changed
+     * js:var drawPolygon(var verts, var fillColor,var borderWidth,var borderColor)
+     * @endcode
+     */
+    bool drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor);
+
+	bool drawCircle(cocos2d::CCPoint const&, float, cocos2d::_ccColor4F const&, float, cocos2d::_ccColor4F const&, unsigned int);
+	void drawCubicBezier(cocos2d::CCPoint const&, cocos2d::CCPoint const&, cocos2d::CCPoint const&, cocos2d::CCPoint const&, unsigned int, cocos2d::_ccColor4F const&);
+	void drawPreciseCubicBezier(cocos2d::CCPoint const&, cocos2d::CCPoint const&, cocos2d::CCPoint const&, cocos2d::CCPoint const&, unsigned int, cocos2d::_ccColor4F const&);
+	bool drawLines(cocos2d::CCPoint*, unsigned int, float, cocos2d::_ccColor4F const&);
+	bool drawRect(cocos2d::CCPoint const&, cocos2d::CCPoint const&, cocos2d::_ccColor4F const&, float, cocos2d::_ccColor4F const&);
+    bool drawRect(cocos2d::CCRect const&, cocos2d::_ccColor4F const&, float, cocos2d::_ccColor4F const&);
+    void disableDrawArea();
+    void enableDrawArea(cocos2d::CCRect& rect);
+#else
     /** draw a dot at a position, with a given radius and color */
     void drawDot(const CCPoint &pos, float radius, const ccColor4F &color);
     
@@ -76,6 +116,13 @@ public:
      * @endcode
      */
     void drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor);
+
+	void drawCircle(cocos2d::CCPoint const&, float, cocos2d::_ccColor4F const&, float, cocos2d::_ccColor4F const&, unsigned int);
+	void drawCubicBezier(cocos2d::CCPoint const&, cocos2d::CCPoint const&, cocos2d::CCPoint const&, cocos2d::CCPoint const&, unsigned int, cocos2d::_ccColor4F const&);
+	void drawPreciseCubicBezier(cocos2d::CCPoint const&, cocos2d::CCPoint const&, cocos2d::CCPoint const&, cocos2d::CCPoint const&, unsigned int, cocos2d::_ccColor4F const&);
+	void drawLines(cocos2d::CCPoint*, unsigned int, float, cocos2d::_ccColor4F const&);
+	void drawRect(cocos2d::CCPoint const&, cocos2d::CCPoint const&, cocos2d::_ccColor4F const&, float, cocos2d::_ccColor4F const&);
+#endif
     
     /** Clear the geometry in the node's buffer. */
     void clear();
@@ -92,6 +139,7 @@ public:
     void setBlendFunc(const ccBlendFunc &blendFunc);
     
     CCDrawNode();
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCDrawNode, CCNodeRGBA)
 
     /** listen the event that coming to foreground on Android  
      * @js NA

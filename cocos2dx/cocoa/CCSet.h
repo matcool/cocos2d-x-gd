@@ -39,16 +39,18 @@ typedef std::set<CCObject *>::iterator CCSetIterator;
 
 class CC_DLL CCSet : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js  ctor
      * @lua NA
      */
     CCSet(void);
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCSet, CCObject)
     /**
      * @lua NA
      */
-    CCSet(const CCSet &rSetObject);
+    // CCSet(const CCSet &rSetObject);
     /**
      * @js NA
      * @lua NA

@@ -25,15 +25,15 @@ THE SOFTWARE.
 #ifndef __EFFECTS_CCGRID_H__
 #define __EFFECTS_CCGRID_H__
 
-#include "cocoa/CCObject.h"
-#include "base_nodes/CCNode.h"
-#include "CCCamera.h"
-#include "ccTypes.h"
-#include "textures/CCTexture2D.h"
-#include "CCDirector.h"
-#include "kazmath/mat4.h"
+#include "../cocoa/CCObject.h"
+#include "../base_nodes/CCNode.h"
+#include "../CCCamera.h"
+#include "../include/ccTypes.h"
+#include "../textures/CCTexture2D.h"
+#include "../CCDirector.h"
+#include "../kazmath/include/kazmath/mat4.h"
 #ifdef EMSCRIPTEN
-#include "base_nodes/CCGLBufferedNode.h"
+#include "../base_nodes/CCGLBufferedNode.h"
 #endif // EMSCRIPTEN
 
 NS_CC_BEGIN
@@ -51,6 +51,7 @@ class CCGLProgram;
 */
 class CC_DLL CCGridBase : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js NA

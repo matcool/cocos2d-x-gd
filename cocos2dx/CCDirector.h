@@ -29,13 +29,13 @@ THE SOFTWARE.
 
 #include "platform/CCPlatformMacros.h"
 #include "cocoa/CCObject.h"
-#include "ccTypes.h"
+#include "include/ccTypes.h"
 #include "cocoa/CCGeometry.h"
 #include "cocoa/CCArray.h"
-#include "CCGL.h"
-#include "kazmath/mat4.h"
+#include "platform/CCGL.h"
+#include "kazmath/include/kazmath/mat4.h"
 #include "label_nodes/CCLabelAtlas.h"
-#include "ccTypeInfo.h"
+#include "include/ccTypeInfo.h"
 
 
 NS_CC_BEGIN
@@ -62,6 +62,20 @@ typedef enum {
     kCCDirectorProjectionDefault = kCCDirectorProjection3D,
 } ccDirectorProjection;
 
+// @note RobTop Addition
+typedef enum {
+    kTextureQualityLow = 1,
+    kTextureQualityMedium,
+    kTextureQualityHigh
+} TextureQuality;
+
+// @note RobTop Addition
+typedef enum {
+    kPopTransitionFade,
+    kPopTransitionMoveInT
+} PopTransition;
+
+
 /* Forward declarations. */
 class CCLabelAtlas;
 class CCScene;
@@ -73,6 +87,14 @@ class CCActionManager;
 class CCTouchDispatcher;
 class CCKeypadDispatcher;
 class CCAccelerometer;
+// @note RobTop Addition
+class CCKeyboardDispatcher;
+// @note RobTop Addition
+class CCMouseDispatcher;
+// @note RobTop Addition
+class CCSceneDelegate;
+// @note RobTop Addition
+class CCLabelBMFont;
 
 /**
 @brief Class that creates and handle the main Window and manages how
@@ -96,11 +118,13 @@ and when to execute the Scenes.
 */
 class CC_DLL CCDirector : public CCObject, public TypeInfo
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
      */
     CCDirector(void);
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCDirector, CCObject)
     /**
      *  @js NA
      *  @lua NA
@@ -116,6 +140,8 @@ public:
 		return id;
     }
 
+    static GEODE_DLL CCDirector* get();
+
     // attribute
 
     /** Get current running Scene. Director can only run one Scene at the time */
@@ -124,7 +150,7 @@ public:
     /** Get the FPS value */
     inline double getAnimationInterval(void) { return m_dAnimationInterval; }
     /** Set the FPS value. */
-    virtual void setAnimationInterval(double dValue) = 0;
+    virtual void setAnimationInterval(double dValue) {}
 
     /** Whether or not to display the FPS on the bottom-left corner */
     inline bool isDisplayStats(void) { return m_bDisplayStats; }
@@ -145,6 +171,9 @@ public:
 
     /** Whether or not the Director is paused */
     inline bool isPaused(void) { return m_bPaused; }
+
+    // geode addition
+    inline void setPaused(bool p) { m_bPaused = p; }
 
     /** How many frames were called since the director started */
     inline unsigned int getTotalFrames(void) { return m_uTotalFrames; }
@@ -232,8 +261,10 @@ public:
      * The new scene will be executed.
      * Try to avoid big stacks of pushed scenes to reduce memory allocation. 
      * ONLY call it if there is a running scene.
+     * 
+     * @note Robtop Addition: return value from void to bool
      */
-    void pushScene(CCScene *pScene);
+    bool pushScene(CCScene *pScene);
 
     /** Pops out a scene from the queue.
      * This scene will replace the running one.
@@ -257,8 +288,10 @@ public:
 
     /** Replaces the running scene with a new one. The running scene is terminated.
      * ONLY call it if there is a running scene.
+     * 
+     * @note Robtop Addition: return value from void to bool
      */
-    void replaceScene(CCScene *pScene);
+    bool replaceScene(CCScene *pScene);
 
     /** Ends the execution, releases the running scene.
      It doesn't remove the OpenGL view from its parent. You have to do it manually.
@@ -277,17 +310,19 @@ public:
      */
     void resume(void);
 
+protected:
     /** Stops the animation. Nothing will be drawn. The main loop won't be triggered anymore.
      If you don't want to pause your animation call [pause] instead.
      */
-    virtual void stopAnimation(void) = 0;
+    virtual void stopAnimation(void) {}
 
     /** The main loop is triggered again.
      Call this function only if [stopAnimation] was called earlier
      @warning Don't call this function to start the main loop. To run the main loop call runWithScene
      */
-    virtual void startAnimation(void) = 0;
+    virtual void startAnimation(void) {}
 
+public:
     /** Draw the scene.
     This method is called every frame. Don't call it manually.
     */
@@ -315,15 +350,78 @@ public:
     /** enables/disables OpenGL depth test */
     void setDepthTest(bool bOn);
 
-    virtual void mainLoop(void) = 0;
+protected:
+    virtual void mainLoop(void) {}
 
+public:
     /** The size in pixels of the surface. It could be different than the screen size.
     High-res devices might have a higher surface size than the screen size.
     Only available when compiled using SDK >= 4.0.
     @since v0.99.4
     */
     void setContentScaleFactor(float scaleFactor);
-    float getContentScaleFactor(void);
+    inline float getContentScaleFactor(void) { return m_fContentScaleFactor; }
+
+public:
+    // @note RobTop Addition
+    void checkSceneReference(void);
+    // @note RobTop Addition
+    CCScene* getNextScene(void);
+    // @note RobTop Addition
+    int levelForSceneInStack(CCScene*);
+    // @note RobTop Addition
+    bool popSceneWithTransition(float, PopTransition);
+    // @note RobTop Addition
+    void popToSceneInStack(CCScene*);
+    // @note RobTop Addition
+    int sceneCount(void);
+    // @note RobTop Addition
+    void willSwitchToScene(CCScene*);
+    
+    // @note RobTop Addition
+    void removeStatsLabel(void);
+
+    // @note RobTop Addition
+    void resetSmoothFixCounter(void);
+    // @note RobTop Addition
+    void setDeltaTime(float);
+
+    // @note RobTop Addition
+    void setupScreenScale(CCSize, CCSize, TextureQuality);
+    // @note RobTop Addition
+    void updateContentScale(TextureQuality);
+    // @note RobTop Addition
+    void updateScreenScale(CCSize);
+
+    // @note RobTop Addition
+    void applySmoothFix();
+    // @note RobTop Addition
+    void showFPSLabel();
+    // @note RobTop Addition
+    void toggleShowFPS(bool, gd::string, cocos2d::CCPoint);
+protected:
+    // @note RobTop Addition
+    void createStatsLabel();
+
+protected:
+    // @note RobTop Addition
+    CC_SYNTHESIZE_READONLY_NV(float, m_fScreenScaleFactor, ScreenScaleFactor);
+    // @note RobTop Addition
+    CC_SYNTHESIZE_READONLY_NV(float, m_fScreenScaleFactorMax, ScreenScaleFactorMax);
+    // @note RobTop Addition
+    CC_SYNTHESIZE_READONLY_NV(float, m_fScreenScaleFactorW, ScreenScaleFactorW);
+    // @note RobTop Addition
+    CC_SYNTHESIZE_READONLY_NV(float, m_fScreenScaleFactorH, ScreenScaleFactorH);
+    // @note RobTop Addition
+    CC_SYNTHESIZE_READONLY_NV(float, m_fScreenTop, ScreenTop);
+    // @note RobTop Addition
+    CC_SYNTHESIZE_READONLY_NV_NC(float, m_fScreenBottom, ScreenBottom);
+    // @note RobTop Addition
+    CC_SYNTHESIZE_READONLY_NV_NC(float, m_fScreenLeft, ScreenLeft);
+    // @note RobTop Addition
+    CC_SYNTHESIZE_READONLY_NV(float, m_fScreenRight, ScreenRight);
+    // @note RobTop Addition
+    CC_SYNTHESIZE_NV(CCScene*, m_pSceneReference, SceneReference);
 
 public:
     /** CCScheduler associated with this director
@@ -346,6 +444,12 @@ public:
      */
     CC_PROPERTY(CCKeypadDispatcher*, m_pKeypadDispatcher, KeypadDispatcher);
 
+    // @note RobTop Addition
+    CC_PROPERTY(CCKeyboardDispatcher*, m_pKeyboardDispatcher, KeyboardDispatcher);
+
+    // @note RobTop Addition
+    CC_PROPERTY(CCMouseDispatcher*, m_pMouseDispatcher, MouseDispatcher);
+
     /** CCAccelerometer associated with this director
      @since v2.0
      @js NA
@@ -355,6 +459,11 @@ public:
 
     /* delta time since last tick to main loop */
 	CC_PROPERTY_READONLY(float, m_fDeltaTime, DeltaTime);
+
+    /* *actual* delta time, according to rob. not sure what that means but i'm not arguing */
+    // @note RobTop Addition
+    CC_SYNTHESIZE_NV(float, m_fActualDeltaTime, ActualDeltaTime); 
+    
 	
 public:
     /** returns a shared instance of the director 
@@ -365,18 +474,32 @@ public:
 protected:
 
     void purgeDirector();
+    // @note RobTop Addition
+    CC_SYNTHESIZE_READONLY_NV(bool, m_bIsTransitioning, IsTransitioning);   // if in a CCTransitionScene
+
+    // @note RobTop Addition
+    CC_SYNTHESIZE_NV(bool, m_bSmoothFix, SmoothFix);                        // if smooth fix is on
+    // @note RobTop Addition
+    CC_SYNTHESIZE_NV(bool, m_bSmoothFixCheck, SmoothFixCheck);              // not exactly sure what this is, but the name says something ig
+    // @note RobTop Addition
+    CC_SYNTHESIZE_NV(bool, m_bForceSmoothFix, ForceSmoothFix);              // if "force smooth fix" is on or not
+    // @note RobTop Addition
+    CC_SYNTHESIZE_READONLY_NV(int, m_nSmoothFixCounter, SmoothFixCounter);  // not sure about this one either
+
     bool m_bPurgeDirecotorInNextLoop; // this flag will be set to true in end()
-    
+
+protected:
     void setNextScene(void);
     
     void showStats();
-    void createStatsLabel();
+    // Robtop Removal
+    // void createStatsLabel();
     void calculateMPF();
     void getFPSImageData(unsigned char** datapointer, unsigned int* length);
     
     /** calculates delta time since last time it was called */    
     void calculateDeltaTime();
-protected:
+public:
     /* The CCEGLView, where everything is rendered */
     CCEGLView    *m_pobOpenGLView;
 
@@ -387,6 +510,9 @@ protected:
     bool m_bLandscape;
     
     bool m_bDisplayStats;
+
+    float m_fFpsAccumDt;
+
     float m_fAccumDt;
     float m_fFrameRate;
     
@@ -425,7 +551,7 @@ protected:
     ccDirectorProjection m_eProjection;
 
     /* window size in points */
-    CCSize    m_obWinSizeInPoints;
+    CCSize m_obWinSizeInPoints;
     
     /* content scale factor */
     float    m_fContentScaleFactor;
@@ -438,6 +564,32 @@ protected:
 
     /* Projection protocol delegate */
     CCDirectorDelegate *m_pProjectionDelegate;
+
+    // @note RobTop Addition
+    CC_SYNTHESIZE(CCSceneDelegate*, m_pAppDelegate, SceneDelegate);
+    // @note RobTop Addition
+    bool m_bDisplayFPS;
+    // @note RobTop Addition
+    CCLabelBMFont* m_pFPSNode;
+    // @note RobTop Addition
+    CCSize m_obScaleFactor;
+    // @note RobTop Addition
+    CCSize m_obResolutionInPixels;
+    // @note RobTop Addition
+    CC_SYNTHESIZE_READONLY_NV(TextureQuality, m_eTextureQuality, LoadedTextureQuality);
+    // @note RobTop Addition
+    CC_SYNTHESIZE_NV(bool, m_bDontCallWillSwitch, DontCallWillSwitch);
+
+#if GEODE_COMP_GD_VERSION >= 22003
+    // @note RobTop Addition
+    CC_SYNTHESIZE_NV(bool, m_bFastMenu, FastMenu);
+#else
+    // these were just garbage memory in reclass
+    // @note RobTop Addition
+    void* m_unknownPtr2;
+#endif
+    // @note RobTop Addition
+    void* m_unknownPtr3;
     
     // CCEGLViewProtocol will recreate stats labels to fit visible rect
     friend class CCEGLViewProtocol;

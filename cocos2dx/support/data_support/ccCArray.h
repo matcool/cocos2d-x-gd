@@ -42,8 +42,8 @@ THE SOFTWARE.
 #ifndef CC_ARRAY_H
 #define CC_ARRAY_H
 
-#include "ccMacros.h"
-#include "cocoa/CCObject.h"
+#include "../../include/ccMacros.h"
+#include "../../cocoa/CCObject.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -60,6 +60,8 @@ __object__=__array__->arr[0]; for(unsigned int i=0, num=__array__->num; i<num; i
 
 typedef struct _ccArray {
 	unsigned int num, max;
+    // 2.2 additions
+    unsigned int unknown;
 	CCObject** arr;
 } ccArray;
 

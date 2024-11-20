@@ -25,7 +25,7 @@ THE SOFTWARE.
 #ifndef __CC_IMAGE_H__
 #define __CC_IMAGE_H__
 
-#include "cocoa/CCObject.h"
+#include "../cocoa/CCObject.h"
 
 NS_CC_BEGIN
 
@@ -40,11 +40,13 @@ class CCFreeTypeFont;
 
 class CC_DLL CCImage : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      @js ctor
      */
     CCImage();
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCImage, CCObject)
     /**
      * @js NA
      * @lua NA
@@ -106,7 +108,8 @@ public:
                            EImageFormat eFmt = kFmtUnKnown,
                            int nWidth = 0,
                            int nHeight = 0,
-                           int nBitsPerComponent = 8);
+                           int nBitsPerComponent = 8,
+                           int whoknows = 0);
 
     /**
     @brief    Create image with specified string.
@@ -172,9 +175,9 @@ public:
     */
     bool saveToFile(const char *pszFilePath, bool bIsToRGB = true);
 
-    CC_SYNTHESIZE_READONLY(unsigned short,   m_nWidth,       Width);
-    CC_SYNTHESIZE_READONLY(unsigned short,   m_nHeight,      Height);
-    CC_SYNTHESIZE_READONLY(int,     m_nBitsPerComponent,   BitsPerComponent);
+    CC_SYNTHESIZE_READONLY_NV(unsigned short,   m_nWidth,       Width);
+    CC_SYNTHESIZE_READONLY_NV(unsigned short,   m_nHeight,      Height);
+    CC_SYNTHESIZE_READONLY_NV(int,     m_nBitsPerComponent,   BitsPerComponent);
 
 protected:
     bool _initWithJpgData(void *pData, int nDatalen);
@@ -197,8 +200,8 @@ protected:
 
 private:
     // noncopyable
-    CCImage(const CCImage&    rImg);
-    CCImage & operator=(const CCImage&);
+    // CCImage(const CCImage&    rImg);
+    // CCImage & operator=(const CCImage&);
 
 
 };

@@ -41,29 +41,39 @@ NS_CC_BEGIN
  * @ js NA
  */
 
+#define kMaxStringLen (1024*100)
+
 class CC_DLL CCString : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCString, CCObject)
     /**
      * @lua NA
      */
+#ifndef GEODE_IS_ANDROID
+    inline CCString() : m_sString("") {}
+#else
+    // Make sure its imported because of gd::string stuff,
+    // check android/main.cpp for more info
     CCString();
+#endif
     /**
      * @lua NA
      */
-    CCString(const char* str);
+    inline CCString(const char* str) : m_sString(str) {}
     /**
      * @lua NA
      */
-    CCString(const std::string& str);
+    inline CCString(const gd::string& str) : m_sString(str.c_str()) {}
     /**
      * @lua NA
      */
-    CCString(const CCString& str);
+    inline CCString(const CCString& str) {}
     /**
      * @lua NA
      */
-    virtual ~CCString();
+    virtual inline ~CCString() {}
     
     /* override assignment operator
      * @lua NA
@@ -106,11 +116,14 @@ public:
     virtual CCObject* copyWithZone(CCZone* pZone);
     virtual bool isEqual(const CCObject* pObject);
 
-    /** create a string with std string, you can also pass a c string pointer because the default constructor of std::string can access a c string pointer. 
+    /** create a string with std string, you can also pass a c string pointer because the default constructor of gd::string can access a c string pointer. 
      *  @return A CCString pointer which is an autorelease object pointer,
      *          it means that you needn't do a release operation unless you retain it.
      */
-    static CCString* create(const std::string& str);
+    // Geode change: this is kind of a hack but i think it will work
+    static inline CCString* create(gd::string const& str) {
+    	return CCString::createWithData(reinterpret_cast<unsigned char const*>(str.c_str()), str.size());
+    }
 
     /** create a string with format, it's similar with the c function 'sprintf', the default buffer size is (1024*100) bytes,
      *  if you want to change it, you should modify the kMaxStringLen macro in CCString.cpp file.
@@ -118,7 +131,15 @@ public:
      *          it means that you needn't do a release operation unless you retain it.
      *  @lua NA
      */ 
-    static CCString* createWithFormat(const char* format, ...) CC_FORMAT_PRINTF(1, 2);
+    static inline CCString* createWithFormat(const char* format, ...) CC_FORMAT_PRINTF(1, 2) {
+    	CCString* pRet = CCString::create("");
+	    va_list ap;
+	    va_start(ap, format);
+	    pRet->initWithFormatAndValist(format, ap);
+	    va_end(ap);
+
+	    return pRet;
+    }
 
     /** create a string with binary data 
      *  @return A CCString pointer which is an autorelease object pointer,
@@ -139,18 +160,30 @@ public:
 private:
 
     /** only for internal use */
-    bool initWithFormatAndValist(const char* format, va_list ap);
+    bool initWithFormatAndValist(const char* format, va_list ap) {
+    	bool bRet = false;
+		char* pBuf = (char*)malloc(kMaxStringLen);
+		if (pBuf != NULL)
+		{
+		    vsnprintf(pBuf, kMaxStringLen, format, ap);
+		    m_sString = pBuf;
+		    free(pBuf);
+		    bRet = true;
+		}
+		return bRet;
+    }
 
 public:
-    std::string m_sString;
+    gd::string m_sString;
 };
 
-// struct CCStringCompare : public std::binary_function<CCString *, CCString *, bool> {
-//     public:
-//         bool operator() (CCString * a, CCString * b) const {
-//             return strcmp(a->getCString(), b->getCString()) < 0;
-//         }
-// };
+/*
+struct CCStringCompare : public std::binary_function<CCString *, CCString *, bool> {
+    public:
+        bool operator() (CCString * a, CCString * b) const {
+            return strcmp(a->getCString(), b->getCString()) < 0;
+        }
+};*/
 
 #define CCStringMake(str) CCString::create(str)
 #define ccs               CCStringMake

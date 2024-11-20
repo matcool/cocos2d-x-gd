@@ -27,7 +27,7 @@ THE SOFTWARE.
 #ifndef __CCSHADERCACHE_H__
 #define __CCSHADERCACHE_H__
 
-#include "cocoa/CCDictionary.h"
+#include "../cocoa/CCDictionary.h"
 
 NS_CC_BEGIN
 
@@ -44,6 +44,7 @@ class CCGLProgram;
  */
 class CC_DLL CCShaderCache : public CCObject 
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js ctor

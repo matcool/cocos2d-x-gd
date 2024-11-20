@@ -25,15 +25,17 @@ THE SOFTWARE.
 #ifndef __CC_APPLICATION_MAC_H__
 #define __CC_APPLICATION_MAC_H__
 
-#include "platform/CCCommon.h"
-#include "platform/CCApplicationProtocol.h"
+#include "../CCCommon.h"
+#include "../CCApplicationProtocol.h"
 #include <string>
 
 NS_CC_BEGIN
 
 class CC_DLL CCApplication : public CCApplicationProtocol
 {
+    GEODE_FRIEND_MODIFY
 public:
+	GEODE_CUSTOM_CONSTRUCTOR_BEGIN(CCApplication)
     CCApplication();
     virtual ~CCApplication();
         
@@ -58,6 +60,8 @@ public:
     */
     static CCApplication* sharedApplication();
 
+    static GEODE_DLL CCApplication* get();
+
     /**
     @brief Get current language config
     @return Current language config
@@ -73,23 +77,28 @@ public:
      *  Sets the Resource root path.
      *  @deprecated Please use CCFileUtils::sharedFileUtils()->setSearchPaths() instead.
      */
-    CC_DEPRECATED_ATTRIBUTE void setResourceRootPath(const std::string& rootResDir);
+    CC_DEPRECATED_ATTRIBUTE void setResourceRootPath(const gd::string& rootResDir);
     
     /** 
      *  Gets the Resource root path.
      *  @deprecated Please use CCFileUtils::sharedFileUtils()->getSearchPaths() instead. 
      */
-    CC_DEPRECATED_ATTRIBUTE const std::string& getResourceRootPath(void);
+    CC_DEPRECATED_ATTRIBUTE const gd::string& getResourceRootPath(void);
     
-    void setStartupScriptFilename(const std::string& startupScriptFile);
+    void setStartupScriptFilename(const gd::string& startupScriptFile);
     
-    const std::string& getStartupScriptFilename(void);
+    const gd::string& getStartupScriptFilename(void);
+
+    //Robtop modification
+    virtual void openURL(char const* link);
+
+    bool getControllerConnected() const;
     
 protected:
     static CCApplication * sm_pSharedApplication;
     
-    std::string m_resourceRootPath;
-    std::string m_startupScriptFilename;
+    gd::string m_resourceRootPath;
+    gd::string m_startupScriptFilename;
 };
 
 NS_CC_END

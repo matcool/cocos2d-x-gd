@@ -25,8 +25,8 @@ THE SOFTWARE.
 #ifndef __CC_EGLVIEW_IPHONE_H__
 #define __CC_EGLVIEW_IPHONE_H__
 
-#include "platform/CCCommon.h"
-#include "platform/CCEGLViewProtocol.h"
+#include "../CCCommon.h"
+#include "../CCEGLViewProtocol.h"
 
 NS_CC_BEGIN
 
@@ -34,6 +34,7 @@ NS_CC_BEGIN
 
 class CC_DLL CCEGLView : public CCEGLViewProtocol
 {
+    GEODE_FRIEND_MODIFY
 public:
     CCEGLView();
    ~CCEGLView();
@@ -48,6 +49,8 @@ public:
     virtual void setIMEKeyboardState(bool bOpen);
     
     static CCEGLView* sharedOpenGLView();
+    
+    static GEODE_DLL CCEGLView* get();
 
 };
 

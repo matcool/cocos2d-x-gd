@@ -27,7 +27,7 @@ THE SOFTWARE.
 #ifndef __CCSCENE_H__
 #define __CCSCENE_H__
 
-#include "base_nodes/CCNode.h"
+#include "../base_nodes/CCNode.h"
 
 NS_CC_BEGIN
 
@@ -35,6 +35,15 @@ NS_CC_BEGIN
  * @addtogroup scene
  * @{
  */
+
+// geode should use the cocos2d-x-gd imo
+class CCScene;
+
+class CC_DLL CCSceneDelegate {
+public: 
+    virtual void willSwitchToScene(CCScene* scene) {}
+};
+
 
 /** @brief CCScene is a subclass of CCNode that is used only as an abstract concept.
 
@@ -48,11 +57,13 @@ It is a good practice to use and CCScene as the parent of all your nodes.
 */
 class CC_DLL CCScene : public CCNode
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
      */
     CCScene();
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCScene, CCNode)
     /**
      *  @js NA
      *  @lua NA
@@ -60,7 +71,19 @@ public:
     virtual ~CCScene();
     bool init();
 
-    static CCScene *create(void);
+    static CCScene* create(void);
+    /**
+     * Get the running scene
+     * @note Geode addition
+     */
+    static GEODE_DLL CCScene* get();
+
+    CCScene(const CCScene&);
+    CCScene& operator=(const CCScene&);
+
+    int getHighestChildZ(void);
+
+    CCSceneDelegate* m_pDelegate;
 };
 
 // end of scene group

@@ -25,7 +25,7 @@ THE SOFTWARE.
 #ifndef __CC_ZONE_H__
 #define __CC_ZONE_H__
 
-#include "platform/CCPlatformMacros.h"
+#include "../platform/CCPlatformMacros.h"
 #include <stdio.h>
 
 NS_CC_BEGIN
@@ -42,6 +42,7 @@ class CCObject;
  */
 class CC_DLL CCZone
 {
+    GEODE_FRIEND_MODIFY
 public:
     CCZone(CCObject *pObject = NULL);
 

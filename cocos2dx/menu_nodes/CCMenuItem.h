@@ -27,9 +27,9 @@ THE SOFTWARE.
 #ifndef __CCMENU_ITEM_H__
 #define __CCMENU_ITEM_H__
 
-#include "base_nodes/CCNode.h"
-#include "CCProtocols.h"
-#include "cocoa/CCArray.h"
+#include "../base_nodes/CCNode.h"
+#include "../include/CCProtocols.h"
+#include "../cocoa/CCArray.h"
 
 NS_CC_BEGIN
     
@@ -38,7 +38,7 @@ class CCLabelAtlas;
 class CCSprite;
 class CCSpriteFrame;
 #define kCCItemSize 32
-    
+
 /**
  * @addtogroup GUI
  * @{
@@ -52,7 +52,8 @@ class CCSpriteFrame;
  */
 class CC_DLL CCMenuItem : public CCNodeRGBA
 {
-protected:
+    GEODE_FRIEND_MODIFY
+public:
     /** whether or not the item is selected
      @since v0.8.2
      */
@@ -69,7 +70,9 @@ public:
     , m_pListener(NULL)            
     , m_pfnSelector(NULL)
     , m_nScriptTapHandler(0)
+    , m_fSizeMult(0.f)
     {}
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCMenuItem, CCNodeRGBA)
     /**
      * @js NA
      * @lua NA
@@ -109,10 +112,14 @@ public:
     /** set the target/selector of the menu item*/
     void setTarget(CCObject *rec, SEL_MenuHandler selector);
 
-protected:
+public:
     CCObject*       m_pListener;
-    SEL_MenuHandler    m_pfnSelector;
+    SEL_MenuHandler m_pfnSelector;
     int             m_nScriptTapHandler;
+
+    // 2.2 additions
+    // @note RobTop Addition
+    float m_fSizeMult = 0.f;
 };
 
 /** @brief An abstract class for "label" CCMenuItemLabel items 
@@ -124,6 +131,7 @@ protected:
  */
 class CC_DLL CCMenuItemLabel : public CCMenuItem
 {
+    GEODE_FRIEND_MODIFY
     /** the color that will be used to disable the item */
     CC_PROPERTY_PASS_BY_REF(ccColor3B, m_tDisabledColor, DisabledColor);
     /** Label that is rendered. It can be any CCNode that implements the CCLabelProtocol */
@@ -136,6 +144,7 @@ public:
     : m_pLabel(NULL)
     , m_fOriginalScale(0.0)
     {}
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCMenuItemLabel, CCMenuItem)
     /**
      * @js NA
      * @lua NA
@@ -173,6 +182,7 @@ protected:
  */
 class CC_DLL CCMenuItemAtlasFont : public CCMenuItemLabel
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -200,6 +210,7 @@ public:
  */
 class CC_DLL CCMenuItemFont : public CCMenuItemLabel
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -256,7 +267,7 @@ protected:
     void recreateLabel();
     
     unsigned int m_uFontSize;
-    std::string m_strFontName;
+    gd::string m_strFontName;
 };
 
 
@@ -270,6 +281,7 @@ protected:
  */
 class CC_DLL CCMenuItemSprite : public CCMenuItem
 {
+    GEODE_FRIEND_MODIFY
     /** the image used when the item is not selected */
     CC_PROPERTY(CCNode*, m_pNormalImage, NormalImage);
     /** the image used when the item is selected */
@@ -285,6 +297,7 @@ public:
     ,m_pSelectedImage(NULL)
     ,m_pDisabledImage(NULL)
     {}
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCMenuItemSprite, CCMenuItem)
 
     /** creates a menu item with a normal, selected and disabled image*/
     static CCMenuItemSprite * create(CCNode* normalSprite, CCNode* selectedSprite, CCNode* disabledSprite = NULL);
@@ -322,12 +335,14 @@ protected:
  */
 class CC_DLL CCMenuItemImage : public CCMenuItemSprite
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js ctor
      * @lua NA
      */
     CCMenuItemImage(){}
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCMenuItemImage, CCMenuItemSprite)
     /**
      * @js NA
      * @lua NA
@@ -370,6 +385,7 @@ public:
  */
 class CC_DLL CCMenuItemToggle : public CCMenuItem
 {
+    GEODE_FRIEND_MODIFY
     /** returns the selected item */
     CC_PROPERTY(unsigned int, m_uSelectedIndex, SelectedIndex);
     /** CCMutableArray that contains the subitems. You can add/remove items in runtime, and you can replace the array with a new one.

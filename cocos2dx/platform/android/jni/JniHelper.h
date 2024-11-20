@@ -26,7 +26,7 @@ THE SOFTWARE.
 
 #include <jni.h>
 #include <string>
-#include "platform/CCPlatformMacros.h"
+#include "../../CCPlatformMacros.h"
 
 NS_CC_BEGIN
 
@@ -39,13 +39,14 @@ typedef struct JniMethodInfo_
 
 class CC_DLL JniHelper
 {
+    GEODE_FRIEND_MODIFY
 public:
     static JavaVM* getJavaVM();
     static void setJavaVM(JavaVM *javaVM);
     static jclass getClassID(const char *className, JNIEnv *env=0);
     static bool getStaticMethodInfo(JniMethodInfo &methodinfo, const char *className, const char *methodName, const char *paramCode);
     static bool getMethodInfo(JniMethodInfo &methodinfo, const char *className, const char *methodName, const char *paramCode);
-    static std::string jstring2string(jstring str);
+    static gd::string jstring2string(jstring str);
 
 private:
     static JavaVM *m_psJavaVM;

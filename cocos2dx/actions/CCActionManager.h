@@ -29,8 +29,8 @@ THE SOFTWARE.
 #define __ACTION_CCACTION_MANAGER_H__
 
 #include "CCAction.h"
-#include "cocoa/CCArray.h"
-#include "cocoa/CCObject.h"
+#include "../cocoa/CCArray.h"
+#include "../cocoa/CCObject.h"
 
 NS_CC_BEGIN
 
@@ -56,6 +56,7 @@ struct _hashElement;
  */
 class CC_DLL CCActionManager : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -66,6 +67,8 @@ public:
      *  @lua NA
      */
     ~CCActionManager(void);
+
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCActionManager, CCObject);
 
     // actions
     

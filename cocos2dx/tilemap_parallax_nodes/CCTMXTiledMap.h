@@ -26,7 +26,7 @@ THE SOFTWARE.
 #ifndef __CCTMX_TILE_MAP_H__
 #define __CCTMX_TILE_MAP_H__
 
-#include "base_nodes/CCNode.h"
+#include "../base_nodes/CCNode.h"
 #include "CCTMXObjectGroup.h"
 
 NS_CC_BEGIN
@@ -108,6 +108,7 @@ object->propertyNamed(name_of_the_property);
 */
 class CC_DLL CCTMXTiledMap : public CCNode
 {
+    GEODE_FRIEND_MODIFY
     /** the map's size property measured in tiles */
     CC_SYNTHESIZE_PASS_BY_REF(CCSize, m_tMapSize, MapSize);
     /** the tiles's size property measured in pixels */

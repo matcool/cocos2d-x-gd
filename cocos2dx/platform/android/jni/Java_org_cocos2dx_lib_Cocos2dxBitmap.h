@@ -27,6 +27,6 @@ THE SOFTWARE.
 #include <string>
 
 int getFontSizeAccordingHeightJni(int height);
-std::string getStringWithEllipsisJni(const char* pszText, float width, float fontSize);
+gd::string getStringWithEllipsisJni(const char* pszText, float width, float fontSize);
 
 #endif // __EDITBOX_JNI_H__

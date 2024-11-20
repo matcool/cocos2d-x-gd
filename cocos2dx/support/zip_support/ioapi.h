@@ -21,7 +21,18 @@
 #ifndef _ZLIBIOAPI64_H
 #define _ZLIBIOAPI64_H
 
-#include "platform/CCPlatformConfig.h"
+#include "../../platform/CCPlatformConfig.h"
+#include "zipMacro.h"
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+    #ifdef GEODE_EXPORTING
+        #define CC_ZIP_DLL __declspec(dllexport)
+    #else
+        #define CC_ZIP_DLL __declspec(dllimport)
+    #endif
+#else
+    #define CC_ZIP_DLL __attribute__((visibility("default")))
+#endif
 
 #if (!defined(_WIN32)) && (!defined(WIN32))
 
@@ -44,7 +55,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "zlib.h"
+#include "../../platform/IncludeZlib.h"
 
 namespace cocos2d {
 
@@ -85,7 +96,7 @@ namespace cocos2d {
 typedef  64BIT_INT_CUSTOM_TYPE ZPOS64_T;
 #else
 #ifdef HAS_STDINT_H
-#include "stdint.h"
+#include <stdint.h>
 typedef uint64_t ZPOS64_T;
 #else
 

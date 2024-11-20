@@ -25,12 +25,13 @@ THE SOFTWARE.
 #ifndef __PLATFORM_MAC_CCACCELEROMETER_H__
 #define __PLATFORM_MAC_CCACCELEROMETER_H__
 
-#include "platform/CCAccelerometerDelegate.h"
+#include "../CCAccelerometerDelegate.h"
 
 NS_CC_BEGIN
 
 class CC_DLL CCAccelerometer
 {
+    GEODE_FRIEND_MODIFY
 public:
     CCAccelerometer() {}
     ~CCAccelerometer() {}

@@ -25,8 +25,8 @@ THE SOFTWARE.
 #ifndef __CCNOTIFICATIONCENTER_H__
 #define __CCNOTIFICATIONCENTER_H__
 
-#include "cocoa/CCObject.h"
-#include "cocoa/CCArray.h"
+#include "../cocoa/CCObject.h"
+#include "../cocoa/CCArray.h"
 
 NS_CC_BEGIN
 /**
@@ -34,6 +34,7 @@ NS_CC_BEGIN
  */
 class CC_DLL CCNotificationCenter : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
     /** CCNotificationCenter constructor */
     CCNotificationCenter();
@@ -119,6 +120,7 @@ private:
  */
 class CC_DLL CCNotificationObserver : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
     /** @brief CCNotificationObserver constructor
      *  @param target The target which wants to observer notification events.

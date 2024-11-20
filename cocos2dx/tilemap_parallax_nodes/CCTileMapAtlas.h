@@ -27,7 +27,7 @@ THE SOFTWARE.
 #define __CCTILE_MAP_ATLAS__
 
 
-#include "base_nodes/CCAtlasNode.h"
+#include "../base_nodes/CCAtlasNode.h"
 
 NS_CC_BEGIN
 
@@ -56,6 +56,7 @@ Instead, use the newer TMX file format: CCTMXTiledMap
 */
 class CC_DLL CCTileMapAtlas : public CCAtlasNode 
 {
+    GEODE_FRIEND_MODIFY
     /** TileMap info */
     CC_PROPERTY(struct sImageTGA*, m_pTGAInfo, TGAInfo);
 public:

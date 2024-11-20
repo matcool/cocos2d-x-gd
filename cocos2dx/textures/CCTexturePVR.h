@@ -26,10 +26,10 @@ THE SOFTWARE.
 #ifndef __CCPVRTEXTURE_H__
 #define __CCPVRTEXTURE_H__
 
-#include "CCStdC.h"
-#include "CCGL.h"
-#include "cocoa/CCObject.h"
-#include "cocoa/CCArray.h"
+#include "../platform/CCStdC.h"
+#include "../platform/CCGL.h"
+#include "../cocoa/CCObject.h"
+#include "../cocoa/CCArray.h"
 
 NS_CC_BEGIN
 

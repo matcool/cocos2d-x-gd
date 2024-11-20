@@ -26,9 +26,11 @@ THE SOFTWARE.
 #define __CC_EGLVIEW_WIN32_H__
 
 #include "CCStdC.h"
-#include "platform/CCCommon.h"
-#include "cocoa/CCGeometry.h"
-#include "platform/CCEGLViewProtocol.h"
+#include "../CCCommon.h"
+#include "../../cocoa/CCGeometry.h"
+#include "../CCEGLViewProtocol.h"
+
+#include "../../robtop/glfw/glfw3.h"
 
 NS_CC_BEGIN
 
@@ -36,43 +38,76 @@ typedef LRESULT (*CUSTOM_WND_PROC)(UINT message, WPARAM wParam, LPARAM lParam, B
 
 class CCEGL;
 
-class CC_DLL CCEGLView : public CCEGLViewProtocol
+// @note RobTop Addition: added CCObject inheritance
+class CC_DLL CCEGLView : public CCEGLViewProtocol, public CCObject
 {
+    GEODE_FRIEND_MODIFY
+protected:
+    virtual ~CCEGLView();
 public:
     CCEGLView();
-    virtual ~CCEGLView();
+
+    CCEGLView(geode::ZeroConstructorType, size_t fill) :
+        CCEGLViewProtocol(geode::ZeroConstructor, fill),
+        CCObject(geode::ZeroConstructor, fill - sizeof(CCEGLViewProtocol)) {}
+
+    CCEGLView(geode::ZeroConstructorType) :
+        CCEGLViewProtocol(geode::ZeroConstructor, sizeof(CCEGLView)),
+        CCObject(geode::ZeroConstructor, sizeof(CCEGLView) - sizeof(CCEGLViewProtocol)) {}
+
+    CCEGLView(geode::CutoffConstructorType, size_t fill) : CCEGLView() {}
 
     /* override functions */
     virtual bool isOpenGLReady();
     virtual void end();
     virtual void swapBuffers();
     virtual void setFrameSize(float width, float height);
-	virtual void setEditorFrameSize(float width, float height,HWND hWnd); 
+	// Robtop Removal
+    // virtual void setEditorFrameSize(float width, float height,HWND hWnd);
     virtual void setIMEKeyboardState(bool bOpen);
+    void updateWindow(int width, int height);
+    void pollEvents(void);
 
     void setMenuResource(LPCWSTR menu);
     void setWndProc(CUSTOM_WND_PROC proc);
 
 protected:
-    virtual bool Create();
-public:
-    bool initGL();
-    void destroyGL();
+    // Robtop Removal
+    // virtual bool Create();
+    void setupWindow(cocos2d::CCRect rect);
+    // @note RobTop Addition
+    bool initGlew();
 
-    virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+public:
+    // Robtop Removal
+    // bool initGL();
+    // Robtop Removal
+    // void destroyGL();
+
+    // Robtop Removal
+    // virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 
 	void setHWnd(HWND hWnd);
     // win32 platform function
-    HWND getHWnd();
-    virtual void resize(int width, int height);
+    // Robtop Removal
+    // HWND getHWnd();
+    // Robtop Removal
+    // virtual void resize(int width, int height);
+    // @note RobTop Addition
+     void resizeWindow(int width, int height);
 	
     /* 
      * Set zoom factor for frame. This method is for debugging big resolution (e.g.new ipad) app on desktop.
      */
     void setFrameZoomFactor(float fZoomFactor);
 	float getFrameZoomFactor();
-    virtual void centerWindow();
-
+    // @note RobTop Addition: made non virtual
+    void centerWindow();
+    // @note RobTop Addition
+    bool windowShouldClose();
+    // @note RobTop Addition
+    void showCursor(bool state);
+	    
     typedef void (*LPFN_ACCELEROMETER_KEYHOOK)( UINT message,WPARAM wParam, LPARAM lParam );
     void setAccelerometerKeyHook( LPFN_ACCELEROMETER_KEYHOOK lpfnAccelerometerKeyHook );
 
@@ -85,19 +120,148 @@ public:
     */
     static CCEGLView* sharedOpenGLView();
 
+    /**
+     * @note Geode addition
+     */
+    static GEODE_DLL CCEGLView* get();
+
+    /**
+     * @note RobTop addition
+     */
+    static CCEGLView* create(const gd::string&);
+
+    static cocos2d::CCEGLView* createWithFullScreen(gd::string const&, bool);
+	static cocos2d::CCEGLView* createWithFullScreen(gd::string const&, bool, GLFWvidmode const&, GLFWmonitor*);
+	static cocos2d::CCEGLView* createWithRect(gd::string const&, cocos2d::CCRect, float);
+
+    /**
+     * @note Geode addition
+     */
+    inline CCPoint getMousePosition() { return { m_fMouseX, m_fMouseY }; }
+
+    /**
+     * @note RobTop addition
+     */
+    void toggleFullScreen(bool fullscreen, bool borderless, bool fix);
+
+    /**
+     * @note RobTop addition
+     */
+    GLFWwindow* getWindow(void) const;
+
+    /**
+     * @note RobTop addition
+     */
+    CCSize getDisplaySize();
+
+	void capture();
+	void checkErrorGL(char const*);
+
+	void enableRetina(bool);
+
+	bool getCursorLocked() const;
+	bool getGameplayActive() const;
+	bool getIsBorderless() const;
+	bool getIsFullscreen() const;
+	int getRetinaFactor() const;
+	bool getShouldHideCursor() const;
+	void iconify();
+
+    bool initWithFullScreen(gd::string const&, bool);
+	bool initWithFullscreen(gd::string const&, bool, GLFWvidmode const&, GLFWmonitor*);
+	bool initWithRect(gd::string const&, cocos2d::CCRect, float);
+
+	bool isRetinaEnabled() const;
+
+	void onGLFWWindowCloseFunCallback(GLFWwindow*);
+	void releaseCapture();
+	void showMessage(gd::string);
+
+	void toggleGameplayActive(bool);
+	void toggleLockCursor(bool);
+	void updateDesignSize(int, int);
+	void updateFrameSize();
+
+
 protected:
 	static CCEGLView* s_pEglView;
+    // @note unknown members here
+    uint8_t m_unkPad[8];
     bool m_bCaptured;
-    HWND m_hWnd;
-    HDC  m_hDC;
-    HGLRC m_hRC;
-    LPFN_ACCELEROMETER_KEYHOOK m_lpfnAccelerometerKeyHook;
+    // Robtop Removal
+    // HWND m_hWnd;
+    // Robtop Removal
+    // HDC  m_hDC;
+    // Robtop Removal
+    // HGLRC m_hRC;
+    // Robtop Removal
+    // LPFN_ACCELEROMETER_KEYHOOK m_lpfnAccelerometerKeyHook;
     bool m_bSupportTouch;
-
-    LPCWSTR m_menu;
-    CUSTOM_WND_PROC m_wndproc;
-
+    // @note RobTop Addition
+    bool m_bInRetinaMonitor;
+    // @note RobTop Addition
+    bool m_bRetinaEnabled;
+    // @note RobTop Addition
+    int m_nRetinaFactor;
+    // @note RobTop Addition
+    bool m_bCursorHidden;
+    // @note may be before m_bCursorHidden
+    int m_unkSize4;
+    // Robtop Removal
+    // LPCWSTR m_menu;
+    // Robtop Removal
+    // CUSTOM_WND_PROC m_wndproc;
     float m_fFrameZoomFactor;
+    // @note RobTop Addition
+    GLFWwindow* m_pMainWindow;
+    // @note RobTop Addition
+    GLFWmonitor* m_pPrimaryMonitor;
+public:
+    // @note RobTop Addition
+    CC_SYNTHESIZE_NV(CCSize, m_obWindowedSize, WindowedSize);
+
+    // @note RobTop Addition
+    float m_fMouseX;
+    // @note RobTop Addition
+    float m_fMouseY;
+    // @note RobTop Addition
+    bool m_bIsFullscreen;
+    // @note RobTop Addition
+    bool m_bIsBorderless;
+    // @note RobTop Addition
+    bool m_bIsFix;
+    // @note RobTop Addition
+    bool m_bShouldHideCursor;
+    // @note RobTop Addition
+    bool m_bCursorLocked;
+    // @note RobTop Addition
+    bool m_bShouldCallGLFinish;
+
+protected:
+    // @note RobTop Addition
+    void onGLFWCharCallback(GLFWwindow* window, unsigned int entered);
+    // @note RobTop Addition
+    void onGLFWCursorEnterFunCallback(GLFWwindow* window, int entered);
+    // @note RobTop Addition
+    void onGLFWDeviceChangeFunCallback(GLFWwindow* window);
+    // @note RobTop Addition
+    void onGLFWError(int code, const char* description);
+    // @note RobTop Addition
+    void onGLFWframebuffersize(GLFWwindow* window, int width, int height);
+    // @note RobTop Addition
+    void onGLFWMouseMoveCallBack(GLFWwindow* window, double x, double y);
+    // @note RobTop Addition
+    void onGLFWMouseCallBack(GLFWwindow* window, int button, int action, int mods);
+    // @note RobTop Addition
+    void onGLFWKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    // @note RobTop Addition
+    void onGLFWMouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+    // @note RobTop Addition
+    void onGLFWWindowIconifyFunCallback(GLFWwindow* window, int iconified);
+    // @note RobTop Addition
+    void onGLFWWindowPosCallback(GLFWwindow* window, int x, int y);
+    // @note RobTop Addition
+    void onGLFWWindowSizeFunCallback(GLFWwindow* window, int width, int height);
 };
 
 NS_CC_END

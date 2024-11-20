@@ -27,9 +27,9 @@ THE SOFTWARE.
 #ifndef __ACTIONS_CCACTION_H__
 #define __ACTIONS_CCACTION_H__
 
-#include "cocoa/CCObject.h"
-#include "cocoa/CCGeometry.h"
-#include "platform/CCPlatformMacros.h"
+#include "../cocoa/CCObject.h"
+#include "../cocoa/CCGeometry.h"
+#include "../platform/CCPlatformMacros.h"
 
 NS_CC_BEGIN
 
@@ -48,11 +48,13 @@ enum {
  */
 class CC_DLL CCAction : public CCObject 
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js ctor
      */
     CCAction(void);
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCAction, CCObject);
     /**
      * @js NA
      * @lua NA
@@ -108,6 +110,12 @@ public:
 
     inline int getTag(void) { return m_nTag; }
     inline void setTag(int nTag) { m_nTag = nTag; }
+    
+    // @note RobTop Addition
+    void setSpeedMod(float mod);
+
+    // 2.2 addition
+    float getSpeedMod();
 
 public:
     /** Create an action */
@@ -122,6 +130,8 @@ protected:
     CCNode    *m_pTarget;
     /** The action tag. An identifier of the action */
     int     m_nTag;
+    // @note RobTop Addition
+    float m_fSpeedMod;
 };
 
 /** 
@@ -135,7 +145,10 @@ protected:
  */
 class CC_DLL CCFiniteTimeAction : public CCAction
 {
+    GEODE_FRIEND_MODIFY
 public:
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCFiniteTimeAction, CCAction)
+
     /**
      *  @js ctor
      */
@@ -170,6 +183,7 @@ class CCRepeatForever;
  */
 class CC_DLL CCSpeed : public CCAction
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
@@ -227,6 +241,7 @@ Instead of using CCCamera as a "follower", use this action instead.
 */
 class CC_DLL CCFollow : public CCAction
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor

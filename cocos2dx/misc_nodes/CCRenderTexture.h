@@ -25,9 +25,9 @@ THE SOFTWARE.
 #ifndef __CCRENDER_TEXTURE_H__
 #define __CCRENDER_TEXTURE_H__
 
-#include "base_nodes/CCNode.h"
-#include "sprite_nodes/CCSprite.h"
-#include "kazmath/mat4.h"
+#include "../base_nodes/CCNode.h"
+#include "../sprite_nodes/CCSprite.h"
+#include "../kazmath/include/kazmath/mat4.h"
 
 NS_CC_BEGIN
 
@@ -53,6 +53,7 @@ There are also functions for saving the render texture to disk in PNG or JPG for
 */
 class CC_DLL CCRenderTexture : public CCNode 
 {
+    GEODE_FRIEND_MODIFY
     /** The CCSprite being used.
     The sprite, by default, will use the following blending function: GL_ONE, GL_ONE_MINUS_SRC_ALPHA.
     The blending function can be changed in runtime by calling:
@@ -163,6 +164,8 @@ public:
      */
     bool isAutoDraw() const;
     void setAutoDraw(bool bAutoDraw);
+
+	void updateInternalScale(float, float);
 
 private:
     void beginWithClear(float r, float g, float b, float a, float depthValue, int stencilValue, GLbitfield flags);

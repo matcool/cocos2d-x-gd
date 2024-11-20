@@ -1,9 +1,10 @@
 #ifndef __CCPLATFORMDEFINE_H__
 #define __CCPLATFORMDEFINE_H__
 
-#include "android/log.h"
+#include <android/log.h>
 
-#define CC_DLL
+#define CC_DLL 
+#define ACTUAL_CC_DLL
 
 #define CC_NO_MESSAGE_PSEUDOASSERT(cond)                        \
     if (!(cond)) {                                              \

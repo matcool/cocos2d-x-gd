@@ -25,7 +25,7 @@ THE SOFTWARE.
 #ifndef cocos2dx_ccTypeInfo_h
 #define cocos2dx_ccTypeInfo_h
 
-#include "platform/CCPlatformMacros.h"
+#include "../platform/CCPlatformMacros.h"
 
 #include <typeinfo>
 #include <ctype.h>

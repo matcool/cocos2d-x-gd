@@ -25,8 +25,8 @@ THE SOFTWARE.
 #ifndef __CC_APPLICATION_IOS_H__
 #define __CC_APPLICATION_IOS_H__
 
-#include "platform/CCCommon.h"
-#include "platform/CCApplicationProtocol.h"
+#include "../CCCommon.h"
+#include "../CCApplicationProtocol.h"
 
 NS_CC_BEGIN
 
@@ -34,7 +34,9 @@ class CCRect;
 
 class CC_DLL CCApplication : public CCApplicationProtocol
 {
+    GEODE_FRIEND_MODIFY
 public:
+	GEODE_CUSTOM_CONSTRUCTOR_BEGIN(CCApplication)
     CCApplication();
     /**
      *  @js NA
@@ -55,6 +57,8 @@ public:
     @js getInstance
     */
     static CCApplication* sharedApplication();
+
+    static GEODE_DLL CCApplication* get();
     
     /**
      @brief    Callback by CCDirector for limit FPS.
@@ -73,6 +77,9 @@ public:
      @brief Get target platform
      */
     virtual TargetPlatform getTargetPlatform();
+
+    //Robtop modification
+    virtual void openURL(char const* link);
 
 protected:
     static CCApplication * sm_pSharedApplication;

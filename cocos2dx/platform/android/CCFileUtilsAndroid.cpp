@@ -23,7 +23,7 @@ THE SOFTWARE.
 ****************************************************************************/
 #include "CCFileUtilsAndroid.h"
 #include "support/zip_support/ZipUtils.h"
-#include "platform/CCCommon.h"
+#include "../platform/CCCommon.h"
 #include "jni/Java_org_cocos2dx_lib_Cocos2dxHelper.h"
 
 using namespace std;
@@ -39,7 +39,7 @@ CCFileUtils* CCFileUtils::sharedFileUtils()
     {
         s_sharedFileUtils = new CCFileUtilsAndroid();
         s_sharedFileUtils->init();
-        std::string resourcePath = getApkPath();
+        gd::string resourcePath = getApkPath();
         s_pZipFile = new ZipFile(resourcePath, "assets/");
     }
     return s_sharedFileUtils;
@@ -60,7 +60,7 @@ bool CCFileUtilsAndroid::init()
     return CCFileUtils::init();
 }
 
-bool CCFileUtilsAndroid::isFileExist(const std::string& strFilePath)
+bool CCFileUtilsAndroid::isFileExist(const gd::string& strFilePath)
 {
     if (0 == strFilePath.length())
     {
@@ -72,7 +72,7 @@ bool CCFileUtilsAndroid::isFileExist(const std::string& strFilePath)
     // Check whether file exists in apk.
     if (strFilePath[0] != '/')
     {
-        std::string strPath = strFilePath;
+        gd::string strPath = strFilePath;
         if (strPath.find(m_strDefaultResRootPath) != 0)
         {// Didn't find "assets/" at the beginning of the path, adding it.
             strPath.insert(0, m_strDefaultResRootPath);
@@ -95,7 +95,7 @@ bool CCFileUtilsAndroid::isFileExist(const std::string& strFilePath)
     return bFound;
 }
 
-bool CCFileUtilsAndroid::isAbsolutePath(const std::string& strPath)
+bool CCFileUtilsAndroid::isAbsolutePath(const gd::string& strPath)
 {
     // On Android, there are two situations for full path.
     // 1) Files in APK, e.g. assets/path/path/file.png
@@ -167,7 +167,7 @@ unsigned char* CCFileUtilsAndroid::doGetFileData(const char* pszFileName, const 
     
     if (! pData)
     {
-        std::string msg = "Get data from file(";
+        gd::string msg = "Get data from file(";
         msg.append(pszFileName).append(") failed!");
         CCLOG("%s", msg.c_str());
     }

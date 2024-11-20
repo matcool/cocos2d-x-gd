@@ -26,7 +26,7 @@ THE SOFTWARE.
 #define __CCMENU_H_
 
 #include "CCMenuItem.h"
-#include "layers_scenes_transitions_nodes/CCLayer.h"
+#include "../layers_scenes_transitions_nodes/CCLayer.h"
 
 NS_CC_BEGIN
 
@@ -55,6 +55,7 @@ enum {
 */
 class CC_DLL CCMenu : public CCLayerRGBA
 {
+    GEODE_FRIEND_MODIFY
     /** whether or not the menu will receive events */
     bool m_bEnabled;
     
@@ -63,6 +64,7 @@ public:
      *  @js ctor
      */
     CCMenu() : m_pSelectedItem(NULL) {}
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCMenu, CCLayerRGBA)
     /**
      *  @js NA
      *  @lua NA
@@ -187,6 +189,7 @@ public:
 
 protected:
     CCMenuItem* itemForTouch(CCTouch * touch);
+    CCMenuItem* itemForTouch(CCTouch * touch, bool);
     tCCMenuState m_eState;
     CCMenuItem *m_pSelectedItem;
 };

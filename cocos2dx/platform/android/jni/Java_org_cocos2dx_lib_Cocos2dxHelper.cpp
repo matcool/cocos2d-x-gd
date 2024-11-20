@@ -3,7 +3,7 @@
 #include <android/log.h>
 #include <string>
 #include "JniHelper.h"
-#include "cocoa/CCString.h"
+#include "../cocoa/CCString.h"
 #include "Java_org_cocos2dx_lib_Cocos2dxHelper.h"
 
 
@@ -112,9 +112,9 @@ void terminateProcessJNI() {
     }
 }
 
-std::string getPackageNameJNI() {
+gd::string getPackageNameJNI() {
     JniMethodInfo t;
-    std::string ret("");
+    gd::string ret("");
 
     if (JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getCocos2dxPackageName", "()Ljava/lang/String;")) {
         jstring str = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
@@ -125,9 +125,9 @@ std::string getPackageNameJNI() {
     return ret;
 }
 
-std::string getFileDirectoryJNI() {
+gd::string getFileDirectoryJNI() {
     JniMethodInfo t;
-    std::string ret("");
+    gd::string ret("");
 
     if (JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getCocos2dxWritablePath", "()Ljava/lang/String;")) {
         jstring str = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
@@ -139,9 +139,9 @@ std::string getFileDirectoryJNI() {
     return ret;
 }
 
-std::string getCurrentLanguageJNI() {
+gd::string getCurrentLanguageJNI() {
     JniMethodInfo t;
-    std::string ret("");
+    gd::string ret("");
     
     if (JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getCurrentLanguage", "()Ljava/lang/String;")) {
         jstring str = (jstring)t.env->CallStaticObjectMethod(t.classID, t.methodID);
@@ -249,10 +249,10 @@ double getDoubleForKeyJNI(const char* pKey, double defaultValue)
     return defaultValue;
 }
 
-std::string getStringForKeyJNI(const char* pKey, const char* defaultValue)
+gd::string getStringForKeyJNI(const char* pKey, const char* defaultValue)
 {
     JniMethodInfo t;
-    std::string ret("");
+    gd::string ret("");
 
     if (JniHelper::getStaticMethodInfo(t, CLASS_NAME, "getStringForKey", "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;")) {
         jstring stringArg1 = t.env->NewStringUTF(pKey);

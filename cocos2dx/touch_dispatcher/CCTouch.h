@@ -25,8 +25,8 @@ THE SOFTWARE.
 #ifndef __CC_TOUCH_H__
 #define __CC_TOUCH_H__
 
-#include "cocoa/CCObject.h"
-#include "cocoa/CCGeometry.h"
+#include "../cocoa/CCObject.h"
+#include "../cocoa/CCGeometry.h"
 
 NS_CC_BEGIN
 
@@ -37,6 +37,7 @@ NS_CC_BEGIN
 
 class CC_DLL CCTouch : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js ctor
@@ -81,7 +82,7 @@ public:
         return m_nId;
     }
 
-private:
+public:
     int m_nId;
     bool m_startPointCaptured;
     CCPoint m_startPoint;
@@ -91,6 +92,7 @@ private:
 
 class CC_DLL CCEvent : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 };
 
 // end of input group

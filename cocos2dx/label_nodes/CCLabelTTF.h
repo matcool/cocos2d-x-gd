@@ -25,8 +25,8 @@ THE SOFTWARE.
 #ifndef __CCLABELTTF_H__
 #define __CCLABELTTF_H__
 
-#include "sprite_nodes/CCSprite.h"
-#include "textures/CCTexture2D.h"
+#include "../sprite_nodes/CCSprite.h"
+#include "../textures/CCTexture2D.h"
 
 NS_CC_BEGIN
 
@@ -54,13 +54,16 @@ NS_CC_BEGIN
  * @endcode
  *
  */
+
 class CC_DLL CCLabelTTF : public CCSprite, public CCLabelProtocol
 {
+	GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
      */
     CCLabelTTF();
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCLabelTTF, CCSprite)
     /**
      *  @js NA
      *  @lua NA
@@ -147,17 +150,69 @@ public:
     virtual void setString(const char *label);
     virtual const char* getString(void);
     
-    CCTextAlignment getHorizontalAlignment();
-    void setHorizontalAlignment(CCTextAlignment alignment);
+    CCTextAlignment getHorizontalAlignment() {
+	    return m_hAlignment;
+	}
+    void setHorizontalAlignment(CCTextAlignment alignment) {
+	    if (alignment != m_hAlignment)
+	    {
+	        m_hAlignment = alignment;
+	        
+	        // Force update
+	        if (std::string(m_string).size() > 0)
+	        {
+	            this->updateTexture();
+	        }
+	    }
+	}
     
-    CCVerticalTextAlignment getVerticalAlignment();
-    void setVerticalAlignment(CCVerticalTextAlignment verticalAlignment);
+    CCVerticalTextAlignment getVerticalAlignment() {
+	    return m_vAlignment;
+	}
+    void setVerticalAlignment(CCVerticalTextAlignment verticalAlignment) {
+	    if (verticalAlignment != m_vAlignment)
+	    {
+	        m_vAlignment = verticalAlignment;
+	        
+	        // Force update
+	        if (std::string(m_string).size() > 0)
+	        {
+	            this->updateTexture();
+	        }
+	    }
+	}
     
-    CCSize getDimensions();
-    void setDimensions(const CCSize &dim);
+    CCSize getDimensions() {
+    	return m_tDimensions;
+    }
+    void setDimensions(const CCSize &dim) {
+    	if (dim.width != m_tDimensions.width || dim.height != m_tDimensions.height)
+	    {
+	        m_tDimensions = dim;
+	        
+	        // Force update
+	        if (std::string(m_string).size() > 0)
+	        {
+	            this->updateTexture();
+	        }
+	    }
+    }
     
-    float getFontSize();
-    void setFontSize(float fontSize);
+    float getFontSize() {
+    	return m_fFontSize;
+    }
+    void setFontSize(float fontSize) {
+    	if (m_fFontSize != fontSize)
+	    {
+	        m_fFontSize = fontSize;
+	        
+	        // Force update
+	        if (std::string(m_string).size() > 0)
+	        {
+	            this->updateTexture();
+	        }
+	    }
+    }
     
     const char* getFontName();
     void setFontName(const char *fontName);
@@ -177,11 +232,11 @@ protected:
     /** The vertical alignment of the label */
     CCVerticalTextAlignment m_vAlignment;
     /** Font name used in the label */
-    std::string * m_pFontName;
+    gd::string * m_pFontName;
     /** Font size of the label */
     float m_fFontSize;
     /** label's string */
-    std::string m_string;
+    gd::string m_string;
     
     /** font shadow */
     bool    m_shadowEnabled;

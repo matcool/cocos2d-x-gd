@@ -29,8 +29,8 @@
 #ifndef __CCPARTICLEBATCHNODE_H__
 #define __CCPARTICLEBATCHNODE_H__
 
-#include "base_nodes/CCNode.h"
-#include "CCProtocols.h"
+#include "../base_nodes/CCNode.h"
+#include "../include/CCProtocols.h"
 
 NS_CC_BEGIN
 
@@ -66,6 +66,7 @@ class CCParticleSystem;
 
 class CC_DLL CCParticleBatchNode : public CCNode, public CCTextureProtocol
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js ctor

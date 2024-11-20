@@ -27,9 +27,9 @@ THE SOFTWARE.
 #ifndef __CCTEXTURE_ATLAS_H__
 #define __CCTEXTURE_ATLAS_H__
 
-#include "ccTypes.h"
-#include "cocoa/CCObject.h"
-#include "ccConfig.h"
+#include "../include/ccTypes.h"
+#include "../cocoa/CCObject.h"
+#include "../include/ccConfig.h"
 #include <string>
 
 NS_CC_BEGIN
@@ -55,7 +55,10 @@ To render the quads using an interleaved vertex array list, you should modify th
 */
 class CC_DLL CCTextureAtlas : public CCObject 
 {
+    GEODE_FRIEND_MODIFY
 protected:
+
+
     GLushort*           m_pIndices;
 #if CC_TEXTURE_ATLAS_USE_VAO
     GLuint              m_uVAOname;
@@ -78,6 +81,7 @@ public:
      * @js ctor
      */
     CCTextureAtlas();
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTextureAtlas, CCObject)
     /**
      *  @js NA
      *  @lua NA

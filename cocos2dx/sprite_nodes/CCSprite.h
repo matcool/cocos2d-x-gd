@@ -27,14 +27,14 @@ THE SOFTWARE.
 #ifndef __SPITE_NODE_CCSPRITE_H__
 #define __SPITE_NODE_CCSPRITE_H__
 
-#include "base_nodes/CCNode.h"
-#include "CCProtocols.h"
-#include "textures/CCTextureAtlas.h"
-#include "ccTypes.h"
-#include "cocoa/CCDictionary.h"
+#include "../base_nodes/CCNode.h"
+#include "../include/CCProtocols.h"
+#include "../textures/CCTextureAtlas.h"
+#include "../include/ccTypes.h"
+#include "../cocoa/CCDictionary.h"
 #include <string>
 #ifdef EMSCRIPTEN
-#include "base_nodes/CCGLBufferedNode.h"
+#include "../base_nodes/CCGLBufferedNode.h"
 #endif // EMSCRIPTEN
 
 NS_CC_BEGIN
@@ -84,6 +84,7 @@ class CC_DLL CCSprite : public CCNodeRGBA, public CCTextureProtocol
 , public CCGLBufferedNode
 #endif // EMSCRIPTEN
 {
+    GEODE_FRIEND_MODIFY
 public:
     /// @{
     /// @name Creators
@@ -167,6 +168,7 @@ public:
      * @js ctor
      */
     CCSprite(void);
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCSprite, CCNodeRGBA)
     
     /**
      * Default destructor
@@ -263,7 +265,8 @@ public:
     virtual bool initWithFile(const char *pszFilename, const CCRect& rect);
     
     /// @} end of initializers
-    
+
+
     /// @{
     /// @name Functions inherited from CCTextureProtocol
     virtual void setTexture(CCTexture2D *texture);
@@ -274,6 +277,11 @@ public:
      */
     inline ccBlendFunc getBlendFunc(void) { return m_sBlendFunc; }
     /// @}
+
+    // @note RobTop Addition
+    virtual void setChildColor(const ccColor3B&);
+    // @note RobTop Addition
+    virtual void setChildOpacity(GLubyte);
 
     /// @{
     /// @name Functions inherited from CCNode
@@ -343,7 +351,8 @@ public:
      
     /// @} end of BatchNode methods
     
-    
+    // @note RobTop Addition
+    virtual void refreshTextureRect(void);
     
     /// @{
     /// @name Texture methods
@@ -501,10 +510,16 @@ public:
     void setFlipY(bool bFlipY);
     
     /// @} End of Sprite properties getter/setters
+
+	cocos2d::CCPoint const& getUnflippedOffsetPosition();
+	bool getUseVertexMod() const;
+	void setUseVertexMod(bool);
+
     
 protected:
     void updateColor(void);
-    virtual void setTextureCoords(CCRect rect);
+    // @note RobTop Addition: Changed the param from CCRect to const CCRect&
+    virtual void setTextureCoords(const CCRect& rect);
     virtual void updateBlendFunc(void);
     virtual void setReorderChildDirtyRecursively(void);
     virtual void setDirtyRecursively(bool bValue);
@@ -549,6 +564,21 @@ protected:
     // image is flipped
     bool m_bFlipX;                              /// Whether the sprite is flipped horizaontally or not.
     bool m_bFlipY;                              /// Whether the sprite is flipped vertically or not.
+
+    // @note RobTop Addition
+    CC_SYNTHESIZE_NV(bool, m_bDontDraw, DontDraw);
+    // @note RobTop Addition
+    CC_SYNTHESIZE_NV(float, m_fTlVertexMod, TlVertexMod);
+    // @note RobTop Addition
+    CC_SYNTHESIZE_NV(float, m_fTrVertexMod, TrVertexMod);
+    // @note RobTop Addition
+    CC_SYNTHESIZE_NV(float, m_fBlVertexMod, BlVertexMod);
+    // @note RobTop Addition
+    CC_SYNTHESIZE_NV(float, m_fBrVertexMod, BrVertexMod);
+    // @note RobTop Addition
+    PAD(16);
+    // @note RobTop Addition
+    bool m_bUnknown;
 };
 
 

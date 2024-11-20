@@ -28,14 +28,14 @@ THE SOFTWARE.
 #ifndef __CCTEXTURE_CACHE_H__
 #define __CCTEXTURE_CACHE_H__
 
-#include "cocoa/CCObject.h"
-#include "cocoa/CCDictionary.h"
-#include "textures/CCTexture2D.h"
+#include "../cocoa/CCObject.h"
+#include "../cocoa/CCDictionary.h"
+#include "../textures/CCTexture2D.h"
 #include <string>
 
 
 #if CC_ENABLE_CACHE_TEXTURE_DATA
-    #include "platform/CCImage.h"
+    #include "../platform/CCImage.h"
     #include <list>
 #endif
 
@@ -55,7 +55,10 @@ class CCImage;
 */
 class CC_DLL CCTextureCache : public CCObject
 {
-protected:
+    GEODE_FRIEND_MODIFY
+public:
+
+
     CCDictionary* m_pTextures;
     //pthread_mutex_t                *m_pDictLock;
 
@@ -88,6 +91,7 @@ public:
      *  @js getInstance
      */
     static CCTextureCache * sharedTextureCache();
+    static GEODE_DLL CCTextureCache* get();
 
     /** purges the cache. It releases the retained instance.
     @since v0.99.0
@@ -99,8 +103,9 @@ public:
     *  object and it will return it. It will use the filename as a key.
     * Otherwise it will return a reference of a previously loaded image.
     * Supported image extensions: .png, .bmp, .tiff, .jpeg, .pvr, .gif
+    * @note Robtop Addition: added a bool param
     */
-    CCTexture2D* addImage(const char* fileimage);
+    CCTexture2D* addImage(const char* fileimage, bool unknown = false);
 
     /* Returns a Texture2D object given a file image
     * If the file image was not previously loaded, it will create a new CCTexture2D object and it will return it.
@@ -111,7 +116,7 @@ public:
     * @lua NA
     */
     
-    void addImageAsync(const char *path, CCObject *target, SEL_CallFuncO selector);
+	void addImageAsync(char const*, cocos2d::CCObject*, cocos2d::SEL_MenuHandler, int, cocos2d::CCTexture2DPixelFormat);
 
     /* Returns a Texture2D object given an CGImageRef image
     * If the image was not previously loaded, it will create a new CCTexture2D object and it will return it.
@@ -190,6 +195,9 @@ public:
     It's only useful when the value of CC_ENABLE_CACHE_TEXTURE_DATA is 1
     */
     static void reloadAllTextures();
+
+	void prepareAsyncLoading();
+
 };
 
 #if CC_ENABLE_CACHE_TEXTURE_DATA
@@ -238,15 +246,15 @@ protected:
     CCSize m_TextureSize;
     CCTexture2DPixelFormat m_PixelFormat;
 
-    std::string m_strFileName;
+    gd::string m_strFileName;
     CCImage::EImageFormat m_FmtImage;
 
     ccTexParams     m_texParams;
     CCSize          m_size;
     CCTextAlignment m_alignment;
     CCVerticalTextAlignment m_vAlignment;
-    std::string     m_strFontName;
-    std::string     m_strText;
+    gd::string     m_strFontName;
+    gd::string     m_strText;
     float           m_fFontSize;
 };
 

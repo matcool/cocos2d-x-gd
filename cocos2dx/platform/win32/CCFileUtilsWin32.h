@@ -24,10 +24,10 @@
 #ifndef __CC_FILEUTILS_WIN32_H__
 #define __CC_FILEUTILS_WIN32_H__
 
-#include "platform/CCFileUtils.h"
-#include "platform/CCPlatformMacros.h"
-#include "ccTypes.h"
-#include "ccTypeInfo.h"
+#include "../CCFileUtils.h"
+#include "../CCPlatformMacros.h"
+#include "../../include/ccTypes.h"
+#include "../../include/ccTypeInfo.h"
 #include <string>
 #include <vector>
 
@@ -41,23 +41,21 @@ NS_CC_BEGIN
 //! @brief  Helper class to handle file operations
 class CC_DLL CCFileUtilsWin32 : public CCFileUtils
 {
+    GEODE_FRIEND_MODIFY
     friend class CCFileUtils;
     CCFileUtilsWin32();
 public:
     /* override funtions */
     bool init();
-    virtual std::string getWritablePath();
-    virtual bool isFileExist(const std::string& strFilePath);
-    virtual bool isAbsolutePath(const std::string& strPath);
-	virtual void addSearchPath(const char* path);
-	virtual void removeSearchPath(const char *path);
+    virtual void addSearchPath(const char* path);
+    virtual void removeSearchPath(const char* path);
+    virtual gd::string getWritablePath();
+    virtual gd::string getWritablePath2();
+    virtual bool isFileExist(const gd::string& strFilePath);
+    virtual bool isAbsolutePath(const gd::string& strPath);
 
-	/* transfer utf8 to gbk */
-	std::string utf8Togbk(const char *src);
+    virtual bool init();
 
-	virtual std::string fullPathForFilename(const char* pszFileName);
-
-	protected:
     /**
      *  Gets full path for filename, resolution directory and search path.
      *
@@ -66,7 +64,12 @@ public:
      *  @param searchPath The search path.
      *  @return The full path of the file. It will return an empty string if the full path of the file doesn't exist.
      */
-    virtual std::string getPathForFilename(const std::string& filename, const std::string& resolutionDirectory, const std::string& searchPath);
+    virtual gd::string getPathForFilename(const gd::string& filename, const gd::string& resolutionDirectory, const gd::string& searchPath);
+    
+    virtual gd::string fullPathForFilename(const char* pszFileName);
+    
+    /* transfer utf8 to gbk */
+    gd::string utf8Togbk(const char *src);
 };
 
 // end of platform group

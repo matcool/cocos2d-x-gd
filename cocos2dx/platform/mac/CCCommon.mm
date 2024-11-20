@@ -23,7 +23,7 @@
  ****************************************************************************/
 #include <Cocoa/Cocoa.h>
 
-#include "platform/CCCommon.h"
+#include "../platform/CCCommon.h"
 
 #include <stdarg.h>
 #include <stdio.h>

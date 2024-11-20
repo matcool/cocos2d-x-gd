@@ -3,7 +3,8 @@
 
 #include <assert.h>
 
-#define CC_DLL 
+#define CC_DLL //__attribute__((visibility("hidden")))
+#define ACTUAL_CC_DLL
 
 #define CC_ASSERT(cond) assert(cond)
 

@@ -40,9 +40,9 @@ THE SOFTWARE.
 #define __CCDRAWING_PRIMITIVES__
     
 
-#include "ccTypes.h"
-#include "ccMacros.h"
-#include "cocoa/CCGeometry.h"    // for CCPoint
+#include "../include/ccTypes.h"
+#include "../include/ccMacros.h"
+#include "../cocoa/CCGeometry.h"    // for CCPoint
 
 /**
  @file
@@ -92,6 +92,11 @@ void CC_DLL ccDrawPoints( const CCPoint *points, unsigned int numberOfPoints );
 /** draws a line given the origin and destination point measured in points */
 void CC_DLL ccDrawLine( const CCPoint& origin, const CCPoint& destination );
 
+/** draws an array of lines. 
+ * @note Robtop Addition
+*/
+void CC_DLL ccDrawLines( const CCPoint *lines, unsigned int numberOfLines );
+
 /** draws a rectangle given the origin and destination point measured in points. */
 void CC_DLL ccDrawRect( CCPoint origin, CCPoint destination );
 
@@ -112,6 +117,11 @@ void CC_DLL ccDrawSolidPoly( const CCPoint *poli, unsigned int numberOfPoints, c
 /** draws a circle given the center, radius and number of segments. */
 void CC_DLL ccDrawCircle( const CCPoint& center, float radius, float angle, unsigned int segments, bool drawLineToCenter, float scaleX, float scaleY);
 void CC_DLL ccDrawCircle( const CCPoint& center, float radius, float angle, unsigned int segments, bool drawLineToCenter);
+// @note RobTop Addition
+void CC_DLL ccDrawFilledCircle( const CCPoint& center, float radius, float angle, unsigned int segments);
+
+// 2.2 additions
+void ccDrawCircleSegment(cocos2d::CCPoint const&, float, float, float, unsigned int, bool, float, float);
 
 /** draws a quad bezier path
  @warning This function could be pretty slow. Use it only for debugging purposes.

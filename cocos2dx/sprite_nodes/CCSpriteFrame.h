@@ -27,10 +27,10 @@ THE SOFTWARE.
 #ifndef __SPRITE_CCSPRITE_FRAME_H__
 #define __SPRITE_CCSPRITE_FRAME_H__
 
-#include "base_nodes/CCNode.h"
-#include "CCProtocols.h"
-#include "cocoa/CCObject.h"
-#include "cocoa/CCGeometry.h"
+#include "../base_nodes/CCNode.h"
+#include "../include/CCProtocols.h"
+#include "../cocoa/CCObject.h"
+#include "../cocoa/CCGeometry.h"
 
 NS_CC_BEGIN
 
@@ -54,6 +54,7 @@ class CCZone;
  */
 class CC_DLL CCSpriteFrame : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
     // attributes
 
@@ -146,6 +147,8 @@ public:
      */
     bool initWithTextureFilename(const char* filename, const CCRect& rect, bool rotated, const CCPoint& offset, const CCSize& originalSize);
 
+	gd::string getFrameName() const;
+	void setFrameName(gd::string);
 
 protected:
     CCPoint m_obOffset;
@@ -156,7 +159,9 @@ protected:
     CCPoint m_obOffsetInPixels;
     CCSize m_obOriginalSizeInPixels;
     CCTexture2D *m_pobTexture;
-    std::string  m_strTextureFilename;
+    gd::string  m_strTextureFilename;
+    // @note RobTop Addition
+    gd::string  m_strFrameName;
 };
 
 // end of sprite_nodes group

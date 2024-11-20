@@ -25,10 +25,10 @@ THE SOFTWARE.
 #ifndef __SUPPORT_CCPROFILING_H__
 #define __SUPPORT_CCPROFILING_H__
 
-#include "ccConfig.h"
-#include "cocoa/CCObject.h"
-#include "platform/platform.h"
-#include "cocoa/CCDictionary.h"
+#include "../include/ccConfig.h"
+#include "../cocoa/CCObject.h"
+#include "../platform/platform.h"
+#include "../cocoa/CCDictionary.h"
 #include <string>
 
 NS_CC_BEGIN
@@ -50,6 +50,7 @@ class CCProfilingTimer;
 
 class CC_DLL CCProfiler : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
     ~CCProfiler(void);
     /** display the timers */
@@ -82,7 +83,7 @@ public:
     /** resets the timer properties */
     void reset();
 
-    std::string m_NameStr;
+    gd::string m_NameStr;
     int               numberOfCalls;
     int               m_dAverageTime1;
     int               m_dAverageTime2;

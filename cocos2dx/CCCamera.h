@@ -28,8 +28,8 @@ THE SOFTWARE.
 #define __CCCAMERA_H__
 
 #include "cocoa/CCObject.h"
-#include "ccMacros.h"
-#include "kazmath/mat4.h"
+#include "include/ccMacros.h"
+#include "kazmath/include/kazmath/mat4.h"
 #include <string>
 
 NS_CC_BEGIN
@@ -63,6 +63,7 @@ using the camera.
 */
 class CC_DLL CCCamera : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 protected:
     float m_fEyeX;
     float m_fEyeY;

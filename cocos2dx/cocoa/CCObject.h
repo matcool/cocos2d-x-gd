@@ -26,10 +26,15 @@ THE SOFTWARE.
 #define __CCOBJECT_H__
 
 #include "CCDataVisitor.h"
+#include "../include/ccMacros.h"
+#include <unordered_map>
 
 #ifdef EMSCRIPTEN
 #include <GLES2/gl2.h>
 #endif // EMSCRIPTEN
+
+// @note RobTop Addition
+class DS_Dictionary;
 
 NS_CC_BEGIN
 
@@ -38,10 +43,20 @@ NS_CC_BEGIN
  * @{
  */
 
+// please someone tell we why in higher being(s)'s name rob did this
+enum class CCObjectType {
+    PlayLayer = 5,
+    LevelEditorLayer = 6,
+    GameObject = 13,
+    MenuLayer = 15,
+};
+
 class CCZone;
 class CCObject;
 class CCNode;
 class CCEvent;
+
+
 
 /**
  * @js NA
@@ -49,26 +64,57 @@ class CCEvent;
  */
 class CC_DLL CCCopying
 {
+    GEODE_FRIEND_MODIFY
 public:
-    virtual CCObject* copyWithZone(CCZone* pZone);
+    virtual CCObject* copyWithZone(CCZone* pZone)  { return 0; }
 };
 
 /**
+ * This class is used to fix the problem of destructor recursion.
+ */
+class CCDestructor : public CCCopying {
+private:
+	static std::unordered_map<void*, bool>& destructorLock();
+public:
+	static bool& globalLock();
+	static bool& lock(void* self);
+	~CCDestructor();
+};
+
+#pragma warning(push)
+#pragma warning(disable: 4275)
+/**
  * @js NA
  */
-class CC_DLL CCObject : public CCCopying
+class CC_DLL CCObject : public CCDestructor
 {
+    GEODE_FRIEND_MODIFY
 public:
     // object id, CCScriptSupport need public m_uID
     unsigned int        m_uID;
     // Lua reference id
     int                 m_nLuaID;
 protected:
+    // the object's tag
+    int m_nTag;
     // count of references
     unsigned int        m_uReference;
     // count of autorelease
     unsigned int        m_uAutoReleaseCount;
+
+    CCObjectType m_eObjType;
+
+    int m_uIndexInArray; // used in some ccarray stuff, I don't remember what it does rn
+
+    // 2.2 additions
+
+    int m_uUnknown; // -1 by default
+    int m_unknown2;
+    int m_nZOrder; // moved from CCNode, why rob
+    int m_uOrderOfArrival; // moved from CCNode, why rob
+    int m_unknown5;
 public:
+	GEODE_CUSTOM_CONSTRUCTOR_BEGIN(CCObject)
     CCObject(void);
     /**
      *  @lua NA
@@ -80,16 +126,36 @@ public:
     CCObject* autorelease(void);
     CCObject* copy(void);
     bool isSingleReference(void) const;
-    unsigned int retainCount(void) const;
+    inline unsigned int retainCount(void) const {
+        return m_uReference;
+    }
     virtual bool isEqual(const CCObject* pObject);
 
     virtual void acceptVisitor(CCDataVisitor &visitor);
 
     virtual void update(float dt) {CC_UNUSED_PARAM(dt);};
     
+    virtual void encodeWithCoder(DS_Dictionary*);
+
+    static CCObject* createWithCoder(DS_Dictionary*);
+    
+    virtual bool canEncode();
+
+    inline CCObjectType getObjType() const {
+        return m_eObjType;
+    }
+ 
+    virtual int getTag() const;
+
+    virtual void setTag(int nTag);
+    
+    inline void setObjType(CCObjectType type) {
+        m_eObjType = type;
+    }
+
     friend class CCAutoreleasePool;
 };
-
+#pragma warning(pop)
 
 typedef void (CCObject::*SEL_SCHEDULE)(float);
 typedef void (CCObject::*SEL_CallFunc)();
@@ -100,14 +166,14 @@ typedef void (CCObject::*SEL_MenuHandler)(CCObject*);
 typedef void (CCObject::*SEL_EventHandler)(CCEvent*);
 typedef int (CCObject::*SEL_Compare)(CCObject*);
 
-#define schedule_selector(_SELECTOR) (SEL_SCHEDULE)(&_SELECTOR)
-#define callfunc_selector(_SELECTOR) (SEL_CallFunc)(&_SELECTOR)
-#define callfuncN_selector(_SELECTOR) (SEL_CallFuncN)(&_SELECTOR)
-#define callfuncND_selector(_SELECTOR) (SEL_CallFuncND)(&_SELECTOR)
-#define callfuncO_selector(_SELECTOR) (SEL_CallFuncO)(&_SELECTOR)
-#define menu_selector(_SELECTOR) (SEL_MenuHandler)(&_SELECTOR)
-#define event_selector(_SELECTOR) (SEL_EventHandler)(&_SELECTOR)
-#define compare_selector(_SELECTOR) (SEL_Compare)(&_SELECTOR)
+#define schedule_selector(...) (cocos2d::SEL_SCHEDULE)(&__VA_ARGS__)
+#define callfunc_selector(...) (cocos2d::SEL_CallFunc)(&__VA_ARGS__)
+#define callfuncN_selector(...) (cocos2d::SEL_CallFuncN)(&__VA_ARGS__)
+#define callfuncND_selector(...) (cocos2d::SEL_CallFuncND)(&__VA_ARGS__)
+#define callfuncO_selector(...) (cocos2d::SEL_CallFuncO)(&__VA_ARGS__)
+#define menu_selector(...) (cocos2d::SEL_MenuHandler)(&__VA_ARGS__)
+#define event_selector(...) (cocos2d::SEL_EventHandler)(&__VA_ARGS__)
+#define compare_selector(...) (cocos2d::SEL_Compare)(&__VA_ARGS__)
 
 // end of base_nodes group
 /// @}

@@ -25,9 +25,9 @@
 #ifndef __CCETCTEXTURE_H__
 #define __CCETCTEXTURE_H__
 
-#include "cocoa/CCObject.h"
-#include "platform/CCPlatformMacros.h"
-#include "CCGL.h"
+#include "../cocoa/CCObject.h"
+#include "../platform/CCPlatformMacros.h"
+#include "../platform/CCGL.h"
 
 NS_CC_BEGIN
 /**
@@ -36,6 +36,7 @@ NS_CC_BEGIN
  */
 class CC_DLL CCTextureETC : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
     CCTextureETC();
     virtual ~CCTextureETC();

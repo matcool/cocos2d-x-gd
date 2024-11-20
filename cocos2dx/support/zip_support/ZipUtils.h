@@ -21,15 +21,19 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
+#ifndef GEODE_IS_MEMBER_TEST
 #ifndef __SUPPORT_ZIPUTILS_H__
 #define __SUPPORT_ZIPUTILS_H__
 
 #include <string>
-#include "CCPlatformDefine.h"
-#include "platform/CCPlatformConfig.h"
+#include <filesystem>
+#include "../../platform/CCPlatformDefine.h"
+#include "../../platform/CCPlatformConfig.h"
+#include "../../include/ccMacros.h"
+#include "zipMacro.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-#include "platform/android/CCFileUtilsAndroid.h"
+#include "../../platform/android/CCFileUtilsAndroid.h"
 #endif
 
 namespace cocos2d
@@ -54,6 +58,7 @@ namespace cocos2d
 
     class CC_DLL ZipUtils
     {
+        GEODE_FRIEND_MODIFY;
     public:
         /** 
         * Inflates either zlib or gzip deflated memory. The inflated memory is
@@ -146,6 +151,20 @@ namespace cocos2d
         */
         static void ccSetPvrEncryptionKey(unsigned int keyPart1, unsigned int keyPart2, unsigned int keyPart3, unsigned int keyPart4);
 
+        static gd::string base64DecodeEnc(gd::string const&, gd::string);
+        static gd::string base64EncodeEnc(gd::string const&, gd::string);
+        static gd::string base64URLDecode(gd::string const&);
+        static gd::string base64URLEncode(gd::string const&);
+        static int ccDeflateMemory(unsigned char*, unsigned int, unsigned char**);
+        static int ccDeflateMemoryWithHint(unsigned char*, unsigned int, unsigned char**, unsigned int);
+        static gd::string compressString(gd::string const&, bool, int);
+        static gd::string decompressString(gd::string const&, bool, int);
+        static gd::string decompressString2(unsigned char*, bool, int, int);
+        static gd::string encryptDecrypt(gd::string const&, int);
+        static gd::string encryptDecryptWKey(gd::string const&, gd::string);
+        static unsigned char hexToChar(const gd::string&);
+        static gd::string urlDecode(const gd::string&);
+
     private:
         static int ccInflateMemoryWithHint(unsigned char *in, unsigned int inLength, unsigned char **out, unsigned int *outLength, 
                                            unsigned int outLenghtHint);
@@ -168,7 +187,7 @@ namespace cocos2d
     *
     * @since v2.0.5
     */
-    class ZipFile
+    class GEODE_DLL ZipFile
     {
     public:
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
@@ -186,6 +205,19 @@ namespace cocos2d
         */
         ZipFile(const std::string &zipFile, const std::string &filter = std::string());
         virtual ~ZipFile();
+    
+        /**
+         * Custom function added for geode; returns if the 
+         * zip file was successfully decoded.
+         * 
+         * @return true if the zip was successfully loaded, 
+         *         false otherwise.
+         * 
+         * @since geode v1.0.0
+         */
+        bool isLoaded() const;
+
+        bool unzipAllTo(std::filesystem::path const& path);
 
         /**
         * Regenerate accessible file list based on a new filter string.
@@ -219,6 +251,16 @@ namespace cocos2d
         */
         unsigned char *getFileData(const std::string &fileName, unsigned long *pSize);
 
+        /**
+         * Custom function added for geode; returns all of 
+         * the files in the zip that match the current filter.
+         * 
+         * @return Vector of filenames
+         * 
+         * @since geode v1.0.0
+         */
+        std::vector<std::string> getAllFiles() const;
+
     private:
         bool setFilter(const std::string &filer, ZipFilePrivate *data);
         unsigned char *getFileData(const std::string &fileName, unsigned long *pSize, ZipFilePrivate *data);
@@ -231,3 +273,4 @@ namespace cocos2d
 } // end of namespace cocos2d
 #endif // __SUPPORT_ZIPUTILS_H__
 
+#endif

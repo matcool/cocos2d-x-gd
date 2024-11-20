@@ -26,7 +26,7 @@ THE SOFTWARE.
 #define __CCKEYPAD_DISPATCHER_H__
 
 #include "CCKeypadDelegate.h"
-#include "cocoa/CCArray.h"
+#include "../cocoa/CCArray.h"
 
 NS_CC_BEGIN
 
@@ -50,6 +50,7 @@ struct _ccCArray;
 */
 class CC_DLL CCKeypadDispatcher : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
     CCKeypadDispatcher();
     ~CCKeypadDispatcher();

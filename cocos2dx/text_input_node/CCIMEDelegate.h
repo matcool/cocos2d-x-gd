@@ -25,7 +25,7 @@ THE SOFTWARE.
 #ifndef __CC_IME_DELEGATE_H__
 #define __CC_IME_DELEGATE_H__
 
-#include "cocoa/CCGeometry.h"
+#include "../cocoa/CCGeometry.h"
 
 NS_CC_BEGIN
 
@@ -48,7 +48,9 @@ typedef struct
 */
 class CC_DLL CCIMEDelegate
 {
+    GEODE_FRIEND_MODIFY
 public:
+    GEODE_CUSTOM_CONSTRUCTOR_BEGIN(CCIMEDelegate)
     virtual ~CCIMEDelegate();
 
     virtual bool attachWithIME();
@@ -81,7 +83,7 @@ protected:
     /**
     @brief    Called by CCIMEDispatcher when text input received from the IME.
     */
-    virtual void insertText(const char * text, int len) {CC_UNUSED_PARAM(text);CC_UNUSED_PARAM(len);}
+    virtual void insertText(const char * text, int len, cocos2d::enumKeyCodes) {CC_UNUSED_PARAM(text);CC_UNUSED_PARAM(len);}
 
     /**
     @brief    Called by CCIMEDispatcher after the user clicks the backward key.
@@ -100,6 +102,8 @@ protected:
     virtual void keyboardDidShow(CCIMEKeyboardNotificationInfo& info)    {CC_UNUSED_PARAM(info);}
     virtual void keyboardWillHide(CCIMEKeyboardNotificationInfo& info)   {CC_UNUSED_PARAM(info);}
     virtual void keyboardDidHide(CCIMEKeyboardNotificationInfo& info)    {CC_UNUSED_PARAM(info);}
+
+	virtual void deleteForward();
 
 protected:
     CCIMEDelegate();

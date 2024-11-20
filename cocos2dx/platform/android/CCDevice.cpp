@@ -1,4 +1,4 @@
-#include "platform/CCDevice.h"
+#include "../platform/CCDevice.h"
 #include "jni/DPIJni.h"
 
 NS_CC_BEGIN

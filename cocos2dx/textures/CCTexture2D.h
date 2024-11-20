@@ -27,11 +27,11 @@ THE SOFTWARE.
 #define __CCTEXTURE2D_H__
 
 #include <string>
-#include "cocoa/CCObject.h"
-#include "cocoa/CCGeometry.h"
-#include "ccTypes.h"
+#include "../cocoa/CCObject.h"
+#include "../cocoa/CCGeometry.h"
+#include "../include/ccTypes.h"
 #ifdef EMSCRIPTEN
-#include "base_nodes/CCGLBufferedNode.h"
+#include "../base_nodes/CCGLBufferedNode.h"
 #endif // EMSCRIPTEN
 
 NS_CC_BEGIN
@@ -111,11 +111,13 @@ class CC_DLL CCTexture2D : public CCObject
 , public CCGLBufferedNode
 #endif // EMSCRIPTEN
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js ctor
      */
     CCTexture2D();
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTexture2D, CCObject)
     /**
      * @js NA
      * @lua NA
@@ -267,6 +269,9 @@ public:
     
     bool hasPremultipliedAlpha();
     bool hasMipmaps();
+
+	void releaseGLTexture();
+
 private:
     bool initPremultipliedATextureWithImage(CCImage * image, unsigned int pixelsWide, unsigned int pixelsHigh);
     

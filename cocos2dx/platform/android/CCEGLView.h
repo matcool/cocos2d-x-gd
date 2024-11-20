@@ -25,14 +25,17 @@ THE SOFTWARE.
 #ifndef __CC_EGLVIEW_ANDROID_H__
 #define __CC_EGLVIEW_ANDROID_H__
 
-#include "cocoa/CCGeometry.h"
-#include "platform/CCEGLViewProtocol.h"
+#include "../../cocoa/CCGeometry.h"
+#include "../CCEGLViewProtocol.h"
 
 NS_CC_BEGIN
 
 class CC_DLL CCEGLView : public CCEGLViewProtocol
 {
+    GEODE_FRIEND_MODIFY
 public:
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCEGLView, CCEGLViewProtocol)
+    
     CCEGLView();
     virtual ~CCEGLView();
 
@@ -48,6 +51,8 @@ public:
     @brief    get the shared main open gl window
     */
     static CCEGLView* sharedOpenGLView();
+    
+    static GEODE_DLL CCEGLView* get();
 };
 
 NS_CC_END

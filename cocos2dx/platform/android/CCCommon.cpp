@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#include "platform/CCCommon.h"
+#include "../platform/CCCommon.h"
 #include "jni/Java_org_cocos2dx_lib_Cocos2dxHelper.h"
 #include <android/log.h>
 #include <stdio.h>

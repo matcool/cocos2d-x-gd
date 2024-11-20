@@ -34,9 +34,9 @@ THE SOFTWARE.
  * http://zwoptex.zwopple.com/
  */
 
-#include "sprite_nodes/CCSpriteFrame.h"
-#include "textures/CCTexture2D.h"
-#include "cocoa/CCObject.h"
+#include "../sprite_nodes/CCSpriteFrame.h"
+#include "../textures/CCTexture2D.h"
+#include "../cocoa/CCObject.h"
 #include <set>
 #include <string>
 
@@ -57,7 +57,10 @@ class CCSprite;
  */
 class CC_DLL CCSpriteFrameCache : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 protected:
+
+
     // MARMALADE: Made this protected not private, as deriving from this class is pretty useful
     /**
      * @js ctor
@@ -149,6 +152,7 @@ public:
      *  @js getInstance
      */
     static CCSpriteFrameCache* sharedSpriteFrameCache(void);
+    static GEODE_DLL CCSpriteFrameCache* get();
 
     /** Purges the cache. It releases all the Sprite Frames and the retained instance. */
     static void purgeSharedSpriteFrameCache(void);
@@ -156,10 +160,10 @@ public:
 private:
     // MARMALADE: Made this protected not private, as deriving from this class is pretty useful
 //    CCSpriteFrameCache(void) : m_pSpriteFrames(NULL), m_pSpriteFramesAliases(NULL){}
-protected:
+public:
     CCDictionary* m_pSpriteFrames;
     CCDictionary* m_pSpriteFramesAliases;
-    std::set<std::string>*  m_pLoadedFileNames;
+    std::set<gd::string>*  m_pLoadedFileNames;
 };
 
 // end of sprite_nodes group

@@ -25,14 +25,17 @@ THE SOFTWARE.
 #ifndef __CC_FRAMEWORK_COMPONENT_H__
 #define __CC_FRAMEWORK_COMPONENT_H__
 
-#include "cocoa/CCObject.h"
+#include "../../cocoa/CCObject.h"
 #include <string>
 
 NS_CC_BEGIN
 
 class CC_DLL CCComponent : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 protected:
+
+
     CCComponent(void);
 public:
     /**
@@ -65,7 +68,7 @@ public:
     
 protected:
     CCNode *m_pOwner;
-    std::string m_strName;
+    gd::string m_strName;
     bool m_bEnabled;
 };
 

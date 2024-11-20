@@ -40,8 +40,8 @@
 #include <vector>
 
 #include "CCActionInterval.h"
-#include "base_nodes/CCNode.h"
-#include "cocoa/CCGeometry.h"
+#include "../base_nodes/CCNode.h"
+#include "../cocoa/CCGeometry.h"
 
 NS_CC_BEGIN;
 
@@ -57,6 +57,7 @@ NS_CC_BEGIN;
  */
 class CC_DLL CCPointArray : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
     
     /** creates and initializes a Points array with capacity 
@@ -104,12 +105,12 @@ public:
      */
     virtual CCObject* copyWithZone(CCZone *zone);
     
-    const std::vector<CCPoint*>* getControlPoints();
+    const gd::vector<CCPoint*>* getControlPoints();
 
-    void setControlPoints(std::vector<CCPoint*> *controlPoints);
+    void setControlPoints(gd::vector<CCPoint*> *controlPoints);
 private:
     /** Array that contains the control points */
-    std::vector<CCPoint*> *m_pControlPoints;
+    gd::vector<CCPoint*> *m_pControlPoints;
 };
 
 /** Cardinal Spline path.
@@ -118,6 +119,7 @@ private:
  */
 class CC_DLL CCCardinalSplineTo : public CCActionInterval
 {
+    GEODE_FRIEND_MODIFY
 public:
 
     /** creates an action with a Cardinal Spline array of points and tension 
@@ -189,6 +191,7 @@ protected:
  */
 class CC_DLL CCCardinalSplineBy : public CCCardinalSplineTo 
 {
+    GEODE_FRIEND_MODIFY
 public:
     
     /** creates an action with a Cardinal Spline array of points and tension 
@@ -223,6 +226,7 @@ protected:
  */
 class CC_DLL CCCatmullRomTo : public CCCardinalSplineTo
 {
+    GEODE_FRIEND_MODIFY
 public:
     
     /** creates an action with a Cardinal Spline array of points and tension 
@@ -247,6 +251,7 @@ public:
  */
 class CC_DLL CCCatmullRomBy : public CCCardinalSplineBy
 {
+    GEODE_FRIEND_MODIFY
 public:
     
     /** creates an action with a Cardinal Spline array of points and tension 

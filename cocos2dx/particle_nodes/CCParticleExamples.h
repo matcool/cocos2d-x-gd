@@ -38,6 +38,7 @@ NS_CC_BEGIN
 //! @brief A fire particle system
 class CC_DLL CCParticleFire : public CCParticleSystemQuad
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js ctor
@@ -58,6 +59,7 @@ public:
 //! @brief A fireworks particle system
 class CC_DLL CCParticleFireworks : public CCParticleSystemQuad
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js ctor
@@ -78,6 +80,7 @@ public:
 //! @brief A sun particle system
 class CC_DLL CCParticleSun : public CCParticleSystemQuad
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js ctor
@@ -98,6 +101,7 @@ public:
 //! @brief A galaxy particle system
 class CC_DLL CCParticleGalaxy : public CCParticleSystemQuad
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js ctor
@@ -118,6 +122,7 @@ public:
 //! @brief A flower particle system
 class CC_DLL CCParticleFlower : public CCParticleSystemQuad
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js ctor
@@ -138,6 +143,7 @@ public:
 //! @brief A meteor particle system
 class CC_DLL CCParticleMeteor : public CCParticleSystemQuad
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js ctor
@@ -158,6 +164,7 @@ public:
 //! @brief An spiral particle system
 class CC_DLL CCParticleSpiral : public CCParticleSystemQuad
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js ctor
@@ -178,6 +185,7 @@ public:
 //! @brief An explosion particle system
 class CC_DLL CCParticleExplosion : public CCParticleSystemQuad
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js ctor
@@ -198,6 +206,7 @@ public:
 //! @brief An smoke particle system
 class CC_DLL CCParticleSmoke : public CCParticleSystemQuad
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js ctor
@@ -218,6 +227,7 @@ public:
 //! @brief An snow particle system
 class CC_DLL CCParticleSnow : public CCParticleSystemQuad
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js ctor
@@ -238,6 +248,7 @@ public:
 //! @brief A rain particle system
 class CC_DLL CCParticleRain : public CCParticleSystemQuad
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js ctor

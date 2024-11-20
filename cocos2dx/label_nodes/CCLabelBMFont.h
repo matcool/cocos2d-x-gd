@@ -33,8 +33,8 @@ Use any of these editors to generate BMFonts:
 #ifndef __CCBITMAP_FONT_ATLAS_H__
 #define __CCBITMAP_FONT_ATLAS_H__
 
-#include "sprite_nodes/CCSpriteBatchNode.h"
-#include "support/data_support/uthash.h"
+#include "../sprite_nodes/CCSpriteBatchNode.h"
+#include "../support/data_support/uthash.h"
 #include <map>
 #include <sstream>
 #include <iostream>
@@ -109,6 +109,7 @@ typedef struct _KerningHashElement
 */
 class CC_DLL CCBMFontConfiguration : public CCObject
 {
+    GEODE_FRIEND_MODIFY
     // XXX: Creating a public interface so that the bitmapFontArray[] is accessible
 public://@public
     // BMFont definitions
@@ -119,10 +120,10 @@ public://@public
     //! Padding
     ccBMFontPadding    m_tPadding;
     //! atlas name
-    std::string m_sAtlasName;
+    gd::string m_sAtlasName;
     //! values for kerning
     tCCKerningHashElement *m_pKerningDictionary;
-    
+
     // Character Set defines the letters that actually exist in the font
     std::set<unsigned int> *m_pCharacterSet;
 public:
@@ -143,18 +144,18 @@ public:
 
     /** initializes a BitmapFontConfiguration with a FNT file */
     bool initWithFNTfile(const char *FNTfile);
-    
+
     inline const char* getAtlasName(){ return m_sAtlasName.c_str(); }
     inline void setAtlasName(const char* atlasName) { m_sAtlasName = atlasName; }
-    
-    std::set<unsigned int>* getCharacterSet() const;
+
+    inline std::set<unsigned int>* getCharacterSet() const { return m_pCharacterSet; }
 private:
     std::set<unsigned int>* parseConfigFile(const char *controlFile);
-    void parseCharacterDefinition(std::string line, ccBMFontDef *characterDefinition);
-    void parseInfoArguments(std::string line);
-    void parseCommonArguments(std::string line);
-    void parseImageFileName(std::string line, const char *fntFile);
-    void parseKerningEntry(std::string line);
+    void parseCharacterDefinition(gd::string line, ccBMFontDef *characterDefinition);
+    void parseInfoArguments(gd::string line);
+    void parseCommonArguments(gd::string line);
+    void parseImageFileName(gd::string line, const char *fntFile);
+    void parseKerningEntry(gd::string line);
     void purgeKerningDictionary();
     void purgeFontDefDictionary();
 };
@@ -191,11 +192,13 @@ http://www.angelcode.com/products/bmfont/ (Free, Windows only)
 
 class CC_DLL CCLabelBMFont : public CCSpriteBatchNode, public CCLabelProtocol, public CCRGBAProtocol
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
      */
     CCLabelBMFont();
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCLabelBMFont, CCSpriteBatchNode)
     /**
      *  @js NA
      *  @lua NA
@@ -209,7 +212,7 @@ public:
 
     /** creates a bitmap font atlas with an initial string and the FNT file */
     static CCLabelBMFont * create(const char *str, const char *fntFile, float width, CCTextAlignment alignment, CCPoint imageOffset);
-    
+
 	static CCLabelBMFont * create(const char *str, const char *fntFile, float width, CCTextAlignment alignment);
 
 	static CCLabelBMFont * create(const char *str, const char *fntFile, float width);
@@ -240,8 +243,8 @@ public:
     virtual void setScale(float scale);
     virtual void setScaleX(float scaleX);
     virtual void setScaleY(float scaleY);
-    
-    // CCRGBAProtocol 
+
+    // CCRGBAProtocol
     virtual bool isOpacityModifyRGB();
     virtual void setOpacityModifyRGB(bool isOpacityModifyRGB); virtual GLubyte getOpacity();
     virtual GLubyte getDisplayedOpacity();
@@ -258,42 +261,65 @@ public:
 
     void setFntFile(const char* fntFile);
     const char* getFntFile();
-	CCBMFontConfiguration* getConfiguration() const;
+	inline CCBMFontConfiguration* getConfiguration() const {
+		return m_pConfiguration;
+	}
 #if CC_LABELBMFONT_DEBUG_DRAW
     virtual void draw();
 #endif // CC_LABELBMFONT_DEBUG_DRAW
+
+    // @note RobTop Addition
+    static CCLabelBMFont* createBatched(const char* str, const char* fntFile, CCArray*, int);
+    // @note RobTop Addition
+    void limitLabelWidth(float width, float defaultScale, float minScale);
+
+	// @note RobTop Addition
+    inline int getExtraKerning() const { return m_nExtraKerning; }
+	// @note RobTop Addition
+    inline void setExtraKerning(int extraKerning) { m_nExtraKerning = extraKerning; }
+
+	// @note RobTop Addition
+    bool getIsBatched() const;
+	// @note RobTop Addition
+    void setIsBatched(bool);
+
+	// @note RobTop Addition
+    cocos2d::CCArray* getTargetArray() const;
+	// @note RobTop Addition
+    void setTargetArray(cocos2d::CCArray*);
+
 private:
     char * atlasNameFromFntFile(const char *fntFile);
     int kerningAmountForFirst(unsigned short first, unsigned short second);
-    float getLetterPosXLeft( CCSprite* characterSprite );
-    float getLetterPosXRight( CCSprite* characterSprite );
-    
+    float getLetterPosXLeft( CCSprite* characterSprite, float, bool);
+    float getLetterPosXRight( CCSprite* characterSprite, float, bool);
+
 protected:
     virtual void setString(unsigned short *newString, bool needUpdateLabel);
     // string to render
     unsigned short* m_sString;
-    
+
     // name of fntFile
-    std::string m_sFntFile;
-    
+    gd::string m_sFntFile;
+
     // initial string without line breaks
     unsigned short* m_sInitialString;
-    std::string m_sInitialStringUTF8;
-    
+    gd::string m_sInitialStringUTF8;
+
     // alignment of all lines
     CCTextAlignment m_pAlignment;
     // max width until a line break is added
     float m_fWidth;
-    
+
     CCBMFontConfiguration *m_pConfiguration;
-    
+
     bool m_bLineBreakWithoutSpaces;
     // offset of the texture atlas
     CCPoint    m_tImageOffset;
-    
+
     // reused char
     CCSprite *m_pReusedChar;
-    
+
     // texture RGBA
     GLubyte m_cDisplayedOpacity;
     GLubyte m_cRealOpacity;
@@ -303,6 +329,15 @@ protected:
     bool m_bCascadeOpacityEnabled;
     /** conforms to CCRGBAProtocol protocol */
     bool        m_bIsOpacityModifyRGB;
+
+    // @note RobTop Addition
+    bool m_bIsBatched;
+    // @note RobTop Addition
+    CCArray* m_pTargetArray;
+    // @note RobTop Addition
+    CCTexture2D* m_pSomeTexture;
+    // @note RobTop Addition
+    int m_nExtraKerning;
 
 };
 

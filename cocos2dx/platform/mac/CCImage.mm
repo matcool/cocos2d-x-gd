@@ -24,7 +24,7 @@ THE SOFTWARE.
 #include <Foundation/Foundation.h>
 #include <Cocoa/Cocoa.h>
 #include "CCDirector.h"
-#include "ccMacros.h"
+#include "../include/ccMacros.h"
 #include "CCImage.h"
 #include "CCFileUtils.h"
 #include "CCTexture2D.h"
@@ -519,7 +519,7 @@ bool isFileExists(const char* szFilePath)
 	} while (0);
 	if (!bFind)
 	{
-		//std::string strFilenName = s_strRelativePath + szFilePath;
+		//gd::string strFilenName = s_strRelativePath + szFilePath;
 		unsigned char * pBuffer = NULL;
 		unzFile pFile = NULL;
 		unsigned long pSize = 0;
@@ -573,15 +573,15 @@ CCImage::~CCImage()
 
 bool CCImage::initWithImageFile(const char * strPath, EImageFormat eImgFmt/* = eFmtPng*/)
 {
-    std::string strTemp = CCFileUtils::sharedFileUtils()->fullPathForFilename(strPath);
+    gd::string strTemp = CCFileUtils::sharedFileUtils()->fullPathForFilename(strPath);
 	if (m_bEnabledScale)
 	{
 		if (!isFileExists(strTemp.c_str()))
 		{
-			if (strTemp.rfind("@2x") == std::string::npos)
+			if (strTemp.rfind("@2x") == gd::string::npos)
 			{
 				int t = strTemp.rfind(".");
-				if (t != std::string::npos)
+				if (t != gd::string::npos)
 				{
 					strTemp.insert(t, "@2x");
 				}

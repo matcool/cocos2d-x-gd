@@ -1,4 +1,4 @@
-#include "cocoa/CCGeometry.h"
+#include "../cocoa/CCGeometry.h"
 #include "platform/android/CCAccelerometer.h"
 #include "../CCEGLView.h"
 #include "JniHelper.h"

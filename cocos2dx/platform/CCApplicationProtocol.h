@@ -52,6 +52,7 @@ enum TargetPlatform
 
 class CC_DLL CCApplicationProtocol
 {
+    GEODE_FRIEND_MODIFY
 public:
 
     virtual ~CCApplicationProtocol() {}
@@ -61,36 +62,48 @@ public:
     @return true    Initialize success, app continue.
     @return false   Initialize failed, app terminate.
     */
-    virtual bool applicationDidFinishLaunching() = 0;
+    virtual bool applicationDidFinishLaunching() { return true; }
 
     /**
     @brief  The function be called when the application enter background
     @param  the pointer of the application
     */
-    virtual void applicationDidEnterBackground() = 0;
+    virtual void applicationDidEnterBackground() {}
 
     /**
     @brief  The function be called when the application enter foreground
     @param  the pointer of the application
     */
-    virtual void applicationWillEnterForeground() = 0;
+    virtual void applicationWillEnterForeground() {}
+
+    // @note RobTop Addition
+    virtual void applicationWillBecomeActive() {}
+    // @note RobTop Addition
+    virtual void applicationWillResignActive() {}
+    // @note RobTop Addition
+    virtual void trySaveGame(bool) {}
+    // @note RobTop Addition
+    virtual void gameDidSave() {}
 
     /**
     @brief    Callback by CCDirector for limit FPS.
     @interval       The time, expressed in seconds, between current frame and next. 
     */
-    virtual void setAnimationInterval(double interval) = 0;
+    virtual void setAnimationInterval(double interval) {}
 
     /**
     @brief Get current language config
     @return Current language config
     */
-    virtual ccLanguageType getCurrentLanguage() = 0;
+    virtual ccLanguageType getCurrentLanguage() { return kLanguageEnglish; }
     
     /**
      @brief Get target platform
      */
-    virtual TargetPlatform getTargetPlatform() = 0;
+    virtual TargetPlatform getTargetPlatform() { return kTargetWindows; }
+
+    // @note RobTop Addition
+    virtual void openURL(const char* url) {}
 };
 
 // end of platform group

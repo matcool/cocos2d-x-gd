@@ -28,10 +28,10 @@ THE SOFTWARE.
 #ifndef __CCGLPROGRAM_H__
 #define __CCGLPROGRAM_H__
 
-#include "ccMacros.h"
-#include "cocoa/CCObject.h"
+#include "../include/ccMacros.h"
+#include "../cocoa/CCObject.h"
 
-#include "CCGL.h"
+#include "../platform/CCGL.h"
 
 NS_CC_BEGIN
 
@@ -100,12 +100,14 @@ typedef void (*GLLogFunction) (GLuint program, GLsizei bufsize, GLsizei* length,
  */
 class CC_DLL CCGLProgram : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js  ctor
      * @lua NA
      */
     CCGLProgram();
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCGLProgram, CCObject);
     /**
      * @js NA
      * @lua NA
@@ -270,13 +272,15 @@ public:
      */
     inline const GLuint getProgram() { return m_uProgram; }
 
+	void setUniformLocationWithMatrix3fv(int, float*, unsigned int);
+
 private:
     bool updateUniformLocation(GLint location, GLvoid* data, unsigned int bytes);
     const char* description();
     bool compileShader(GLuint * shader, GLenum type, const GLchar* source);
     const char* logForOpenGLObject(GLuint object, GLInfoFunction infoFunc, GLLogFunction logFunc);
 
-private:
+protected:
     GLuint            m_uProgram;
     GLuint            m_uVertShader;
     GLuint            m_uFragShader;
@@ -286,7 +290,7 @@ private:
     bool              m_hasShaderCompiler;
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
-    std::string       m_shaderId;
+    gd::string       m_shaderId;
 #endif
 };
 

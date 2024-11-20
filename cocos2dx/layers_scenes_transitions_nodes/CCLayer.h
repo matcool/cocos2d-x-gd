@@ -27,14 +27,18 @@ THE SOFTWARE.
 #ifndef __CCLAYER_H__
 #define __CCLAYER_H__
 
-#include "base_nodes/CCNode.h"
-#include "CCProtocols.h"
-#include "touch_dispatcher/CCTouchDelegateProtocol.h"
-#include "platform/CCAccelerometerDelegate.h"
-#include "keypad_dispatcher/CCKeypadDelegate.h"
-#include "cocoa/CCArray.h"
+#include "../base_nodes/CCNode.h"
+#include "../include/CCProtocols.h"
+#include "../touch_dispatcher/CCTouchDelegateProtocol.h"
+#include "../platform/CCAccelerometerDelegate.h"
+#include "../keypad_dispatcher/CCKeypadDelegate.h"
+
+#include "../robtop/keyboard_dispatcher/CCKeyboardDelegate.h"
+#include "../robtop/mouse_dispatcher/CCMouseDelegate.h"
+
+#include "../cocoa/CCArray.h"
 #ifdef EMSCRIPTEN
-#include "base_nodes/CCGLBufferedNode.h"
+#include "../base_nodes/CCGLBufferedNode.h"
 #endif // EMSCRIPTEN
 
 NS_CC_BEGIN
@@ -59,14 +63,17 @@ class CCTouchScriptHandlerEntry;
 All features from CCNode are valid, plus the following new features:
 - It can receive iPhone Touches
 - It can receive Accelerometer input
+ * @note Robtop Addition: added CCKeyboardDelegate and CCMouseDelegate
 */
-class CC_DLL CCLayer : public CCNode, public CCTouchDelegate, public CCAccelerometerDelegate, public CCKeypadDelegate
+class CC_DLL CCLayer : public CCNode, public CCTouchDelegate, public CCAccelerometerDelegate, public CCKeypadDelegate, public CCKeyboardDelegate, public CCMouseDelegate
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor
      */
     CCLayer();
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCLayer, CCNode)
     /**
      *  @js NA
      *  @lua NA
@@ -158,6 +165,16 @@ public:
     virtual bool isKeypadEnabled();
     virtual void setKeypadEnabled(bool value);
 
+    // @note RobTop Addition
+    virtual bool isKeyboardEnabled();
+    // @note RobTop Addition
+    virtual void setKeyboardEnabled(bool value);
+
+    // @note RobTop Addition
+    virtual bool isMouseEnabled();
+    // @note RobTop Addition
+    virtual void setMouseEnabled(bool value);
+
     /** Register keypad events handler */
     void registerScriptKeypadHandler(int nHandler);
     /** Unregister keypad events handler */
@@ -166,6 +183,13 @@ public:
     virtual void keyBackClicked(void);
     virtual void keyMenuClicked(void);
     
+    // @note RobTop Addition
+    void keyDown(enumKeyCodes);
+
+    // 2.2 additions
+    virtual void setPreviousPriority(int);
+    virtual int getPreviousPriority();
+    
     inline CCTouchScriptHandlerEntry* getScriptTouchHandlerEntry() { return m_pScriptTouchHandlerEntry; };
     inline CCScriptHandlerEntry* getScriptKeypadHandlerEntry() { return m_pScriptKeypadHandlerEntry; };
     inline CCScriptHandlerEntry* getScriptAccelerateHandlerEntry() { return m_pScriptAccelerateHandlerEntry; };
@@ -173,6 +197,10 @@ protected:
     bool m_bTouchEnabled;
     bool m_bAccelerometerEnabled;
     bool m_bKeypadEnabled;
+    // @note RobTop Addition
+    bool m_bKeyboardEnabled;
+    // @note RobTop Addition
+    bool m_bMouseEnabled;
     
 private:
     // Script touch events handler
@@ -182,6 +210,9 @@ private:
     
     int m_nTouchPriority;
     ccTouchesMode m_eTouchMode;
+
+    // 2.2 additions
+    int m_uPreviousPriority; // no idea
     
     int  excuteScriptTouchHandler(int nEventType, CCTouch *pTouch);
     int  excuteScriptTouchHandler(int nEventType, CCSet *pTouches);
@@ -201,12 +232,14 @@ private:
  */
 class CC_DLL CCLayerRGBA : public CCLayer, public CCRGBAProtocol
 {
+    GEODE_FRIEND_MODIFY
 public:
     CREATE_FUNC(CCLayerRGBA);
     /**
      *  @js ctor
      */
     CCLayerRGBA();
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCLayerRGBA, CCLayer)
     /**
      *  @js NA
      *  @lua NA
@@ -251,7 +284,10 @@ class CC_DLL CCLayerColor : public CCLayerRGBA, public CCBlendProtocol
 , public CCGLBufferedNode
 #endif // EMSCRIPTEN
 {
+    GEODE_FRIEND_MODIFY
 protected:
+
+
     ccVertex2F m_pSquareVertices[4];
     ccColor4F  m_pSquareColors[4];
 
@@ -260,6 +296,7 @@ public:
      *  @js ctor
      */
     CCLayerColor();
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCLayerColor, CCLayerRGBA)
     /**
      *  @js NA
      *  @lua NA
@@ -297,6 +334,10 @@ public:
     virtual void setColor(const ccColor3B &color);
     virtual void setOpacity(GLubyte opacity);
 
+	void addToVertices(cocos2d::CCPoint, cocos2d::CCPoint, cocos2d::CCPoint);
+	void setVertices(cocos2d::CCPoint, cocos2d::CCPoint, cocos2d::CCPoint);
+
+
 protected:
     virtual void updateColor();
 };
@@ -325,7 +366,11 @@ If ' compressedInterpolation' is enabled (default mode) you will see both the st
 */
 class CC_DLL CCLayerGradient : public CCLayerColor
 {
+    GEODE_FRIEND_MODIFY
 public:
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCLayerGradient, CCLayerColor)
+    CCLayerGradient() {}
+
 
     /** Creates a full-screen CCLayer with a gradient between start and end. */
     static CCLayerGradient* create(const ccColor4B& start, const ccColor4B& end);
@@ -334,6 +379,8 @@ public:
     static CCLayerGradient* create(const ccColor4B& start, const ccColor4B& end, const CCPoint& v);
 
     virtual bool init();
+
+    virtual void updateColor();
     /** Initializes the CCLayer with a gradient between start and end. 
      *  @js init
      */
@@ -350,6 +397,11 @@ public:
     CC_PROPERTY(GLubyte, m_cEndOpacity, EndOpacity)
     CC_PROPERTY_PASS_BY_REF(CCPoint, m_AlongVector, Vector)
 
+	bool getShouldPremultiply() const;
+	void setShouldPremultiply(bool);
+	void setValues(cocos2d::_ccColor3B const&, unsigned char, cocos2d::_ccColor3B const&, unsigned char, cocos2d::CCPoint const&);
+
+
     /** Whether or not the interpolation will be compressed in order to display all the colors of the gradient both in canonical and non canonical vectors
     Default: YES
     */
@@ -360,9 +412,6 @@ public:
     virtual bool isCompressedInterpolation();
     
     static CCLayerGradient* create();
-
-protected:
-    virtual void updateColor();
 };
 
 
@@ -373,7 +422,10 @@ Features:
 */
 class CC_DLL CCLayerMultiplex : public CCLayer
 {
+    GEODE_FRIEND_MODIFY
 protected:
+
+
     unsigned int m_nEnabledLayer;
     CCArray*     m_pLayers;
 public:

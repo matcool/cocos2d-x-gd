@@ -27,7 +27,7 @@ THE SOFTWARE.
 #define __CCCONFIGURATION_H__
 
 #include "cocoa/CCObject.h"
-#include "CCGL.h"
+#include "platform/CCGL.h"
 #include "cocoa/CCString.h"
 #include <string>
 
@@ -54,6 +54,7 @@ typedef enum _ccConfigurationType {
  */
 class CC_DLL CCConfiguration : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
     /** returns a shared instance of CCConfiguration */
     static CCConfiguration *sharedConfiguration(void);
@@ -105,7 +106,7 @@ public:
 	bool supportsShareableVAO(void) const;
 
     /** returns whether or not an OpenGL is supported */
-    bool checkForGLExtension(const std::string &searchName) const;
+    bool checkForGLExtension(const gd::string &searchName) const;
 
     bool init(void);
 
@@ -139,7 +140,7 @@ public:
 private:
     CCConfiguration(void);
     static CCConfiguration *s_gSharedConfiguration;
-	static std::string		s_sConfigfile;
+	static gd::string		s_sConfigfile;
     
 protected:
     GLint           m_nMaxTextureSize;

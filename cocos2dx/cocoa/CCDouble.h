@@ -38,6 +38,7 @@ NS_CC_BEGIN
 
 class CC_DLL CCDouble : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
     CCDouble(double v)
         : m_dValue(v) {}

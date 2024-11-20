@@ -43,7 +43,9 @@ class CCCamera;
 */
 class CC_DLL CCActionCamera : public CCActionInterval //<NSCopying> 
 {
+    GEODE_FRIEND_MODIFY
 public:
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCActionCamera, CCActionInterval)
     /**
      *  @js ctor
      */
@@ -87,6 +89,7 @@ Orbits the camera around the center of the screen using spherical coordinates
 */
 class CC_DLL CCOrbitCamera : public CCActionCamera //<NSCopying> 
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js ctor

@@ -353,7 +353,7 @@ if (MSVC)
 	target_compile_options(cocos2d PRIVATE /wd4251 /wd4267 /wd4244 /wd4996 /wd4302 /wd4311 /wd4312)
 endif()
 # target_compile_definitions(cocos2d PRIVATE HAVE_STRUCT_TIMESPEC CC_ENABLE_BOX2D_INTEGRATION COCOS2D_DEBUG=1)
-target_compile_definitions(cocos2d PRIVATE HAVE_STRUCT_TIMESPEC COCOS2D_DEBUG=1 _USRDLL=1)
+target_compile_definitions(cocos2d PRIVATE HAVE_STRUCT_TIMESPEC COCOS2D_DEBUG=1 _USRDLL=1 CC_TARGET_OS_WIN32=1 GEODE_IS_MEMBER_TEST=1)
 
 if (PROJECT_IS_TOP_LEVEL)
 	add_subdirectory(mat-sample)

@@ -25,7 +25,7 @@ THE SOFTWARE.
 #ifndef __CCARRAY_H__
 #define __CCARRAY_H__
 
-#include "support/data_support/ccCArray.h"
+#include "../support/data_support/ccCArray.h"
 
 /**
  * @addtogroup data_structures
@@ -113,6 +113,7 @@ NS_CC_BEGIN
  */
 class CC_DLL CCArray : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @lua NA
@@ -176,6 +177,16 @@ public:
     unsigned int indexOfObject(CCObject* object) const;
     /** Returns an element with a certain index */
     CCObject* objectAtIndex(unsigned int index);
+    /** 
+     * Rob modification
+     * Returns an element with a certain index casted to CCString */
+    CCString* stringAtIndex(unsigned int index);
+
+    /** 
+     * Returns first element, or null if empty
+     * @note Geode addition
+     */
+    GEODE_DLL CCObject* firstObject();
     /** Returns last element */
     CCObject* lastObject();
     /** Returns a random element */
@@ -188,6 +199,11 @@ public:
 
     /** Add a certain object */
     void addObject(CCObject* object);
+
+    /**
+     * Rob modification
+     * Add a certain object */
+    void addObjectNew(CCObject* object);
     /** Add all elements of an existing array */
     void addObjectsFromArray(CCArray* otherArray);
     /** Insert a certain object at a certain index */
@@ -195,6 +211,11 @@ public:
 
     // Removing Objects
 
+    /** 
+     * Remove first object, or do nothing if array is empty
+     * @note Geode addition
+     */
+    GEODE_DLL void removeFirstObject(bool bReleaseObj = true);
     /** Remove last object */
     void removeLastObject(bool bReleaseObj = true);
     /** Remove a certain object */
@@ -209,6 +230,17 @@ public:
     void fastRemoveObject(CCObject* object);
     /** Fast way to remove an element with a certain index */
     void fastRemoveObjectAtIndex(unsigned int index);
+    /** 
+     * Fast way to remove an element with a certain index
+     * @note RobTop addition
+     */
+    void fastRemoveObjectAtIndexNew(unsigned int index);
+
+	void fastRemoveObjectAtIndexChild(unsigned int);
+
+	void recreateNewIndexes();
+	void removeObjectAtIndexChild(unsigned int, bool);
+
 
     // Rearranging Content
 
@@ -230,6 +262,13 @@ public:
      *  @lua NA
      */
     virtual CCObject* copyWithZone(CCZone* pZone);
+
+    /**
+     * Creates a shallow copy of this array, aka only clones the pointers to 
+     * the array members and not the members themselves
+     * @returns New array with same members
+     */
+    GEODE_DLL CCArray* shallowCopy();
 
     /* override functions */
     virtual void acceptVisitor(CCDataVisitor &visitor);

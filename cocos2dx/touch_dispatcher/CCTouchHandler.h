@@ -28,8 +28,8 @@ THE SOFTWARE.
 
 #include "CCTouchDelegateProtocol.h"
 #include "CCTouchDispatcher.h"
-#include "cocoa/CCObject.h"
-#include "cocoa/CCSet.h"
+#include "../cocoa/CCObject.h"
+#include "../cocoa/CCSet.h"
 
 NS_CC_BEGIN
 
@@ -46,7 +46,10 @@ NS_CC_BEGIN
 */
 class CC_DLL  CCTouchHandler : public CCObject
 {
+    GEODE_FRIEND_MODIFY
 public:
+	GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTouchHandler, CCObject)
+	inline CCTouchHandler() = default;
     virtual ~CCTouchHandler(void);
 
     /** delegate */
@@ -68,7 +71,7 @@ public:
     /** allocates a TouchHandler with a delegate and a priority */
     static CCTouchHandler* handlerWithDelegate(CCTouchDelegate *pDelegate, int nPriority);
 
-protected:
+public:
     CCTouchDelegate *m_pDelegate;
     int m_nPriority;
     int m_nEnabledSelectors;
@@ -81,7 +84,13 @@ protected:
  */
 class CC_DLL  CCStandardTouchHandler : public CCTouchHandler
 {
+    GEODE_FRIEND_MODIFY
 public:
+	GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCStandardTouchHandler, CCTouchHandler)
+	inline CCStandardTouchHandler() = default;
+
+    ~CCStandardTouchHandler(void);
+    
     /** initializes a TouchHandler with a delegate and a priority */
     virtual bool initWithDelegate(CCTouchDelegate *pDelegate, int nPriority);
 
@@ -99,7 +108,11 @@ public:
  */
 class CC_DLL  CCTargetedTouchHandler : public CCTouchHandler
 {
+    GEODE_FRIEND_MODIFY
 public:
+	GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCTargetedTouchHandler, CCTouchHandler)
+	inline CCTargetedTouchHandler() = default;
+	
     ~CCTargetedTouchHandler(void);
 
     /** whether or not the touches are swallowed */

@@ -26,8 +26,8 @@ THE SOFTWARE.
 #ifndef __CCPARALLAX_NODE_H__
 #define __CCPARALLAX_NODE_H__
 
-#include "base_nodes/CCNode.h"
-/*#include "support/data_support/ccArray.h"*/
+#include "../base_nodes/CCNode.h"
+/*#include "../support/data_support/ccCArray.h"*/
 
 NS_CC_BEGIN
 
@@ -45,6 +45,7 @@ The children will be moved faster / slower than the parent according the the par
 */
 class CC_DLL CCParallaxNode : public CCNode 
 {
+    GEODE_FRIEND_MODIFY
     /** array that holds the offset / ratio of the children */
     CC_SYNTHESIZE(struct _ccArray *, m_pParallaxArray, ParallaxArray)
 

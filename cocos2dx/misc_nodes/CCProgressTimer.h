@@ -25,9 +25,9 @@ THE SOFTWARE.
 #ifndef __MISC_NODE_CCPROGRESS_TIMER_H__
 #define __MISC_NODE_CCPROGRESS_TIMER_H__
 
-#include "sprite_nodes/CCSprite.h"
+#include "../sprite_nodes/CCSprite.h"
 #ifdef EMSCRIPTEN
-#include "base_nodes/CCGLBufferedNode.h"
+#include "../base_nodes/CCGLBufferedNode.h"
 #endif // EMSCRIPTEN
 
 NS_CC_BEGIN
@@ -58,6 +58,7 @@ class CC_DLL CCProgressTimer : public CCNodeRGBA
 , public CCGLBufferedNode
 #endif // EMSCRIPTEN
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      * @js ctor

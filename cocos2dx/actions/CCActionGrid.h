@@ -40,6 +40,7 @@ class CCGridBase;
 /** @brief Base class for Grid actions */
 class CC_DLL CCGridAction : public CCActionInterval
 {
+    GEODE_FRIEND_MODIFY
 public:
     /**
      *  @js NA
@@ -73,6 +74,7 @@ protected:
  */
 class CC_DLL CCGrid3DAction : public CCGridAction
 {
+    GEODE_FRIEND_MODIFY
 public:
     /** returns the grid */
     virtual CCGridBase* getGrid(void);
@@ -94,6 +96,7 @@ public:
 /** @brief Base class for CCTiledGrid3D actions */
 class CC_DLL CCTiledGrid3DAction : public CCGridAction
 {
+    GEODE_FRIEND_MODIFY
 public:
     /** returns the tile that belongs to a certain position of the grid */
     ccQuad3 tile(const CCPoint& position);
@@ -116,7 +119,11 @@ public:
 /** @brief CCAccelDeccelAmplitude action */
 class CC_DLL CCAccelDeccelAmplitude : public CCActionInterval
 {
+    GEODE_FRIEND_MODIFY
 public:
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCAccelDeccelAmplitude, CCActionInterval)
+    CCAccelDeccelAmplitude() {}
+
     /**
      *  @js NA
      *  @lua NA
@@ -146,7 +153,11 @@ protected:
 /** @brief CCAccelAmplitude action */
 class CC_DLL CCAccelAmplitude : public CCActionInterval
 {
+    GEODE_FRIEND_MODIFY
 public:
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCAccelAmplitude, CCActionInterval);
+    CCAccelAmplitude() {}
+
     /**
      *  @js NA
      *  @lua NA
@@ -175,7 +186,11 @@ protected:
 /** @brief CCDeccelAmplitude action */
 class CC_DLL CCDeccelAmplitude : public CCActionInterval
 {
+    GEODE_FRIEND_MODIFY
 public:
+    GEODE_CUSTOM_CONSTRUCTOR_COCOS(CCDeccelAmplitude, CCActionInterval);
+    CCDeccelAmplitude() {}
+
     /**
      *  @js NA
      *  @lua NA
@@ -209,6 +224,7 @@ protected:
  */
 class CC_DLL CCStopGrid : public CCActionInstant
 {
+    GEODE_FRIEND_MODIFY
 public:
     virtual void startWithTarget(CCNode *pTarget);
 
@@ -220,6 +236,7 @@ public:
 /** @brief CCReuseGrid action */
 class CC_DLL CCReuseGrid : public CCActionInstant
 {
+    GEODE_FRIEND_MODIFY
 public:
     /** initializes an action with the number of times that the current grid will be reused */
     bool initWithTimes(int times);

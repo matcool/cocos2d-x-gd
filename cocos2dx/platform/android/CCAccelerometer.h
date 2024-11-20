@@ -25,13 +25,14 @@ THE SOFTWARE.
 #ifndef __PLATFORM_ANDROID_CCACCELEROMETER_H__
 #define __PLATFORM_ANDROID_CCACCELEROMETER_H__
 
-#include "platform/CCCommon.h"
-#include "platform/CCAccelerometerDelegate.h"
+#include "../CCCommon.h"
+#include "../CCAccelerometerDelegate.h"
 
 namespace   cocos2d {
 
 class CC_DLL CCAccelerometer
 {
+    GEODE_FRIEND_MODIFY
 public:
     CCAccelerometer();
     ~CCAccelerometer();

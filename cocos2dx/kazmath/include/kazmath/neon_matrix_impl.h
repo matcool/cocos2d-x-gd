@@ -28,7 +28,7 @@
 #if defined(__QNX__) || defined(ANDROID) || defined(I3D_ARCH_ARM) || defined(__native_client__) || defined(TIZEN) // MARMALADE CHANGE: Added for Marmalade support
 // blackberry and android don't have arm/arch.h but it defines __arm__
 #else
-#include "arm/arch.h"
+#include <arm/arch.h>
 #endif 
 #endif // __arm__
 

@@ -25,7 +25,7 @@ THE SOFTWARE.
 #ifndef __CCGL_H__
 #define __CCGL_H__
 
-#include "GL/glew.h"
+#include "../third_party/win32/OGLES/GL/glew.h"
 
 #define CC_GL_DEPTH24_STENCIL8		GL_DEPTH24_STENCIL8
 

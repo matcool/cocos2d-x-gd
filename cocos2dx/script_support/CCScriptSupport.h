@@ -25,11 +25,10 @@
 #ifndef __SCRIPT_SUPPORT_H__
 #define __SCRIPT_SUPPORT_H__
 
-#include "platform/CCCommon.h"
-#include "CCAccelerometer.h"
-#include "touch_dispatcher/CCTouch.h"
-#include "cocoa/CCSet.h"
-#include "CCAccelerometer.h"
+#include "../platform/CCCommon.h"
+#include "../platform/CCAccelerometer.h"
+#include "../touch_dispatcher/CCTouch.h"
+#include "../cocoa/CCSet.h"
 #include <map>
 #include <string>
 #include <list>
@@ -174,6 +173,7 @@ private:
  */
 class CC_DLL CCScriptEngineProtocol
 {
+    GEODE_FRIEND_MODIFY
 public:
     virtual ~CCScriptEngineProtocol() {};
     
@@ -257,7 +257,7 @@ public:
         NONE,
         COCOSTUDIO,
     };
-    virtual bool parseConfig(ConfigType type, const std::string& str) = 0;
+    virtual bool parseConfig(ConfigType type, const gd::string& str) = 0;
 };
 
 /**
@@ -269,6 +269,7 @@ public:
  */
 class CC_DLL CCScriptEngineManager
 {
+    GEODE_FRIEND_MODIFY
 public:
     ~CCScriptEngineManager(void);
     

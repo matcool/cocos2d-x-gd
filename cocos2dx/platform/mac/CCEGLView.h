@@ -25,8 +25,8 @@
 #ifndef __CC_EGLVIEW_MAC_H__
 #define __CC_EGLVIEW_MAC_H__
 
-#include "platform/CCCommon.h"
-#include "platform/CCEGLViewProtocol.h"
+#include "../CCCommon.h"
+#include "../CCEGLViewProtocol.h"
 
 NS_CC_BEGIN
 
@@ -36,9 +36,12 @@ class CCSize;
 
 class CC_DLL CCEGLView : public CCEGLViewProtocol
 {
+    GEODE_FRIEND_MODIFY
 public:
     static CCEGLView* sharedOpenGLView(void);
     
+    static GEODE_DLL CCEGLView* get();
+
     virtual ~CCEGLView(void);
     
     virtual bool isOpenGLReady(void);
@@ -56,6 +59,13 @@ public:
     
 private:
     static CCEGLView* s_sharedView;
+
+    // @note RobTop Addition
+    bool m_idk1;
+    // @note RobTop Addition
+    bool m_idk2;
+    // @note RobTop Addition
+    bool m_idk3;
     
     CCEGLView(void);
 };
