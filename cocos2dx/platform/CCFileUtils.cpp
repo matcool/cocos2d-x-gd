@@ -822,18 +822,18 @@ bool CCFileUtils::isPopupNotify()
 }
 
 void cocos2d::CCFileUtils::removeFullPath(char const *) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
 }
 std::string cocos2d::CCFileUtils::getWritablePath2(void) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
     std::abort();
 }
 bool cocos2d::CCFileUtils::shouldUseHD(void) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
     return true;
 }
 std::string cocos2d::CCFileUtils::addSuffix(std::string, std::string) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
     std::abort();
 }
 

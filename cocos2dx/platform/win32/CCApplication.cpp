@@ -154,17 +154,17 @@ void CCApplication::setStartupScriptFilename(const std::string& startupScriptFil
 }
 
 void cocos2d::CCApplication::gameDidSave(void) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
 }
 void cocos2d::CCApplication::openURL(char const *) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
 }
 void cocos2d::CCApplication::setupGLView(void) {
     auto* glview = CCEGLView::create("Try again");
     CCDirector::sharedDirector()->setOpenGLView(glview);
 }
 void cocos2d::CCApplication::platformShutdown(void) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
 }
 
 void CCApplication::setupVerticalSync() {

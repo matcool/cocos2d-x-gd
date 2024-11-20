@@ -357,7 +357,7 @@ float CCEGLViewProtocol::getScaleY() const
 }
 
 void cocos2d::CCEGLViewProtocol::pollInputEvents(void) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
 }
 
 

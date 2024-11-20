@@ -1127,13 +1127,13 @@ CCTexture2D* CCSprite::getTexture(void)
 }
 
 void cocos2d::CCSprite::setChildColor(struct cocos2d::_ccColor3B const &) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
 }
 void cocos2d::CCSprite::setChildOpacity(unsigned char) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
 }
 void cocos2d::CCSprite::refreshTextureRect(void) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
 }
 
 NS_CC_END

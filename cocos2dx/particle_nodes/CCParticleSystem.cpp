@@ -1349,10 +1349,10 @@ void CCParticleSystem::setScaleY(float newScaleY)
 }
 
 void cocos2d::CCParticleSystem::setVisible(bool) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
 }
 void cocos2d::CCParticleSystem::updateEmissionRate(void) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
 }
 
 

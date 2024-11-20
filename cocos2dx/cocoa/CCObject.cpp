@@ -120,11 +120,11 @@ void CCObject::setTag(int var)
 
 void CCObject::encodeWithCoder(DS_Dictionary* encoder)
 {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
 }
 
 bool CCObject::canEncode() {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
     return false;
 }
 

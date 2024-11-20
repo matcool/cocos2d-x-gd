@@ -532,4 +532,8 @@ void ccDrawColor4B( GLubyte r, GLubyte g, GLubyte b, GLubyte a )
     s_tColor.a = a/255.0f;
 }
 
+void ccDrawLines(const CCPoint* lines, unsigned int count) {
+    ROB_UNIMPLEMENTED();
+}
+
 NS_CC_END

@@ -70,12 +70,12 @@ CCScene *CCScene::create()
 }
 
 CCScene::CCScene(const CCScene &scene) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
     // CCNode::operator=(scene);
 }
 
 CCScene& CCScene::operator=(const CCScene &scene) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
     return *this;
 }
 

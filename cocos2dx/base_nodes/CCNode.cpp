@@ -1463,29 +1463,29 @@ CCSize CCNode::getScaledContentSize() {
 }
 
 void CCNode::removeMeAndCleanup() {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
     removeFromParentAndCleanup(true);
 }
 
 const CCAffineTransform CCNode::nodeToParentTransformFast() {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
     return {};
 }
 
 CCAffineTransform CCNode::nodeToWorldTransformFast() {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
     return {};
 }
 
 void cocos2d::CCNode::updateTweenAction(float, char const *) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
 }
 void cocos2d::CCNode::updateTweenActionInt(float, int) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
 }
 
 CCNode& CCNode::operator=(CCNode const&) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
     return *this;
 }
 

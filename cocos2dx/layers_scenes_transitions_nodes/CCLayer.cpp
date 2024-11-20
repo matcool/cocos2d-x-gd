@@ -1127,29 +1127,29 @@ void CCLayerMultiplex::switchToAndReleaseMe(unsigned int n)
 }
 
 bool cocos2d::CCLayer::isKeyboardEnabled(void) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
     return false;
 }
 void cocos2d::CCLayer::setKeyboardEnabled(bool) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
 
 }
 bool cocos2d::CCLayer::isMouseEnabled(void) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
     return false;
 }
 void cocos2d::CCLayer::setMouseEnabled(bool) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
 }
 void cocos2d::CCLayer::setPreviousPriority(int) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
 }
 int cocos2d::CCLayer::getPreviousPriority(void) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
     return 0;
 }
 void cocos2d::CCLayer::keyDown(cocos2d::enumKeyCodes) {
-    // FIXME: unimplemented
+    ROB_UNIMPLEMENTED();
 }
 
 NS_CC_END
