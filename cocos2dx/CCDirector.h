@@ -405,21 +405,21 @@ protected:
 
 protected:
     // @note RobTop Addition
-    CC_SYNTHESIZE_READONLY_NV(float, m_fScreenScaleFactor, ScreenScaleFactor);
+    CC_SYNTHESIZE_NOIMPL_READONLY_NV_NC(float, m_fScreenScaleFactor, ScreenScaleFactor);
     // @note RobTop Addition
-    CC_SYNTHESIZE_READONLY_NV(float, m_fScreenScaleFactorMax, ScreenScaleFactorMax);
+    CC_SYNTHESIZE_NOIMPL_READONLY_NV_NC(float, m_fScreenScaleFactorMax, ScreenScaleFactorMax);
     // @note RobTop Addition
-    CC_SYNTHESIZE_READONLY_NV(float, m_fScreenScaleFactorW, ScreenScaleFactorW);
+    CC_SYNTHESIZE_NOIMPL_READONLY_NV_NC(float, m_fScreenScaleFactorW, ScreenScaleFactorW);
     // @note RobTop Addition
-    CC_SYNTHESIZE_READONLY_NV(float, m_fScreenScaleFactorH, ScreenScaleFactorH);
+    CC_SYNTHESIZE_NOIMPL_READONLY_NV_NC(float, m_fScreenScaleFactorH, ScreenScaleFactorH);
     // @note RobTop Addition
-    CC_SYNTHESIZE_READONLY_NV(float, m_fScreenTop, ScreenTop);
+    CC_SYNTHESIZE_NOIMPL_READONLY_NV_NC(float, m_fScreenTop, ScreenTop);
     // @note RobTop Addition
-    CC_SYNTHESIZE_READONLY_NV_NC(float, m_fScreenBottom, ScreenBottom);
+    CC_SYNTHESIZE_NOIMPL_READONLY_NV_NC(float, m_fScreenBottom, ScreenBottom);
     // @note RobTop Addition
-    CC_SYNTHESIZE_READONLY_NV_NC(float, m_fScreenLeft, ScreenLeft);
+    CC_SYNTHESIZE_NOIMPL_READONLY_NV_NC(float, m_fScreenLeft, ScreenLeft);
     // @note RobTop Addition
-    CC_SYNTHESIZE_READONLY_NV(float, m_fScreenRight, ScreenRight);
+    CC_SYNTHESIZE_NOIMPL_READONLY_NV_NC(float, m_fScreenRight, ScreenRight);
     // @note RobTop Addition
     CC_SYNTHESIZE_NV(CCScene*, m_pSceneReference, SceneReference);
 

@@ -171,6 +171,7 @@ cocos2dx/robtop/mouse_dispatcher/CCMouseDispatcher.cpp
 cocos2dx/robtop/xml/ObjectDecoder.cpp
 cocos2dx/robtop/xml/DS_Dictionary.cpp
 cocos2dx/robtop/xml/pugixml.cpp
+cocos2dx/robtop/content/CCContentManager.cpp
 
 # extensions/AssetsManager/AssetsManager.cpp
 # extensions/CCBReader/CCBAnimationManager.cpp
@@ -362,8 +363,17 @@ else()
 	target_compile_options(cocos2d PRIVATE -Wno-deprecated-declarations)
 endif()
 # target_compile_definitions(cocos2d PRIVATE HAVE_STRUCT_TIMESPEC CC_ENABLE_BOX2D_INTEGRATION COCOS2D_DEBUG=1)
-target_compile_definitions(cocos2d PUBLIC CC_TARGET_OS_WIN32=1 GEODE_IS_MEMBER_TEST=1)
-target_compile_definitions(cocos2d PRIVATE HAVE_STRUCT_TIMESPEC COCOS2D_DEBUG=1 _USRDLL=1 CC_TARGET_OS_WIN32=1 GEODE_IS_MEMBER_TEST=1 _AMD64_=1)
+target_compile_definitions(cocos2d PUBLIC
+	CC_TARGET_OS_WIN32=1
+	GEODE_IS_MEMBER_TEST=1
+	GEODE_COMP_GD_VERSION=22074
+)
+
+target_compile_definitions(cocos2d PRIVATE
+	HAVE_STRUCT_TIMESPEC
+	COCOS2D_DEBUG=1
+	_USRDLL=1
+)
 
 target_link_options(cocos2d PRIVATE -Wl,/errorlimit:0)
 

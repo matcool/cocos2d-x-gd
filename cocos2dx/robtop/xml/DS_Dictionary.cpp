@@ -824,3 +824,42 @@ void DS_Dictionary::setRectArrayForKey(const char* key, const vector<CCRect>& va
         arrayNode.append_child("string").append_child(node_pcdata).set_value(stream.str().c_str());
     }
 }
+
+// robtop additions
+void DS_Dictionary::addBoolValuesToMapForKey(std::map<std::string, bool>&, char const *, bool) {
+    ROB_UNIMPLEMENTED();
+}
+void DS_Dictionary::addBoolValuesToMapForKeySpecial(std::map<std::string, bool>&, char const *, bool) {
+    ROB_UNIMPLEMENTED();
+}
+void DS_Dictionary::copyFile(char const *, char const *) {
+    ROB_UNIMPLEMENTED();
+}
+bool DS_Dictionary::loadRootSubDictFromCompressedFile(char const *) {
+    ROB_UNIMPLEMENTED();
+}
+bool DS_Dictionary::loadRootSubDictFromString(std::string const &) {
+    ROB_UNIMPLEMENTED();
+}
+bool DS_Dictionary::saveRootSubDictToCompressedFile(char const *) {
+    ROB_UNIMPLEMENTED();
+}
+std::string DS_Dictionary::saveRootSubDictToString(void) {
+    ROB_UNIMPLEMENTED();
+}
+
+void DS_Dictionary::setBoolMapForKey(char const *, std::map<std::string, bool>&) {
+    ROB_UNIMPLEMENTED();
+}
+void DS_Dictionary::setArrayForKey(char const *, CCArray*) {
+    ROB_UNIMPLEMENTED();
+}
+CCArray* DS_Dictionary::getArrayForKey(char const *, bool) {
+    ROB_UNIMPLEMENTED();
+}
+CCDictionary* DS_Dictionary::getDictForKey(char const *, bool) {
+    ROB_UNIMPLEMENTED();
+}
+void DS_Dictionary::setDictForKey(char const *, CCDictionary*) {
+    ROB_UNIMPLEMENTED();
+}

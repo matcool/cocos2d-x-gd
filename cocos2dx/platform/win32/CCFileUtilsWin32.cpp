@@ -193,6 +193,5 @@ std::string CCFileUtilsWin32::getPathForFilename(const std::string& filename, co
 
 std::string CCFileUtilsWin32::getWritablePath2() {
     ROB_UNIMPLEMENTED();
-    std::abort();
 }
 NS_CC_END

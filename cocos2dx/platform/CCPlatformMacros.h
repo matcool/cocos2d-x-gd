@@ -428,4 +428,9 @@ protected:                                                      \
 public:                                                         \
     varType get##funName(void) { return varName; }
 
+#define CC_SYNTHESIZE_NOIMPL_READONLY_NV_NC(varType, varName, funName) \
+public: \
+    varType varName; \
+    varType get##funName();
+
 #endif // __CC_PLATFORM_MACROS_H__

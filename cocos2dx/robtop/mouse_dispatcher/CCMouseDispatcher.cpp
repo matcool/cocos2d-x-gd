@@ -6,23 +6,23 @@ CCMouseDispatcher::CCMouseDispatcher() {}
 CCMouseDispatcher::~CCMouseDispatcher() {}
 
 void CCMouseDispatcher::addDelegate(CCMouseDelegate* pDelegate) {
-    std::abort();
+    ROB_UNIMPLEMENTED();
 }
 
 void CCMouseDispatcher::removeDelegate(CCMouseDelegate* pDelegate) {
-    std::abort();
+    ROB_UNIMPLEMENTED();
 }
 
 void CCMouseDispatcher::forceAddDelegate(CCMouseDelegate* pDelegate) {
-    std::abort();
+    ROB_UNIMPLEMENTED();
 }
 
 void CCMouseDispatcher::forceRemoveDelegate(CCMouseDelegate* pDelegate) {
-    std::abort();
+    ROB_UNIMPLEMENTED();
 }
 
 bool CCMouseDispatcher::dispatchScrollMSG(float x, float y) {
-    std::abort();
+    ROB_UNIMPLEMENTED();
 }
 
 // CCMouseHandler
@@ -30,7 +30,7 @@ bool CCMouseDispatcher::dispatchScrollMSG(float x, float y) {
 CCMouseHandler::~CCMouseHandler() {}
 
 CCMouseHandler& CCMouseHandler::operator=(const CCMouseHandler&) {
-    std::abort();
+    ROB_UNIMPLEMENTED();
     return *this;
 }
 

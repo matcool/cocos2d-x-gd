@@ -1,5 +1,18 @@
 #include "ObjectDecoder.h"
 
 bool ObjectDecoder::init() {
-    std::abort();
+    ROB_UNIMPLEMENTED();
+}
+
+ObjectDecoder::ObjectDecoder() {
+    
+}
+
+ObjectDecoder* ObjectDecoder::sharedDecoder() {
+    static ObjectDecoder* sharedDecoder = nullptr;
+    if (!sharedDecoder) {
+        sharedDecoder = new ObjectDecoder();
+        sharedDecoder->init();
+    }
+    return sharedDecoder;
 }

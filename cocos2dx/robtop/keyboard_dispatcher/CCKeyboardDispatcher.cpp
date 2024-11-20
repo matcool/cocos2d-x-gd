@@ -27,7 +27,7 @@ CCKeyboardDispatcher::~CCKeyboardDispatcher() {}
 CCKeyboardHandler::~CCKeyboardHandler() {}
 
 CCKeyboardHandler& CCKeyboardHandler::operator=(const CCKeyboardHandler&) {
-    std::abort();
+    ROB_UNIMPLEMENTED();
     return *this;
 }
 

@@ -1088,6 +1088,38 @@ void CCDirector::updateContentScale(TextureQuality qual) {
     }
 }
 
+float CCDirector::getScreenScaleFactor() { return m_fScreenScaleFactor; }
+float CCDirector::getScreenScaleFactorMax() { return m_fScreenScaleFactorMax; }
+float CCDirector::getScreenScaleFactorW() { return m_fScreenScaleFactorW; }
+float CCDirector::getScreenScaleFactorH() { return m_fScreenScaleFactorH; }
+float CCDirector::getScreenTop() { return m_fScreenTop; }
+float CCDirector::getScreenBottom() { return m_fScreenBottom; }
+float CCDirector::getScreenLeft() { return m_fScreenLeft; }
+float CCDirector::getScreenRight() { return m_fScreenRight; }
+
+bool CCDirector::popSceneWithTransition(float, PopTransition) {
+    ROB_UNIMPLEMENTED();
+}
+void CCDirector::popToSceneInStack(CCScene*) {
+    ROB_UNIMPLEMENTED();
+}
+void CCDirector::removeStatsLabel() {
+    ROB_UNIMPLEMENTED();
+}
+void CCDirector::resetSmoothFixCounter(void) {
+    ROB_UNIMPLEMENTED();
+}
+void CCDirector::setDeltaTime(float) {
+    ROB_UNIMPLEMENTED();
+}
+int CCDirector::sceneCount() {
+    ROB_UNIMPLEMENTED();
+}
+void CCDirector::toggleShowFPS(bool, std::string, CCPoint) {
+    ROB_UNIMPLEMENTED();
+}
+
+
 /***************************************************
 * implementation of DisplayLinkDirector
 **************************************************/

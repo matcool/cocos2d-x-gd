@@ -10,9 +10,11 @@
 // @note RobTop Addition
 class CC_DLL CCContentManager : public cocos2d::CCObject 
 {
+    cocos2d::CCDictionary* m_pDicts = nullptr;
 public:
     static CCContentManager* sharedManager();
     CCContentManager();
+    ~CCContentManager();
     bool init();
 
     cocos2d::CCDictionary* addDict(const char* dict, bool unk);

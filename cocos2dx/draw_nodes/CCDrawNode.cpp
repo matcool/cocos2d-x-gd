@@ -1,5 +1,5 @@
 /* Copyright (c) 2012 Scott Lembcke and Howling Moon Software
- * Copyright (c) 2012 cocos2d-x.org
+ * Copyright (c) 2012 .org
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -237,7 +237,7 @@ void CCDrawNode::draw()
     render();
 }
 
-void CCDrawNode::drawDot(const CCPoint &pos, float radius, const ccColor4F &color)
+bool CCDrawNode::drawDot(const CCPoint &pos, float radius, const ccColor4F &color)
 {
     unsigned int vertex_count = 2*3;
     ensureCapacity(vertex_count);
@@ -256,9 +256,12 @@ void CCDrawNode::drawDot(const CCPoint &pos, float radius, const ccColor4F &colo
 	m_nBufferCount += vertex_count;
 	
 	m_bDirty = true;
+
+    // TODO: implement
+    return true;
 }
 
-void CCDrawNode::drawSegment(const CCPoint &from, const CCPoint &to, float radius, const ccColor4F &color)
+bool CCDrawNode::drawSegment(const CCPoint &from, const CCPoint &to, float radius, const ccColor4F &color)
 {
     unsigned int vertex_count = 6*3;
     ensureCapacity(vertex_count);
@@ -329,9 +332,12 @@ void CCDrawNode::drawSegment(const CCPoint &from, const CCPoint &to, float radiu
 	m_nBufferCount += vertex_count;
 	
 	m_bDirty = true;
+
+    // TODO: implement
+    return true;
 }
 
-void CCDrawNode::drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor)
+bool CCDrawNode::drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor)
 {
     struct ExtrudeVerts {ccVertex2F offset, n;};
 	struct ExtrudeVerts* extrude = (struct ExtrudeVerts*)malloc(sizeof(struct ExtrudeVerts)*count);
@@ -435,6 +441,9 @@ void CCDrawNode::drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F
 	m_bDirty = true;
 
     free(extrude);
+
+    // TODO: implement
+    return true;
 }
 
 void CCDrawNode::clear()
@@ -458,6 +467,27 @@ void CCDrawNode::setBlendFunc(const ccBlendFunc &blendFunc)
 void CCDrawNode::listenBackToForeground(CCObject *obj)
 {
     init();
+}
+
+// rob
+
+void CCDrawNode::disableDrawArea(void) {
+    ROB_UNIMPLEMENTED();
+}
+bool CCDrawNode::drawCircle(CCPoint const &, float, struct _ccColor4F const &, float, struct _ccColor4F const &, unsigned int) {
+    ROB_UNIMPLEMENTED();
+}
+bool CCDrawNode::drawLines(CCPoint *, unsigned int, float, struct _ccColor4F const &) {
+    ROB_UNIMPLEMENTED();
+}
+bool CCDrawNode::drawRect(CCPoint const &, CCPoint const &, struct _ccColor4F const &, float, struct _ccColor4F const &) {
+    ROB_UNIMPLEMENTED();
+}
+bool CCDrawNode::drawRect(class CCRect const &, struct _ccColor4F const &, float, struct _ccColor4F const &) {
+    ROB_UNIMPLEMENTED();
+}
+void CCDrawNode::enableDrawArea(class CCRect &) {
+    ROB_UNIMPLEMENTED();
 }
 
 NS_CC_END

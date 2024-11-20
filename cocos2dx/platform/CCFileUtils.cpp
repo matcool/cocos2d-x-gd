@@ -826,7 +826,6 @@ void cocos2d::CCFileUtils::removeFullPath(char const *) {
 }
 std::string cocos2d::CCFileUtils::getWritablePath2(void) {
     ROB_UNIMPLEMENTED();
-    std::abort();
 }
 bool cocos2d::CCFileUtils::shouldUseHD(void) {
     ROB_UNIMPLEMENTED();
@@ -834,7 +833,6 @@ bool cocos2d::CCFileUtils::shouldUseHD(void) {
 }
 std::string cocos2d::CCFileUtils::addSuffix(std::string, std::string) {
     ROB_UNIMPLEMENTED();
-    std::abort();
 }
 
 NS_CC_END
