@@ -363,7 +363,6 @@ if (MSVC)
 else()
 	target_compile_options(libcocos2d PRIVATE -Wno-deprecated-declarations)
 endif()
-# target_compile_definitions(libcocos2d PRIVATE HAVE_STRUCT_TIMESPEC CC_ENABLE_BOX2D_INTEGRATION COCOS2D_DEBUG=1)
 target_compile_definitions(libcocos2d PUBLIC
 	CC_TARGET_OS_WIN32=1
 	GEODE_IS_MEMBER_TEST=1
@@ -382,4 +381,8 @@ if (PROJECT_IS_TOP_LEVEL)
 	add_subdirectory(mat-sample)
 
 	install(TARGETS libcocos2d RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/dlls)
+
+	if (DEFINED ENV{GD_INSTALL_PATH})
+		install(TARGETS libcocos2d RUNTIME DESTINATION $ENV{GD_INSTALL_PATH})
+	endif()
 endif()
