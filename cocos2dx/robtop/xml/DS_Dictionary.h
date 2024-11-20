@@ -7,7 +7,7 @@
 
 class CC_DLL DS_Dictionary {
 public:
-	// pugi::xml_document doc;
+	pugi::xml_document doc;
 	gd::vector<pugi::xml_node> dictTree;
 	bool compatible;
 
@@ -20,7 +20,7 @@ public:
 
 public:
 	DS_Dictionary();
-	~DS_Dictionary() {}
+	~DS_Dictionary();
     GEODE_CUSTOM_CONSTRUCTOR_BEGIN(DS_Dictionary)
 
 	static void copyFile(const char*, const char*);
@@ -82,7 +82,7 @@ public:
 	void setArrayForKey(const char*, cocos2d::CCArray*);
 	void setBoolMapForKey(const char*, gd::map<gd::string, bool>&);
 	void setSubDictForKey(const char*);
-	void setSubDictForKey(const char*, bool, bool);
+	void setSubDictForKey(const char*, bool, bool unk = false);
 	void setDictForKey(const char*, cocos2d::CCDictionary*);
 	void setObjectForKey(const char*, cocos2d::CCObject*);
 

@@ -169,6 +169,8 @@ cocos2dx/cocos2d.cpp
 cocos2dx/robtop/keyboard_dispatcher/CCKeyboardDispatcher.cpp
 cocos2dx/robtop/mouse_dispatcher/CCMouseDispatcher.cpp
 cocos2dx/robtop/xml/ObjectDecoder.cpp
+cocos2dx/robtop/xml/DS_Dictionary.cpp
+cocos2dx/robtop/xml/pugixml.cpp
 
 # extensions/AssetsManager/AssetsManager.cpp
 # extensions/CCBReader/CCBAnimationManager.cpp

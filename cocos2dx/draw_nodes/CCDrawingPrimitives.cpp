@@ -536,4 +536,12 @@ void ccDrawLines(const CCPoint* lines, unsigned int count) {
     ROB_UNIMPLEMENTED();
 }
 
+void ccDrawCircleSegment(CCPoint const&, float, float, float, unsigned int, bool, float, float) {
+    ROB_UNIMPLEMENTED();
+}
+
+void ccDrawFilledCircle(const CCPoint&, float, float, unsigned int) {
+    ROB_UNIMPLEMENTED();
+}
+
 NS_CC_END
