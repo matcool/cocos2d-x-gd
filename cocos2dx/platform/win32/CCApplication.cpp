@@ -37,6 +37,8 @@ int CCApplication::run()
     this->setupVerticalSync();
     this->updateVerticalSync();
 
+    this->applicationDidFinishLaunching();
+
     auto* egl = CCEGLView::sharedOpenGLView();
     auto* dir = CCDirector::sharedDirector();
 
@@ -48,7 +50,6 @@ int CCApplication::run()
     }
 
     dir->end();
-    egl->end();
 
     // // Main message loop:
     // MSG msg;
