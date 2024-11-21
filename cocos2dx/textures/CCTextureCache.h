@@ -60,6 +60,7 @@ public:
 
 
     CCDictionary* m_pTextures;
+    bool m_unkAsyncBool;
     //pthread_mutex_t                *m_pDictLock;
 
 

@@ -117,6 +117,13 @@ public:
     }
     //314
 
+    inline constexpr bool operator==(const CCPoint& right) const {
+        return this->equals(right);
+    }
+    inline constexpr bool operator!=(const CCPoint& right) const {
+        return !this->equals(right);
+    }
+
     /**
      * @lua NA
      */
@@ -528,6 +535,13 @@ public:
 /* The "zero" rectangle -- equivalent to CCRectMake(0, 0, 0, 0). */ 
 // const CCRect CCRectZero = CCRectMake(0,0,0,0);
 #define CCRectZero CCRectMake(0,0,0,0)
+
+/** Helper macro that creates a CCPoint
+ @return CCPoint
+ @since v0.7.2
+ */
+#define ccp(x, y) cocos2d::CCPointMake((float)(x), (float)(y))
+
 
 // end of data_structure group
 /// @}

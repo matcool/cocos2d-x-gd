@@ -391,8 +391,11 @@ void CCTextureCache::addImageAsyncCallBack(float dt)
     }
 }
 
-void CCTextureCache::prepareAsyncLoading(void) {
-    ROB_UNIMPLEMENTED();
+void CCTextureCache::prepareAsyncLoading() {
+    if (!m_unkAsyncBool) {
+        m_unkAsyncBool = true;
+        this->addImageAsync("nofile", nullptr, nullptr, 0, kCCTexture2DPixelFormat_Default);
+    }
 }
 
 CCTexture2D * CCTextureCache::addImage(const char * path, bool)

@@ -60,3 +60,12 @@ namespace matdash {
 }
 
 static matdash::Console console;
+
+void impl_ROB_UNIMPLEMENTED(std::source_location loc) {
+    std::stringstream ss;
+    ss << "Unimplemented function " << loc.function_name() << " at " << loc.file_name() << ":" << loc.line();
+    auto str = ss.str();
+    CCLOG("%s", str.c_str());
+    cocos2d::CCMessageBox(str.c_str(), "Unimplemented function");
+    std::abort();
+}

@@ -180,7 +180,7 @@ public:
 
     void makeBorderlessTop();
 
-protected:
+public:
     // @note unknown members here
     uint8_t m_unkPad[8];
     bool m_bCaptured;

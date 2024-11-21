@@ -3,11 +3,7 @@
 #include "CCDirector.h"
 #include <algorithm>
 #include "platform/CCFileUtils.h"
-/**
-@brief    This function change the PVRFrame show/hide setting in register.
-@param  bEnable If true show the PVRFrame window, otherwise hide.
-*/
-static void PVRFrameEnableControlWindow(bool bEnable);
+#include <robtop/mouse_dispatcher/CCMouseDispatcher.h>
 
 NS_CC_BEGIN
 
@@ -184,7 +180,21 @@ void CCApplication::toggleMouseControl(bool) {
 }
 
 void CCApplication::updateMouseControl() {
-    ROB_UNIMPLEMENTED();
+    auto* egl = CCEGLView::sharedOpenGLView();
+    auto* dir = CCDirector::sharedDirector();
+    if (!egl->getShouldHideCursor() && !egl->getCursorLocked()) {
+        if (m_obRightThumb != ccp(0, 0)) {
+            dir->getMouseDispatcher()->dispatchScrollMSG(m_obRightThumb.x, -m_obRightThumb.y);
+        }
+        if (m_obLeftThumb != ccp(0, 0)) {
+            this->moveMouse(m_obLeftThumb.x, m_obLeftThumb.y);
+        }
+    }
+}
+
+void CCApplication::moveMouse(int relX, int relY) {
+    auto* egl = CCEGLView::sharedOpenGLView();
+    glfwSetCursorPos(egl->getWindow(), egl->getMousePosition().x + relX, egl->getMousePosition().y + relY);
 }
 
 NS_CC_END

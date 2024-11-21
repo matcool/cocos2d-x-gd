@@ -11,6 +11,7 @@ public:
 
 // @note RobTop Addition
 class CC_DLL ObjectDecoder : public cocos2d::CCNode {
+	void* m_unkPtr = nullptr;
 public:
 	ObjectDecoder();
 	~ObjectDecoder() {}

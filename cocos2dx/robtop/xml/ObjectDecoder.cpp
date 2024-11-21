@@ -1,11 +1,10 @@
 #include "ObjectDecoder.h"
 
 bool ObjectDecoder::init() {
-    ROB_UNIMPLEMENTED();
+    return CCNode::init();
 }
 
 ObjectDecoder::ObjectDecoder() {
-    
 }
 
 ObjectDecoder* ObjectDecoder::sharedDecoder() {

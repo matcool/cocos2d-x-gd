@@ -195,5 +195,8 @@ std::string CCFileUtilsWin32::getWritablePath2() {
     ROB_UNIMPLEMENTED();
 }
 
-void CCFileUtils::setAndroidPath(std::string) {}
+void CCFileUtils::setAndroidPath(std::string str) {
+    static_assert(_ITERATOR_DEBUG_LEVEL == 0, "Only works in release mode");
+    CCLOG("str is %s", str.c_str());
+}
 NS_CC_END

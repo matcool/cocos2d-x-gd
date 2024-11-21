@@ -282,4 +282,15 @@ void CCEGLView::toggleLockCursor(bool) {
     ROB_UNIMPLEMENTED();
 }
 
+bool CCEGLView::getShouldHideCursor() const {
+    return m_bShouldHideCursor;
+}
+bool CCEGLView::getCursorLocked() const {
+    return m_bCursorLocked;
+}
+GLFWwindow* CCEGLView::getWindow() const {
+    return m_pMainWindow;
+}
+
+
 NS_CC_END

@@ -74,7 +74,7 @@ public:
     void logTimeElapsed(gd::string);
 
     // @note RobTop Addition
-    void moveMouse(int, int);
+    void moveMouse(int relX, int relY);
 
     // @note RobTop Addition
     void shutdownApplication();

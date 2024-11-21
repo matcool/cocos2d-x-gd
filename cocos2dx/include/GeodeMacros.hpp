@@ -1,5 +1,6 @@
 #pragma once
 
+
 #define GEODE_FRIEND_MODIFY
 
 #define GEODE_CUSTOM_CONSTRUCTOR_BEGIN(...)
@@ -10,7 +11,11 @@
 // namespace gd = std;
 #define gd std
 
-#define ROB_UNIMPLEMENTED() { \
-    CCLOG("Unimplemented function %s at %s:%d", __PRETTY_FUNCTION__, __FILE__, __LINE__); \
-    std::abort(); \
-}
+#if defined(__cplusplus)
+
+#include <source_location>
+[[noreturn]] void impl_ROB_UNIMPLEMENTED(std::source_location = std::source_location::current());
+
+#define ROB_UNIMPLEMENTED() impl_ROB_UNIMPLEMENTED()
+
+#endif
