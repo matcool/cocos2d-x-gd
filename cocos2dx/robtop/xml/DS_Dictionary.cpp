@@ -10,6 +10,8 @@ using namespace pugi;
 
 #define DS_DEBUG_MODE 0
 
+#define COMPAT_STR(str) (m_compatible ? str : (const char[2]){str[0], 0})
+
 //Constructor
 DS_Dictionary::DS_Dictionary()
 {
@@ -180,9 +182,9 @@ bool DS_Dictionary::saveRootSubDictToFile(const char* fileName)
 
 bool DS_Dictionary::stepIntoSubDictWithKey(const char* key)
 {
-    for(xml_node node = dictTree.back().child(m_compatible ? "key" : "k"); node; node = node.next_sibling(m_compatible ? "key" : "k"))
+    for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
     {
-        if(node.child_value() == string(key) && node.next_sibling() == node.next_sibling(m_compatible ? "dict" : "d"))
+        if(node.child_value() == string(key) && node.next_sibling() == node.next_sibling(COMPAT_STR("dict")))
         {
             dictTree.push_back(node.next_sibling());
             return true;
@@ -252,7 +254,7 @@ unsigned int DS_Dictionary::getIndexOfKey(const char* key)
 {
     unsigned int count = 0;
 
-    for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+    for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
     {
         if(node.child_value() == string(key))
         {
@@ -268,7 +270,7 @@ unsigned int DS_Dictionary::getIndexOfKeyWithClosestAlphaNumericalMatch(const ch
 {
     unsigned int count = 0;
 
-    for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+    for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
     {
         if(alphaNumericallyLessThan(key, node.child_value()))
         {
@@ -284,7 +286,7 @@ void DS_Dictionary::removeKey(unsigned int index)
 {
     unsigned int count = 0;
 
-    for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+    for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
     {
         if(count == index)
         { 
@@ -300,7 +302,7 @@ void DS_Dictionary::removeKey(unsigned int index)
 void DS_Dictionary::removeKey(const char* key)
 {
     //Check to see if the value already exists withing the current sub dict
-    for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+    for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
     {
         if(node.child_value() == string(key))
         {
@@ -314,7 +316,7 @@ void DS_Dictionary::removeKey(const char* key)
 
 void DS_Dictionary::removeAllKeys()
 {
-    while(xml_node node = dictTree.back().child("key"))
+    while(xml_node node = dictTree.back().child(COMPAT_STR("key")))
     {
         dictTree.back().remove_child(node.next_sibling());
         dictTree.back().remove_child(node);
@@ -323,9 +325,9 @@ void DS_Dictionary::removeAllKeys()
 
 int DS_Dictionary::getIntegerForKey(const char* key)
 {
-    for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+    for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
     {
-        if(node.child_value() == string(key) && (node.next_sibling() == node.next_sibling("integer") || node.next_sibling() == node.next_sibling("real")))
+        if(node.child_value() == string(key) && (node.next_sibling() == node.next_sibling(COMPAT_STR("integer")) || node.next_sibling() == node.next_sibling(COMPAT_STR("real"))))
         {
             return strtol(node.next_sibling().child_value(), NULL, 10);
         }
@@ -337,12 +339,12 @@ int DS_Dictionary::getIntegerForKey(const char* key)
 
 bool DS_Dictionary::getBoolForKey(const char* key)
 {
-    for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+    for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
     {
-        if(node.child_value() == string(key) && (node.next_sibling() == node.next_sibling("true") || node.next_sibling() == node.next_sibling("false")))
+        if(node.child_value() == string(key) && (node.next_sibling() == node.next_sibling(COMPAT_STR("true")) || node.next_sibling() == node.next_sibling(COMPAT_STR("false"))))
         {
-            if(node.next_sibling() == node.next_sibling("true")){ return true; }
-            if(node.next_sibling() == node.next_sibling("false")){ return false; }
+            if(node.next_sibling() == node.next_sibling(COMPAT_STR("true"))){ return true; }
+            if(node.next_sibling() == node.next_sibling(COMPAT_STR("false"))){ return false; }
         }
     }
 
@@ -352,9 +354,9 @@ bool DS_Dictionary::getBoolForKey(const char* key)
 
 float DS_Dictionary::getFloatForKey(const char* key)
 {
-    for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+    for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
     {
-        if(node.child_value() == string(key) && (node.next_sibling() == node.next_sibling("integer") || node.next_sibling() == node.next_sibling("real")))
+        if(node.child_value() == string(key) && (node.next_sibling() == node.next_sibling(COMPAT_STR("integer")) || node.next_sibling() == node.next_sibling(COMPAT_STR("real"))))
         {
             return strtod(node.next_sibling().child_value(), NULL);
         }
@@ -366,9 +368,9 @@ float DS_Dictionary::getFloatForKey(const char* key)
 
 string DS_Dictionary::getStringForKey(const char* key)
 {
-    for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+    for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
     {
-        if(node.child_value() == string(key) && node.next_sibling() == node.next_sibling("string"))
+        if(node.child_value() == string(key) && node.next_sibling() == node.next_sibling(COMPAT_STR("string")))
         {
             return node.next_sibling().child_value();
         }
@@ -380,9 +382,9 @@ string DS_Dictionary::getStringForKey(const char* key)
 
 CCPoint DS_Dictionary::getVec2ForKey(const char* key)
 {
-    for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+    for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
     {
-        if(node.child_value() == string(key) && node.next_sibling() == node.next_sibling("string"))
+        if(node.child_value() == string(key) && node.next_sibling() == node.next_sibling(COMPAT_STR("string")))
         {
             CCPoint vec2;
 
@@ -405,9 +407,9 @@ CCPoint DS_Dictionary::getVec2ForKey(const char* key)
 
 CCRect DS_Dictionary::getRectForKey(const char* key)
 {
-    for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+    for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
     {
-        if(node.child_value() == string(key) && node.next_sibling() == node.next_sibling("string"))
+        if(node.child_value() == string(key) && node.next_sibling() == node.next_sibling(COMPAT_STR("string")))
         {
             CCRect rect;
 
@@ -430,9 +432,9 @@ CCRect DS_Dictionary::getRectForKey(const char* key)
 
 vector<string> DS_Dictionary::getStringArrayForKey(const char* key)
 {
-    for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+    for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
     {
-        if(node.child_value() == string(key) && node.next_sibling() == node.next_sibling("array"))
+        if(node.child_value() == string(key) && node.next_sibling() == node.next_sibling(COMPAT_STR("array")))
         {
             vector<string> value;
 
@@ -498,20 +500,20 @@ void DS_Dictionary::setSubDictForKey(const char* key, bool alphaNumericallySorte
     bool appendKey = true;
     if(alphaNumericallySorted)
     {
-        for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+        for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
         {
             if(!alphaNumericallyLessThan(node.child_value(), key))
             {
-                keyNode = dictTree.back().insert_child_before("key", node);
+                keyNode = dictTree.back().insert_child_before(COMPAT_STR("key"), node);
                 appendKey = false;
                 break;
             }
         }
     }
 
-    if(appendKey){ keyNode = dictTree.back().append_child("key"); }
+    if(appendKey){ keyNode = dictTree.back().append_child(COMPAT_STR("key")); }
     keyNode.append_child(node_pcdata).set_value(key);
-    dictTree.back().insert_child_after("dict", keyNode);
+    dictTree.back().insert_child_after(COMPAT_STR("dict"), keyNode);
 }
 
 void DS_Dictionary::setIntegerForKey(const char* key, int value){ setIntegerForKey(key, value, false); }
@@ -529,20 +531,20 @@ void DS_Dictionary::setIntegerForKey(const char* key, int value, bool alphaNumer
     bool appendKey = true;
     if(alphaNumericallySorted)
     {
-        for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+        for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
         {
             if(!alphaNumericallyLessThan(node.child_value(), key))
             {
-                keyNode = dictTree.back().insert_child_before("key", node);
+                keyNode = dictTree.back().insert_child_before(COMPAT_STR("key"), node);
                 appendKey = false;
                 break;
             }
         }
     }
 
-    if(appendKey){ keyNode = dictTree.back().append_child("key"); }
+    if(appendKey){ keyNode = dictTree.back().append_child(COMPAT_STR("key")); }
     keyNode.append_child(node_pcdata).set_value(key);
-    dictTree.back().insert_child_after("integer", keyNode).append_child(node_pcdata).set_value(stream.str().c_str());
+    dictTree.back().insert_child_after(COMPAT_STR("integer"), keyNode).append_child(node_pcdata).set_value(stream.str().c_str());
 }
 
 void DS_Dictionary::setBoolForKey(const char* key, bool value){ setBoolForKey(key, value, false); }
@@ -556,21 +558,21 @@ void DS_Dictionary::setBoolForKey(const char* key, bool value, bool alphaNumeric
     bool appendKey = true;
     if(alphaNumericallySorted)
     {
-        for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+        for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
         {
             if(!alphaNumericallyLessThan(node.child_value(), key))
             {
-                keyNode = dictTree.back().insert_child_before("key", node);
+                keyNode = dictTree.back().insert_child_before(COMPAT_STR("key"), node);
                 appendKey = false;
                 break;
             }
         }
     }
 
-    if(appendKey){ keyNode = dictTree.back().append_child("key"); }
+    if(appendKey){ keyNode = dictTree.back().append_child(COMPAT_STR("key")); }
     keyNode.append_child(node_pcdata).set_value(key);
-    if(value){ dictTree.back().insert_child_after("true", keyNode); }
-    else     { dictTree.back().insert_child_after("false", keyNode); }
+    if(value){ dictTree.back().insert_child_after(COMPAT_STR("true"), keyNode); }
+    else     { dictTree.back().insert_child_after(COMPAT_STR("false"), keyNode); }
 }
 
 void DS_Dictionary::setFloatForKey(const char* key, float value){ setFloatForKey(key, value, false); }
@@ -588,20 +590,20 @@ void DS_Dictionary::setFloatForKey(const char* key, float value, bool alphaNumer
     bool appendKey = true;
     if(alphaNumericallySorted)
     {
-        for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+        for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
         {
             if(!alphaNumericallyLessThan(node.child_value(), key))
             {
-                keyNode = dictTree.back().insert_child_before("key", node);
+                keyNode = dictTree.back().insert_child_before(COMPAT_STR("key"), node);
                 appendKey = false;
                 break;
             }
         }
     }
 
-    if(appendKey){ keyNode = dictTree.back().append_child("key"); }
+    if(appendKey){ keyNode = dictTree.back().append_child(COMPAT_STR("key")); }
     keyNode.append_child(node_pcdata).set_value(key);
-    dictTree.back().insert_child_after("real", keyNode).append_child(node_pcdata).set_value(stream.str().c_str());
+    dictTree.back().insert_child_after(COMPAT_STR("real"), keyNode).append_child(node_pcdata).set_value(stream.str().c_str());
 }
 
 void DS_Dictionary::setStringForKey(const char* key, const string& value){ setStringForKey(key, value, false); }
@@ -615,20 +617,20 @@ void DS_Dictionary::setStringForKey(const char* key, const string& value, bool a
     bool appendKey = true;
     if(alphaNumericallySorted)
     {
-        for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+        for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
         {
             if(!alphaNumericallyLessThan(node.child_value(), key))
             {
-                keyNode = dictTree.back().insert_child_before("key", node);
+                keyNode = dictTree.back().insert_child_before(COMPAT_STR("key"), node);
                 appendKey = false;
                 break;
             }
         }
     }
 
-    if(appendKey){ keyNode = dictTree.back().append_child("key"); }
+    if(appendKey){ keyNode = dictTree.back().append_child(COMPAT_STR("key")); }
     keyNode.append_child(node_pcdata).set_value(key);
-    dictTree.back().insert_child_after("string", keyNode).append_child(node_pcdata).set_value(value.c_str());
+    dictTree.back().insert_child_after(COMPAT_STR("string"), keyNode).append_child(node_pcdata).set_value(value.c_str());
 }
 
 void DS_Dictionary::setVec2ForKey(const char* key, const CCPoint& value){ setVec2ForKey(key, value, false); }
@@ -650,20 +652,20 @@ void DS_Dictionary::setVec2ForKey(const char* key, const CCPoint& value, bool al
     bool appendKey = true;
     if(alphaNumericallySorted)
     {
-        for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+        for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
         {
             if(!alphaNumericallyLessThan(node.child_value(), key))
             {
-                keyNode = dictTree.back().insert_child_before("key", node);
+                keyNode = dictTree.back().insert_child_before(COMPAT_STR("key"), node);
                 appendKey = false;
                 break;
             }
         }
     }
 
-    if(appendKey){ keyNode = dictTree.back().append_child("key"); }
+    if(appendKey){ keyNode = dictTree.back().append_child(COMPAT_STR("key")); }
     keyNode.append_child(node_pcdata).set_value(key);
-    dictTree.back().insert_child_after("string", keyNode).append_child(node_pcdata).set_value(stream.str().c_str());
+    dictTree.back().insert_child_after(COMPAT_STR("string"), keyNode).append_child(node_pcdata).set_value(stream.str().c_str());
 }
 
 void DS_Dictionary::setRectForKey(const char* key, const CCRect& value){ setRectForKey(key, value, false); }
@@ -689,20 +691,20 @@ void DS_Dictionary::setRectForKey(const char* key, const CCRect& value, bool alp
     bool appendKey = true;
     if(alphaNumericallySorted)
     {
-        for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+        for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
         {
             if(!alphaNumericallyLessThan(node.child_value(), key))
             {
-                keyNode = dictTree.back().insert_child_before("key", node);
+                keyNode = dictTree.back().insert_child_before(COMPAT_STR("key"), node);
                 appendKey = false;
                 break;
             }
         }
     }
 
-    if(appendKey){ keyNode = dictTree.back().append_child("key"); }
+    if(appendKey){ keyNode = dictTree.back().append_child(COMPAT_STR("key")); }
     keyNode.append_child(node_pcdata).set_value(key);
-    dictTree.back().insert_child_after("string", keyNode).append_child(node_pcdata).set_value(stream.str().c_str());
+    dictTree.back().insert_child_after(COMPAT_STR("string"), keyNode).append_child(node_pcdata).set_value(stream.str().c_str());
 }
 
 void DS_Dictionary::setStringArrayForKey(const char* key, const vector<string>& value){ setStringArrayForKey(key, value, false); }
@@ -717,25 +719,25 @@ void DS_Dictionary::setStringArrayForKey(const char* key, const vector<string>& 
     bool appendKey = true;
     if(alphaNumericallySorted)
     {
-        for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+        for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
         {
             if(!alphaNumericallyLessThan(node.child_value(), key))
             {
-                keyNode = dictTree.back().insert_child_before("key", node);
+                keyNode = dictTree.back().insert_child_before(COMPAT_STR("key"), node);
                 appendKey = false;
                 break;
             }
         }
     }
 
-    if(appendKey){ keyNode = dictTree.back().append_child("key"); }
+    if(appendKey){ keyNode = dictTree.back().append_child(COMPAT_STR("key")); }
     keyNode.append_child(node_pcdata).set_value(key);
-    arrayNode = dictTree.back().insert_child_after("array", keyNode);
+    arrayNode = dictTree.back().insert_child_after(COMPAT_STR("array"), keyNode);
 
     //Fill the array
     for(int i=0; i<value.size(); i++)
     {
-        arrayNode.append_child("string").append_child(node_pcdata).set_value(value[i].c_str());
+        arrayNode.append_child(COMPAT_STR("string")).append_child(node_pcdata).set_value(value[i].c_str());
     }
 }
 
@@ -751,20 +753,20 @@ void DS_Dictionary::setVec2ArrayForKey(const char* key, const vector<CCPoint>& v
     bool appendKey = true;
     if(alphaNumericallySorted)
     {
-        for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+        for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
         {
             if(!alphaNumericallyLessThan(node.child_value(), key))
             {
-                keyNode = dictTree.back().insert_child_before("key", node);
+                keyNode = dictTree.back().insert_child_before(COMPAT_STR("key"), node);
                 appendKey = false;
                 break;
             }
         }
     }
 
-    if(appendKey){ keyNode = dictTree.back().append_child("key"); }
+    if(appendKey){ keyNode = dictTree.back().append_child(COMPAT_STR("key")); }
     keyNode.append_child(node_pcdata).set_value(key);
-    arrayNode = dictTree.back().insert_child_after("array", keyNode);
+    arrayNode = dictTree.back().insert_child_after(COMPAT_STR("array"), keyNode);
 
     //Fill the array
     for(int i=0; i<value.size(); i++)
@@ -777,7 +779,7 @@ void DS_Dictionary::setVec2ArrayForKey(const char* key, const vector<CCPoint>& v
         stream << value[i].y;
         stream << "}";
 
-        arrayNode.append_child("string").append_child(node_pcdata).set_value(stream.str().c_str());
+        arrayNode.append_child(COMPAT_STR("string")).append_child(node_pcdata).set_value(stream.str().c_str());
     }
 }
 
@@ -793,20 +795,20 @@ void DS_Dictionary::setRectArrayForKey(const char* key, const vector<CCRect>& va
     bool appendKey = true;
     if(alphaNumericallySorted)
     {
-        for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+        for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
         {
             if(!alphaNumericallyLessThan(node.child_value(), key))
             {
-                keyNode = dictTree.back().insert_child_before("key", node);
+                keyNode = dictTree.back().insert_child_before(COMPAT_STR("key"), node);
                 appendKey = false;
                 break;
             }
         }
     }
 
-    if(appendKey){ keyNode = dictTree.back().append_child("key"); }
+    if(appendKey){ keyNode = dictTree.back().append_child(COMPAT_STR("key")); }
     keyNode.append_child(node_pcdata).set_value(key);
-    arrayNode = dictTree.back().insert_child_after("array", keyNode);
+    arrayNode = dictTree.back().insert_child_after(COMPAT_STR("array"), keyNode);
 
     //Fill the array
     for(int i=0; i<value.size(); i++)
@@ -823,7 +825,7 @@ void DS_Dictionary::setRectArrayForKey(const char* key, const vector<CCRect>& va
         stream << value[i].size.height;
         stream << "}}";
 
-        arrayNode.append_child("string").append_child(node_pcdata).set_value(stream.str().c_str());
+        arrayNode.append_child(COMPAT_STR("string")).append_child(node_pcdata).set_value(stream.str().c_str());
     }
 }
 
