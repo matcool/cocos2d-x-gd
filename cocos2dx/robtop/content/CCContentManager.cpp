@@ -1,4 +1,5 @@
 #include "CCContentManager.h"
+#include "robtop/xml/DS_Dictionary.h"
 
 using namespace cocos2d;
 
@@ -20,8 +21,15 @@ bool CCContentManager::init() {
     return true;
 }
 
-cocos2d::CCDictionary* CCContentManager::addDict(const char* dict, bool unk) {
-    ROB_UNIMPLEMENTED();
+CCDictionary* CCContentManager::addDict(const char* filePath, bool unk) {
+    auto* obj = static_cast<CCDictionary*>(m_pDicts->objectForKey(filePath));
+    if (obj == nullptr) {
+        auto* dsDict = new DS_Dictionary();
+        dsDict->loadRootSubDictFromFile(filePath);
+        obj = dsDict->getDictForKey(nullptr, false);
+        m_pDicts->setObject(obj, filePath);
+    }
+    return obj;
 }
 cocos2d::CCDictionary* CCContentManager::addDictDS(const char* dict) {
     ROB_UNIMPLEMENTED();

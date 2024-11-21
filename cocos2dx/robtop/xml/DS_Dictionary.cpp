@@ -158,6 +158,8 @@ bool DS_Dictionary::loadRootSubDictFromFile(const char* fileName)
         return false;
     }
 
+    m_compatible = doc.child("plist").attribute("gjver").as_int() < 2;
+
     //Set root dictTree node
     dictTree.back() = doc.child("plist").child("dict");
     return true;
@@ -178,9 +180,9 @@ bool DS_Dictionary::saveRootSubDictToFile(const char* fileName)
 
 bool DS_Dictionary::stepIntoSubDictWithKey(const char* key)
 {
-    for(xml_node node = dictTree.back().child("key"); node; node = node.next_sibling("key"))
+    for(xml_node node = dictTree.back().child(m_compatible ? "key" : "k"); node; node = node.next_sibling(m_compatible ? "key" : "k"))
     {
-        if(node.child_value() == string(key) && node.next_sibling() == node.next_sibling("dict"))
+        if(node.child_value() == string(key) && node.next_sibling() == node.next_sibling(m_compatible ? "dict" : "d"))
         {
             dictTree.push_back(node.next_sibling());
             return true;
@@ -864,6 +866,8 @@ bool DS_Dictionary::loadRootSubDictFromString(std::string const& str) {
         return false;
     }
 
+    m_compatible = doc.child("plist").attribute("gjver").as_int() < 2;
+
     dictTree.back() = doc.child("plist").child("dict");
     return true;
 }
@@ -884,7 +888,11 @@ void DS_Dictionary::setArrayForKey(char const *, CCArray*) {
 CCArray* DS_Dictionary::getArrayForKey(char const *, bool) {
     ROB_UNIMPLEMENTED();
 }
-CCDictionary* DS_Dictionary::getDictForKey(char const *, bool) {
+CCDictionary* DS_Dictionary::getDictForKey(char const* key, bool unk) {
+    if (key == nullptr || unk || stepIntoSubDictWithKey(key)) {
+        auto* dict = CCDictionary::create();
+        // finish this..
+    }
     ROB_UNIMPLEMENTED();
 }
 void DS_Dictionary::setDictForKey(char const *, CCDictionary*) {
