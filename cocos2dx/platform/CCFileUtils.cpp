@@ -732,7 +732,6 @@ void CCFileUtils::addSearchPath(const char* path_)
     std::string path(path_);
     if (!isAbsolutePath(path))
     { // Not an absolute path
-        CCLOG("relative path, prefix is %s", m_strDefaultResRootPath.c_str());
         strPrefix = m_strDefaultResRootPath;
     }
     path = strPrefix + path;
@@ -740,6 +739,7 @@ void CCFileUtils::addSearchPath(const char* path_)
     {
         path += "/";
     }
+    CCLOG("addSearchPath: %s", path.c_str());
     m_searchPathArray.push_back(path);
 }
 

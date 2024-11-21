@@ -835,12 +835,39 @@ void DS_Dictionary::addBoolValuesToMapForKeySpecial(std::map<std::string, bool>&
 void DS_Dictionary::copyFile(char const *, char const *) {
     ROB_UNIMPLEMENTED();
 }
-bool DS_Dictionary::loadRootSubDictFromCompressedFile(char const *) {
-    ROB_UNIMPLEMENTED();
+
+bool DS_Dictionary::loadRootSubDictFromCompressedFile(char const* path) {
+    CCLOG("DS_Dictionary::loadRootSubDictFromCompressedFile: %s", path);
+    std::string dir = CCFileUtils::sharedFileUtils()->getWritablePath();
+    auto fullPath = dir + path;
+    CCLOG("%s", fullPath.c_str());
+
+    unsigned long size;
+    auto* data = CCFileUtils::sharedFileUtils()->getFileData(fullPath.c_str(), "rb", &size);
+    if (!data) return false;
+
+    auto decoded = ZipUtils::decompressString2(data, true, size, 11);
+    delete[] data;
+
+    return loadRootSubDictFromString(decoded);
 }
-bool DS_Dictionary::loadRootSubDictFromString(std::string const &) {
-    ROB_UNIMPLEMENTED();
+
+bool DS_Dictionary::loadRootSubDictFromString(std::string const& str) {
+    if (str.empty()) return false;
+
+    dictTree.clear();
+    dictTree.push_back(xml_node());
+
+    xml_parse_result result = doc.load(str.c_str());
+
+    if (!result) {
+        return false;
+    }
+
+    dictTree.back() = doc.child("plist").child("dict");
+    return true;
 }
+
 bool DS_Dictionary::saveRootSubDictToCompressedFile(char const *) {
     ROB_UNIMPLEMENTED();
 }

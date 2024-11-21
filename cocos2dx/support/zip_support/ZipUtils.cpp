@@ -397,7 +397,7 @@ int ZipUtils::ccInflateCCZFile(const char *path, unsigned char **out)
     }
     
     unsigned long destlen = len;
-    unsigned long source = (unsigned long) compressed + sizeof(*header);
+    uintptr_t source = (uintptr_t)compressed + sizeof(*header);
     int ret = uncompress(*out, &destlen, (Bytef*)source, fileLen - sizeof(*header) );
     
     delete [] compressed;
@@ -594,7 +594,24 @@ int ZipUtils::ccDeflateMemory(unsigned char*, unsigned int, unsigned char**) { R
 int ZipUtils::ccDeflateMemoryWithHint(unsigned char*, unsigned int, unsigned char**, unsigned int) { ROB_UNIMPLEMENTED(); }
 std::string ZipUtils::compressString(std::string const&, bool, int) { ROB_UNIMPLEMENTED(); }
 std::string ZipUtils::decompressString(std::string const&, bool, int) { ROB_UNIMPLEMENTED(); }
-std::string ZipUtils::decompressString2(unsigned char*, bool, int, int) { ROB_UNIMPLEMENTED(); }
+std::string ZipUtils::decompressString2(unsigned char* data, bool encrypted, int size, int key) {
+    if (!data || key <= 0) return "";
+
+    unsigned long outSize = 0;
+    unsigned char* out = nullptr;
+    outSize = ccInflateMemory(data, size, &out);
+    if (!out || outSize == 0) return "";
+
+    if (encrypted) {
+        for (size_t i = 0; i < outSize; ++i) {
+            out[i] ^= key;
+        }
+    }
+
+    std::string result(reinterpret_cast<char*>(out), outSize);
+    delete[] out;
+    return result;
+}
 std::string ZipUtils::encryptDecrypt(std::string const&, int) { ROB_UNIMPLEMENTED(); }
 std::string ZipUtils::encryptDecryptWKey(std::string const&, std::string) { ROB_UNIMPLEMENTED(); }
 unsigned char ZipUtils::hexToChar(const std::string&) { ROB_UNIMPLEMENTED(); }

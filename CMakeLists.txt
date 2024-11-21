@@ -355,6 +355,7 @@ ${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/jpeg.l
 ${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/glfw3.lib
 
 Winmm.lib
+legacy_stdio_definitions.lib
 )
 
 # disable the "needs to have dll-interface" warning
@@ -374,6 +375,10 @@ target_compile_definitions(libcocos2d PRIVATE
 	COCOS2D_DEBUG=1
 	_USRDLL=1
 )
+
+add_definitions(-D_HAS_ITERATOR_DEBUGGING=0)
+add_compile_definitions(_HAS_ITERATOR_DEBUGGING=0)
+target_compile_definitions(libcocos2d PUBLIC _HAS_ITERATOR_DEBUGGING=0)
 
 target_link_options(libcocos2d PRIVATE -Wl,/errorlimit:0)
 

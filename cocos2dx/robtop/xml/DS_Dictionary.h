@@ -27,7 +27,7 @@ public:
 
 	cocos2d::CCObject* decodeObjectForKey(const char*, bool, int);
 
-	bool loadRootSubDictFromFile(const char*);
+	bool loadRootSubDictFromFile(const char* fileName);
 	bool loadRootSubDictFromCompressedFile(const char*);
 	bool loadRootSubDictFromString(gd::string const&);
 

@@ -29,7 +29,6 @@ THE SOFTWARE.
 #include "../../platform/CCPlatformDefine.h"
 #include "../../platform/CCPlatformConfig.h"
 #include "../../include/ccMacros.h"
-#include "zipMacro.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 #include "../../platform/android/CCFileUtilsAndroid.h"
@@ -159,8 +158,8 @@ namespace cocos2d
         static int ccDeflateMemory(unsigned char*, unsigned int, unsigned char**);
         static int ccDeflateMemoryWithHint(unsigned char*, unsigned int, unsigned char**, unsigned int);
         static gd::string compressString(gd::string const&, bool, int);
-        static gd::string decompressString(gd::string const&, bool, int);
-        static gd::string decompressString2(unsigned char*, bool, int, int);
+        static gd::string decompressString(gd::string const& data, bool encrypted, int encKey);
+        static gd::string decompressString2(unsigned char* data, bool encrypted, int size, int encKey);
         static gd::string encryptDecrypt(gd::string const&, int);
         static gd::string encryptDecryptWKey(gd::string const&, gd::string);
         static unsigned char hexToChar(const gd::string&);
