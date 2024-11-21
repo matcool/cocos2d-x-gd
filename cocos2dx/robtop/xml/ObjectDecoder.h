@@ -11,7 +11,6 @@ public:
 
 // @note RobTop Addition
 class CC_DLL ObjectDecoder : public cocos2d::CCNode {
-	void* m_unkPtr = nullptr;
 public:
 	ObjectDecoder();
 	~ObjectDecoder() {}
@@ -22,6 +21,9 @@ public:
 	cocos2d::CCObject* getDecodedObject(int, DS_Dictionary*);
 
 	virtual bool init();
+
+	ObjectDecoderDelegate* getDelegate() const;
+	void setDelegate(ObjectDecoderDelegate* delegate);
 
 public:
 	ObjectDecoderDelegate* m_delegate;

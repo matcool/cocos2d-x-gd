@@ -11,6 +11,7 @@ using namespace pugi;
 #define DS_DEBUG_MODE 0
 
 #define COMPAT_STR(str) (m_compatible ? str : (const char[2]){str[0], 0})
+#define COMPAT_STR_SV(str) (m_compatible ? std::string_view(str, sizeof(str) - 1) : std::string_view((const char[2]){str[0], 0}, 1))
 
 //Constructor
 DS_Dictionary::DS_Dictionary()
@@ -325,10 +326,8 @@ void DS_Dictionary::removeAllKeys()
 
 int DS_Dictionary::getIntegerForKey(const char* key)
 {
-    for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key")))
-    {
-        if(node.child_value() == string(key) && (node.next_sibling() == node.next_sibling(COMPAT_STR("integer")) || node.next_sibling() == node.next_sibling(COMPAT_STR("real"))))
-        {
+    for(xml_node node = dictTree.back().child(COMPAT_STR("key")); node; node = node.next_sibling(COMPAT_STR("key"))) {
+        if (node.child_value() == std::string_view(key) && node.next_sibling().name() == COMPAT_STR_SV("integer")) {
             return strtol(node.next_sibling().child_value(), NULL, 10);
         }
     }
@@ -891,11 +890,48 @@ CCArray* DS_Dictionary::getArrayForKey(char const *, bool) {
     ROB_UNIMPLEMENTED();
 }
 CCDictionary* DS_Dictionary::getDictForKey(char const* key, bool unk) {
-    if (key == nullptr || unk || stepIntoSubDictWithKey(key)) {
+    if (key == nullptr || unk || this->stepIntoSubDictWithKey(key)) {
         auto* dict = CCDictionary::create();
-        // finish this..
+
+        for (auto node = dictTree.back().first_child(); node; node = node.next_sibling().next_sibling()) {
+            CCObject* object = nullptr;
+            if (node.next_sibling().name() == COMPAT_STR_SV("dict")) {
+                dictTree.push_back(node.next_sibling());
+                bool isArr = this->getBoolForKey("_isArr");
+                int cek = this->getIntegerForKey("kCEK");
+                if (cek == 0) {
+                    if (isArr) {
+                        object = this->getArrayForKey(node.child_value(), true);
+                    } else {
+                        object = this->getDictForKey(node.child_value(), true);
+                    }
+                } else {
+                    if (cek == -1) {
+                        // ??
+                        cek = this->getIntegerForKey("kCEK");
+                    }
+                    object = ObjectDecoder::sharedDecoder()->getDecodedObject(cek, this);
+                    stepOutOfSubDict();
+                }
+            } else if (node.next_sibling().name() == COMPAT_STR_SV("true")) {
+                object = CCString::create("1");
+            } else {
+                object = CCString::create(node.next_sibling().child_value());
+            }
+
+            if (object != nullptr) {
+                dict->setObject(object, node.child_value());
+            }
+        }
+
+        if (key != nullptr) {
+            this->stepOutOfSubDict();
+        }
+        return dict;
+    } else {
+        // im not sure this is what rob is actually doing
+        return CCDictionary::create();
     }
-    ROB_UNIMPLEMENTED();
 }
 void DS_Dictionary::setDictForKey(char const *, CCDictionary*) {
     ROB_UNIMPLEMENTED();
