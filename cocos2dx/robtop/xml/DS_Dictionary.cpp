@@ -152,11 +152,18 @@ bool DS_Dictionary::loadRootSubDictFromFile(const char* fileName)
     dictTree.clear();
     dictTree.push_back(xml_node());
 
-    //Open file
-    xml_parse_result result = doc.load_file(fileName);
+    auto* fileUtils = CCFileUtils::sharedFileUtils();
+    auto fullPath = fileUtils->fullPathForFilename(fileName);
 
-    if(!result)
-    {
+    //Open file
+    xml_parse_result result = doc.load_file(fullPath.c_str());
+
+    if (!result) {
+        auto writablePath = fileUtils->getWritablePath();
+        result = doc.load_file((writablePath + fileName).c_str());
+    }
+
+    if (!result) {
         if(DS_DEBUG_MODE){ printf("%s \n",string("DS_ENGINE:> :ERROR: FAILED TO PARSE XML FILE: ").append(fileName).append(": WITH ERROR: ").append(result.description()).c_str()); }
         return false;
     }

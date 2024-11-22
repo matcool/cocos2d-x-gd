@@ -38,6 +38,7 @@ THE SOFTWARE.
 #include "cocoa/CCArray.h"
 #include "cocoa/CCDictionary.h"
 #include <vector>
+#include "robtop/content/CCContentManager.h"
 
 using namespace std;
 
@@ -175,6 +176,8 @@ void CCSpriteFrameCache::addSpriteFramesWithDictionary(CCDictionary* dictionary,
             CCString * frameKey = new CCString(spriteFrameName);
 
             CCObject* pObj = NULL;
+            // rob did this 
+            #if 0
             CCARRAY_FOREACH(aliases, pObj)
             {
                 std::string oneAlias = ((CCString*)pObj)->getCString();
@@ -185,6 +188,7 @@ void CCSpriteFrameCache::addSpriteFramesWithDictionary(CCDictionary* dictionary,
 
                 m_pSpriteFramesAliases->setObject(frameKey, oneAlias.c_str());
             }
+            #endif
             frameKey->release();
             // create frame
             spriteFrame = new CCSpriteFrame();
@@ -232,10 +236,10 @@ void CCSpriteFrameCache::addSpriteFramesWithFile(const char *pszPlist)
 
     if (m_pLoadedFileNames->find(pszPlist) == m_pLoadedFileNames->end())
     {
-        std::string fullPath = CCFileUtils::sharedFileUtils()->fullPathForFilename(pszPlist);
-        CCDictionary *dict = CCDictionary::createWithContentsOfFileThreadSafe(fullPath.c_str());
 
-        string texturePath("");
+        auto* dict = CCContentManager::sharedManager()->addDict(pszPlist, false);
+
+        std::string texturePath;
 
         CCDictionary* metadataDict = (CCDictionary*)dict->objectForKey("metadata");
         if (metadataDict)
@@ -244,13 +248,7 @@ void CCSpriteFrameCache::addSpriteFramesWithFile(const char *pszPlist)
             texturePath = metadataDict->valueForKey("textureFileName")->getCString();
         }
 
-        if (! texturePath.empty())
-        {
-            // build texture path relative to plist file
-            texturePath = CCFileUtils::sharedFileUtils()->fullPathFromRelativeFile(texturePath.c_str(), pszPlist);
-        }
-        else
-        {
+        if (texturePath.empty()) {
             // build texture path by replacing file extension
             texturePath = pszPlist;
 
@@ -273,7 +271,7 @@ void CCSpriteFrameCache::addSpriteFramesWithFile(const char *pszPlist)
         }
         else
         {
-            CCLOG("cocos2d: CCSpriteFrameCache: Couldn't load texture");
+            CCLOG("cocos2d: CCSpriteFrameCache: Couldn't load texture - plist=%s", pszPlist);
         }
 
         dict->release();

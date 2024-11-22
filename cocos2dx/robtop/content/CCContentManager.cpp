@@ -27,6 +27,7 @@ CCDictionary* CCContentManager::addDict(const char* filePath, bool unk) {
         auto* dsDict = new DS_Dictionary();
         dsDict->loadRootSubDictFromFile(filePath);
         obj = dsDict->getDictForKey(nullptr, false);
+        delete dsDict;
         m_pDicts->setObject(obj, filePath);
     }
     return obj;
