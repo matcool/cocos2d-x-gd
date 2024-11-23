@@ -624,6 +624,15 @@ std::string CCFileUtils::fullPathForFilename(const char* pszFileName, bool skipS
              resOrderIter != m_searchResolutionsOrderArray.end(); ++resOrderIter) {
             
             //CCLOG("\n\nSEARCHING: %s, %s, %s", newFilename.c_str(), resOrderIter->c_str(), searchPathsIter->c_str());
+
+            if (!skipSuffix) {
+                if (CCDirector::sharedDirector()->getContentScaleFactor() >= 4.f) {
+                    addSuffix(newFilename, "-uhd");
+                }
+                else if (CCDirector::sharedDirector()->getContentScaleFactor() >= 2.f) {
+                    addSuffix(newFilename, "-hd");
+                }
+            }
             
             fullpath = this->getPathForFilename(newFilename, *resOrderIter, *searchPathsIter);
             
@@ -821,18 +830,24 @@ bool CCFileUtils::isPopupNotify()
     return s_bPopupNotify;
 }
 
-void cocos2d::CCFileUtils::removeFullPath(char const *) {
-    ROB_UNIMPLEMENTED();
+void cocos2d::CCFileUtils::removeFullPath(char const* path) {
+    m_fullPathCache.erase(path);
 }
 std::string cocos2d::CCFileUtils::getWritablePath2(void) {
-    ROB_UNIMPLEMENTED();
+    
 }
 bool cocos2d::CCFileUtils::shouldUseHD(void) {
-    ROB_UNIMPLEMENTED();
-    return true;
+    return CCDirector::sharedDirector()->getContentScaleFactor() == 2.0f;
 }
-std::string cocos2d::CCFileUtils::addSuffix(std::string, std::string) {
-    ROB_UNIMPLEMENTED();
+std::string cocos2d::CCFileUtils::addSuffix(std::string filename, std::string suffix) {
+    if (filename.find(suffix) == std::string::npos) {
+        auto dotPos = filename.find_last_of(".");
+        auto dashPos = filename.find_last_of("-");
+        if (dotPos != std::string::npos && (dashPos == std::string::npos || dashPos < dotPos)) {
+            filename.insert(dotPos, suffix);
+        }
+    }
+    return filename;
 }
 
 NS_CC_END
