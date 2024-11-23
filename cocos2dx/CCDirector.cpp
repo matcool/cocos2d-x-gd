@@ -158,6 +158,10 @@ bool CCDirector::init(void)
     // KeypadDispatcher
     m_pKeypadDispatcher = new CCKeypadDispatcher();
 
+    m_pKeyboardDispatcher = new CCKeyboardDispatcher();
+
+    m_pMouseDispatcher = new CCMouseDispatcher();
+
     // Accelerometer
     m_pAccelerometer = new CCAccelerometer();
 
