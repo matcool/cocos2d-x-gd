@@ -27,6 +27,8 @@ THE SOFTWARE.
 #include "CCTouchHandler.h"
 #include "cocoa/CCArray.h"
 #include "cocoa/CCSet.h"
+#include "cocoa/CCDictionary.h"
+#include "cocoa/CCInteger.h"
 #include "CCTouch.h"
 #include "textures/CCTexture2D.h"
 #include "support/data_support/ccCArray.h"
@@ -74,6 +76,10 @@ bool CCTouchDispatcher::init(void)
     m_pHandlersToAdd = CCArray::createWithCapacity(8);
     m_pHandlersToAdd->retain();
     m_pHandlersToRemove = ccCArrayNew(8);
+    m_forcePrioDict = CCDictionary::create();
+
+    m_targetPrio = -500;
+    m_forcePrio = 0;
 
     m_bToRemove = false;
     m_bToAdd = false;
@@ -152,6 +158,20 @@ void CCTouchDispatcher::addStandardDelegate(CCTouchDelegate *pDelegate, int nPri
 
 void CCTouchDispatcher::addTargetedDelegate(CCTouchDelegate *pDelegate, int nPriority, bool bSwallowsTouches)
 {    
+    if (isUsingForcePrio() && nPriority > m_targetPrio) {
+        nPriority = m_targetPrio;
+    }
+    else {
+        auto layerPrio = pDelegate->getPreviousPriority();
+        if (layerPrio != 0) {
+            nPriority = layerPrio;
+        }
+        else {
+            nPriority = m_targetPrio;
+        }
+    }
+    pDelegate->setPreviousPriority(nPriority);
+
     CCTouchHandler *pHandler = CCTargetedTouchHandler::handlerWithDelegate(pDelegate, nPriority, bSwallowsTouches);
     if (! m_bLocked)
     {
@@ -517,24 +537,49 @@ void CCTouchDispatcher::touchesCancelled(CCSet *touches, CCEvent *pEvent)
 }
 
 void cocos2d::CCTouchDelegate::setPreviousPriority(int) {
-    ROB_UNIMPLEMENTED();
+    
 }
 int cocos2d::CCTouchDelegate::getPreviousPriority(void) {
-    ROB_UNIMPLEMENTED();
     return 0;
 }
 
-void CCTouchDispatcher::addPrioTargetedDelegate(class cocos2d::CCTouchDelegate *, int, bool) {
-    ROB_UNIMPLEMENTED();
+void CCTouchDispatcher::addPrioTargetedDelegate(class cocos2d::CCTouchDelegate * delegate, int prio, bool p3) {
+    if (isUsingForcePrio()) {
+        prio = m_forcePrio - 1;
+    }
+    return addTargetedDelegate(delegate, prio, p3);
 }
 bool CCTouchDispatcher::isUsingForcePrio(void) {
-    ROB_UNIMPLEMENTED();
+    return 0 < m_targetPrio;
 }
-void CCTouchDispatcher::registerForcePrio(class cocos2d::CCObject *, int) {
-    ROB_UNIMPLEMENTED();
+void CCTouchDispatcher::registerForcePrio(class cocos2d::CCObject * object, int prio) {
+    if (object) {
+        incrementForcePrio(prio);
+        auto obj = m_forcePrioDict->objectForKey(object->m_uID);
+        if (!obj) {
+            auto ccInt = CCInteger::create(prio);
+            m_forcePrioDict->setObject(ccInt, object->m_uID);
+        }
+    }
 }
-void CCTouchDispatcher::unregisterForcePrio(class cocos2d::CCObject *) {
-    ROB_UNIMPLEMENTED();
+void CCTouchDispatcher::unregisterForcePrio(class cocos2d::CCObject *object) {
+    if (object) {
+        auto obj = m_forcePrioDict->objectForKey(object->m_uID);
+        if (obj) {
+            auto ccInt = (CCInteger*)obj;
+            decrementForcePrio(ccInt->getValue());
+            m_forcePrioDict->removeObjectForKey(object->m_uID);
+        }
+    }
+}
+
+void CCTouchDispatcher::incrementForcePrio(int priority) {
+    m_targetPrio -= priority;
+    m_forcePrio += priority;
+}
+void CCTouchDispatcher::decrementForcePrio(int priority) {
+    m_targetPrio += priority;
+    m_forcePrio -= priority;
 }
 
 NS_CC_END

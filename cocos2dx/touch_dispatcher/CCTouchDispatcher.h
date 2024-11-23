@@ -244,7 +244,7 @@ protected:
     // @note RobTop Addition
     CC_SYNTHESIZE_NV(int, m_forcePrio, ForcePrio);
     // @note RobTop Addition
-    void* m_unknown;
+    CCDictionary* m_forcePrioDict;
     // @note RobTop Addition
     CC_SYNTHESIZE_NV(int, m_targetPrio, TargetPrio);
 };

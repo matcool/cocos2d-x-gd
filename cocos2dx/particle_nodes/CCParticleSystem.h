@@ -355,6 +355,8 @@ public:
     bool m_bWasRemoved;
     // @note RobTop Addition
     bool m_bUsingSchedule;
+    // @note RobTop Addition
+    bool m_bIsVisibleWithoutParticles;
 
 
     /** start size in pixels of each particle */
@@ -489,8 +491,10 @@ protected:
 
         // saved/loaded in loadDefaults, loadScaledDefaults and saveDefaults
 
+        char pad[0x2f0 - 0x2c0];
+
         // @note RobTop Addition
-        float m_fDefaultStartSize;
+        float m_fDefaultStartSize; // 0x2f0
         // @note RobTop Addition
         float m_fDefaultStartSizeVar;
         // saved as m_fEndSize but not loaded,
@@ -499,6 +503,8 @@ protected:
         float m_fDefaultEndSize2;
         // @note RobTop Addition
         float m_fDefaultEndSize;
+        // @note RobTop Addition
+        float m_fDefaultAngle;
         // @note RobTop Addition
         float m_fDefaultModeASpeed;
         // @note RobTop Addition

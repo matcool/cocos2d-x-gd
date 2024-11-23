@@ -1376,32 +1376,59 @@ void CCParticleSystem::setScaleY(float newScaleY)
     CCNode::setScaleY(newScaleY);
 }
 
-void cocos2d::CCParticleSystem::setVisible(bool) {
-    ROB_UNIMPLEMENTED();
+void cocos2d::CCParticleSystem::setVisible(bool visible) {
+    m_bIsVisibleWithoutParticles = visible;
+    if (visible && m_uParticleCount != 0) {
+        m_bVisible = true;
+    }
+    else {
+        m_bVisible = false;
+    }
 }
 void cocos2d::CCParticleSystem::updateEmissionRate(void) {
-    ROB_UNIMPLEMENTED();
+    if (m_fLife > 0.f) {
+        setEmissionRate(m_uTotalParticles / m_fLife);
+    }
+    else {
+        setEmissionRate(-1.f);
+    }
 }
 bool CCParticleSystem::getStartRadiusEqualToEnd(void) const {
-    ROB_UNIMPLEMENTED();
+    return m_bStartRadiusEqualToEnd;
 }
 bool CCParticleSystem::getStartSizeEqualToEnd(void) const {
-    ROB_UNIMPLEMENTED();
+    return m_bStartSizeEqualToEnd;
 }
 bool CCParticleSystem::getStartSpinEqualToEnd(void) const {
-    ROB_UNIMPLEMENTED();
+    return m_bStartSpinEqualToEnd;
 }
 float CCParticleSystem::getTimeElapsed(void) {
-    ROB_UNIMPLEMENTED();
+    return m_fElapsed;
 }
 void CCParticleSystem::loadScaledDefaults(float) {
-    ROB_UNIMPLEMENTED();
+    m_fStartSize = m_fDefaultStartSize;
+    m_fStartSizeVar = m_fDefaultStartSizeVar;
+    m_fEndSize = m_fDefaultEndSize;
+    m_tPosVar = m_tDefaultPosVar;
+    if (m_nEmitterMode == 0) {
+        setSpeed(m_fDefaultModeASpeed);
+        setSpeedVar(m_fDefaultModeASpeedVar);
+    }
 }
 void CCParticleSystem::resumeSystem(void) {
     m_bIsActive = true;
 }
 void CCParticleSystem::saveDefaults(void) {
-    ROB_UNIMPLEMENTED();
+    m_fDefaultStartSize = m_fStartSize;
+    m_fDefaultStartSizeVar = m_fStartSizeVar;
+    m_fDefaultEndSize = m_fEndSize;
+    m_fDefaultEndSize2 = m_fEndSize;
+    m_fDefaultAngle = m_fAngle;
+    m_tDefaultPosVar = m_tPosVar;
+    if (m_nEmitterMode == 0) {
+        m_fDefaultModeASpeed = getSpeed();
+        m_fDefaultModeASpeedVar = getSpeedVar();
+    }
 }
 
 
