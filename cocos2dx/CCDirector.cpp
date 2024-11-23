@@ -1100,12 +1100,37 @@ void CCDirector::updateScreenScale(CCSize size) {
 }
 
 void CCDirector::updateContentScale(TextureQuality qual) {
-    m_eTextureQuality = qual;
-    if (qual == kTextureQualityHigh) {
-        m_fContentScaleFactor = 4.0f;
-    } else {
-        m_fContentScaleFactor = 1.0f;
+    float scale;
+    switch (qual) {
+        case kTextureQualityLow:
+            scale = 1.0f;
+            break;
+        case kTextureQualityMedium:
+            scale = 2.0f;
+            break;
+        case kTextureQualityHigh:
+            scale = 4.0f;
+            break;
+        default:
+            if (m_obScaleFactor.width * 1.5f > m_obResolutionInPixels.width && m_obScaleFactor.height * 1.5f > m_obResolutionInPixels.height) {
+                scale = 4.f;
+                qual = kTextureQualityHigh;
+            }
+            else if (m_obScaleFactor.width * 3.f > m_obResolutionInPixels.width && m_obScaleFactor.height * 3.f > m_obResolutionInPixels.height) {
+                scale = 2.f;
+                qual = kTextureQualityMedium;
+            }
+            else {
+                scale = 1.f;
+                qual = kTextureQualityLow;
+            }
+            break;
     }
+
+    CCLOG("Setting content scale factor to %f", scale);
+    
+    m_fContentScaleFactor = scale;
+    m_eTextureQuality = qual;
 }
 
 float CCDirector::getScreenScaleFactor() { return m_fScreenScaleFactor; }

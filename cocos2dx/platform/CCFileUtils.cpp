@@ -834,7 +834,6 @@ void cocos2d::CCFileUtils::removeFullPath(char const* path) {
     m_fullPathCache.erase(path);
 }
 std::string cocos2d::CCFileUtils::getWritablePath2(void) {
-    ROB_UNIMPLEMENTED();
     return "";
 }
 bool cocos2d::CCFileUtils::shouldUseHD(void) {

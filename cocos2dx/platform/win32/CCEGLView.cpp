@@ -33,6 +33,9 @@ THE SOFTWARE.
 #include "support/CCPointExtension.h"
 #include "CCApplication.h"
 
+#define GLFW_EXPOSE_NATIVE_WIN32
+#define GLFW_EXPOSE_NATIVE_WGL
+#include "robtop/glfw/glfw3native.h"
 
 NS_CC_BEGIN
 
@@ -267,7 +270,14 @@ CCEGLView* CCEGLView::createWithFullScreen(std::string const& name, bool borderl
     return CCEGLView::create(name);
 }
 CCSize CCEGLView::getDisplaySize() {
-    ROB_UNIMPLEMENTED();
+    auto hwnd = glfwGetWin32Window(m_pMainWindow);
+    auto monitor = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
+    MONITORINFOEX mi;
+    mi.cbSize = sizeof(mi);
+    GetMonitorInfo(monitor, &mi);
+    float width = mi.rcMonitor.right - mi.rcMonitor.left;
+    float height = mi.rcMonitor.bottom - mi.rcMonitor.top;
+    return {width, height};
 }
 void CCEGLView::makeBorderlessTop() {
     ROB_UNIMPLEMENTED();

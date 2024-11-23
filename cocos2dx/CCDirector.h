@@ -64,6 +64,7 @@ typedef enum {
 
 // @note RobTop Addition
 typedef enum {
+    kTextureQualityAuto = 0,
     kTextureQualityLow = 1,
     kTextureQualityMedium,
     kTextureQualityHigh
