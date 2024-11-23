@@ -281,6 +281,9 @@ void CCEGLView::toggleFullScreen(bool, bool, bool) {
 void CCEGLView::toggleLockCursor(bool) {
     ROB_UNIMPLEMENTED();
 }
+void CCEGLView::iconify() {
+    ROB_UNIMPLEMENTED();
+}
 
 bool CCEGLView::getShouldHideCursor() const {
     return m_bShouldHideCursor;

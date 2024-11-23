@@ -358,20 +358,24 @@ void CCMotionStreak::draw()
     CC_INCREMENT_GL_DRAWS(1);
 }
 
-void CCMotionStreak::enableRepeatMode(float) {
-    ROB_UNIMPLEMENTED();
+void CCMotionStreak::enableRepeatMode(float speed) {
+    m_bRepeatMode = true;
+    m_fRepeatSpeed = speed;
+    m_fRepeatTime = 0;
+    ccTexParams params = {GL_LINEAR, GL_LINEAR, GL_REPEAT, GL_REPEAT};
+    getTexture()->setTexParameters(&params);
 }
 void CCMotionStreak::resumeStroke(void) {
-    ROB_UNIMPLEMENTED();
+    m_bStroke = true;
 }
-void CCMotionStreak::setStroke(float) {
-    ROB_UNIMPLEMENTED();
+void CCMotionStreak::setStroke(float stroke) {
+    m_fStroke = stroke;
 }
 void CCMotionStreak::stopStroke(void) {
-    ROB_UNIMPLEMENTED();
+    m_bStroke = false;
 }
-void CCMotionStreak::updateFade(float) {
-    ROB_UNIMPLEMENTED();
+void CCMotionStreak::updateFade(float fadeDelta) {
+    m_fFadeDelta = 1.f / fadeDelta;
 }
 
 NS_CC_END

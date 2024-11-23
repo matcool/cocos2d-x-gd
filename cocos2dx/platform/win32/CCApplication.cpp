@@ -150,17 +150,25 @@ void CCApplication::setStartupScriptFilename(const std::string& startupScriptFil
 }
 
 void cocos2d::CCApplication::gameDidSave(void) {
-    ROB_UNIMPLEMENTED();
+    if (m_bShutdownCalled) {
+        CCDirector::sharedDirector()->end();
+    }
 }
-void cocos2d::CCApplication::openURL(char const *) {
-    ROB_UNIMPLEMENTED();
+void cocos2d::CCApplication::openURL(char const * url) {
+    auto* glView = CCEGLView::sharedOpenGLView();
+    if (glView->m_bIsFullscreen) {
+        if (!glView->m_bIsBorderless) {
+            glView->iconify();
+        }
+    }
+    ShellExecuteA(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
 }
 void cocos2d::CCApplication::setupGLView(void) {
     auto* glview = CCEGLView::create("Try again");
     CCDirector::sharedDirector()->setOpenGLView(glview);
 }
 void cocos2d::CCApplication::platformShutdown(void) {
-    ROB_UNIMPLEMENTED();
+    
 }
 
 void CCApplication::setupVerticalSync() {
@@ -175,8 +183,8 @@ void CCApplication::toggleVerticalSync(bool) {
     this->updateVerticalSync();
 }
 
-void CCApplication::toggleMouseControl(bool) {
-    ROB_UNIMPLEMENTED();
+void CCApplication::toggleMouseControl(bool control) {
+    m_bMouseControl = control;
 }
 
 void CCApplication::updateMouseControl() {
