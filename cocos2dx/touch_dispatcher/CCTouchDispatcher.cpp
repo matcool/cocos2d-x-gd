@@ -77,6 +77,7 @@ bool CCTouchDispatcher::init(void)
     m_pHandlersToAdd->retain();
     m_pHandlersToRemove = ccCArrayNew(8);
     m_forcePrioDict = CCDictionary::create();
+    m_forcePrioDict->retain();
 
     m_targetPrio = -500;
     m_forcePrio = 0;
