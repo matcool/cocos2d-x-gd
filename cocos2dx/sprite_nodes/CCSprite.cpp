@@ -1126,14 +1126,33 @@ CCTexture2D* CCSprite::getTexture(void)
     return m_pobTexture;
 }
 
-void cocos2d::CCSprite::setChildColor(struct cocos2d::_ccColor3B const &) {
-    ROB_UNIMPLEMENTED();
+void cocos2d::CCSprite::setChildColor(struct cocos2d::_ccColor3B const & color) {
+    if (m_bHasChildren && m_pChildren) {
+        CCObject* pObject = NULL;
+        CCARRAY_FOREACH(m_pChildren, pObject) {
+            CCSprite* pChild = dynamic_cast<CCSprite*>(pObject);
+            if (pChild) {
+                pChild->setColor(color);
+            }
+        }
+    }
 }
-void cocos2d::CCSprite::setChildOpacity(unsigned char) {
-    ROB_UNIMPLEMENTED();
+void cocos2d::CCSprite::setChildOpacity(unsigned char opacity) {
+    if (m_bHasChildren && m_pChildren) {
+        CCObject* pObject = NULL;
+        CCARRAY_FOREACH(m_pChildren, pObject) {
+            CCSprite* pChild = dynamic_cast<CCSprite*>(pObject);
+            if (pChild) {
+                pChild->setOpacity(opacity);
+            }
+        }
+    }
 }
 void cocos2d::CCSprite::refreshTextureRect(void) {
-    ROB_UNIMPLEMENTED();
+    m_bDontDraw = m_fTlVertexMod == 0.f && m_fTrVertexMod == 0.f && m_fBlVertexMod == 0.f && m_fBrVertexMod == 0.f;
+
+    setDirty(true);
+    setTextureRect(m_obRect, m_bRectRotated, m_obContentSize);
 }
 
 NS_CC_END
