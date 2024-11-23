@@ -1492,7 +1492,7 @@ void CCNode::qsortAllChildrenWithIndex(void) {
         if (m_bUseChildIndex) { // this basically "erases" nullptr values from the array, which is weird
             ccArrayUpdateChildIndexes(m_pChildren->data);
         }
-        std::sort(m_pChildren->data->arr, m_pChildren->data->arr + m_pChildren->data->num, [](CCNode* a, CCNode* b) {
+        std::sort(m_pChildren->data->arr, m_pChildren->data->arr + m_pChildren->data->num, [](CCObject* a, CCObject* b) {
             if (a->m_nZOrder == b->m_nZOrder) {
                 return a->m_uOrderOfArrival < b->m_uOrderOfArrival;
             }
