@@ -82,7 +82,28 @@ NS_CC_BEGIN
 //
 
 CCParticleSystem::CCParticleSystem()
-: m_sPlistFile("")
+: m_fFadeInTime(0.0f)
+, m_fFadeInTimeVar(0.0f)
+, m_fFadeOutTime(0.0f)
+, m_fFadeOutTimeVar(0.0f)
+, m_fFrictionPos(0.0f)
+, m_fFrictionPosVar(0.0f)
+, m_fFrictionSize(0.0f)
+, m_fFrictionSizeVar(0.0f)
+, m_fFrictionRot(0.0f)
+, m_fFrictionRotVar(0.0f)
+, m_fRespawn(0.0f)
+, m_fRespawnVar(0.0f)
+, m_bStartSpinEqualToEnd(false)
+, m_bStartSizeEqualToEnd(false)
+, m_bStartRadiusEqualToEnd(false)
+, m_bDynamicRotationIsDir(false)
+, m_bOrderSensitive(false)
+, m_bStartRGBVarSync(false)
+, m_bEndRGBVarSync(false)
+, m_bWasRemoved(false)
+, m_bUsingSchedule(false)
+, m_sPlistFile("")
 , m_fElapsed(0)
 , m_pParticles(NULL)
 , m_fEmitCounter(0)
@@ -116,6 +137,13 @@ CCParticleSystem::CCParticleSystem()
 , m_ePositionType(kCCPositionTypeFree)
 , m_bIsAutoRemoveOnFinish(false)
 , m_nEmitterMode(kCCParticleModeGravity)
+, m_fDefaultStartSize(0.0f)
+, m_fDefaultStartSizeVar(0.0f)
+, m_fDefaultEndSize2(0.0f)
+, m_fDefaultEndSize(0.0f)
+, m_fDefaultModeASpeed(0.0f)
+, m_fDefaultModeASpeedVar(0.0f)
+, m_tDefaultPosVar(CCPointZero)
 {
     modeA.gravity = CCPointZero;
     modeA.speed = 0;
@@ -1370,7 +1398,7 @@ void CCParticleSystem::loadScaledDefaults(float) {
     ROB_UNIMPLEMENTED();
 }
 void CCParticleSystem::resumeSystem(void) {
-    ROB_UNIMPLEMENTED();
+    m_bIsActive = true;
 }
 void CCParticleSystem::saveDefaults(void) {
     ROB_UNIMPLEMENTED();

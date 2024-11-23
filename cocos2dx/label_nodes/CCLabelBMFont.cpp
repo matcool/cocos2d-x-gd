@@ -540,6 +540,10 @@ CCLabelBMFont::CCLabelBMFont()
 , m_bCascadeColorEnabled(true)
 , m_bCascadeOpacityEnabled(true)
 , m_bIsOpacityModifyRGB(false)
+, m_bIsBatched(false)
+, m_pTargetArray(NULL)
+, m_pSomeTexture(NULL)
+, m_nExtraKerning(0)
 {
 
 }

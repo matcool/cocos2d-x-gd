@@ -5,6 +5,8 @@
 #include "platform/CCFileUtils.h"
 #include <robtop/mouse_dispatcher/CCMouseDispatcher.h>
 
+#include <Shellapi.h>
+
 NS_CC_BEGIN
 
 // sharedApplication pointer

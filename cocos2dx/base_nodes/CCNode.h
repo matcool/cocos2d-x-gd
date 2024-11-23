@@ -1141,7 +1141,7 @@ public:
         if (index < 0) {
             index = -index - 1;
             for (size_t i = this->getChildrenCount() - 1; i >= 0; i--) {
-                auto obj = geode::cast::typeinfo_cast<T*>(this->getChildren()->objectAtIndex(i));
+                auto obj = dynamic_cast<T*>(this->getChildren()->objectAtIndex(i));
                 if (obj != nullptr) {
                     if (indexCounter == index) {
                         return obj;
@@ -1153,7 +1153,7 @@ public:
         }
         else {
             for (size_t i = 0; i < this->getChildrenCount(); i++) {
-                auto obj = geode::cast::typeinfo_cast<T*>(this->getChildren()->objectAtIndex(i));
+                auto obj = dynamic_cast<T*>(this->getChildren()->objectAtIndex(i));
                 if (obj != nullptr) {
                     if (indexCounter == index) {
                         return obj;

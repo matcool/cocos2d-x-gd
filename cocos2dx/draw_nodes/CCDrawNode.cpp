@@ -502,11 +502,13 @@ bool CCDrawNode::drawCircle(CCPoint const& center, float radius, struct _ccColor
     }
     drawPolygon(vertices, segments, fillColor, borderWidth, borderColor);
     delete[] vertices;
+    return true;
 }
 bool CCDrawNode::drawLines(CCPoint* vertices, unsigned int count, float lineWidth, struct _ccColor4F const& color) {
     for (unsigned int i = 0; i < count - 1; i++) {
         drawSegment(vertices[i], vertices[i + 1], lineWidth, color);
     }
+    return true;
 }
 bool CCDrawNode::drawRect(CCPoint const& bottomLeft, CCPoint const& topRight, struct _ccColor4F const& fillColor, float borderWidth, struct _ccColor4F const& borderColor) {
     CCPoint verts[4] = {
