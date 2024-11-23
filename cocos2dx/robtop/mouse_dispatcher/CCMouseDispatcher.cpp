@@ -2,37 +2,90 @@
 
 namespace cocos2d {
 
-CCMouseDispatcher::CCMouseDispatcher() {}
-CCMouseDispatcher::~CCMouseDispatcher() {}
+CCMouseDispatcher::CCMouseDispatcher() {
+    m_pMouseHandlers = CCArray::create();
+    m_pMouseHandlers->retain();
+    m_bLocked = false;
+    m_bToAdd = false;
+    m_bToRemove = false;
+    m_pHandlersToAdd = ccCArrayNew(8);
+    m_pHandlersToRemove = ccCArrayNew(8);
+}
+CCMouseDispatcher::~CCMouseDispatcher() {
+    CC_SAFE_RELEASE(m_pMouseHandlers);
+    ccCArrayFree(m_pHandlersToAdd);
+    ccCArrayFree(m_pHandlersToRemove);
+}
 
 void CCMouseDispatcher::addDelegate(CCMouseDelegate* pDelegate) {
-    ROB_UNIMPLEMENTED();
+    if (m_bLocked) {
+        ccCArrayAppendValue(m_pHandlersToAdd, pDelegate);
+        m_bToAdd = true;
+    } else {
+        forceAddDelegate(pDelegate);
+    }
 }
 
 void CCMouseDispatcher::removeDelegate(CCMouseDelegate* pDelegate) {
-    ROB_UNIMPLEMENTED();
+    if (m_bLocked) {
+        ccCArrayAppendValue(m_pHandlersToRemove, pDelegate);
+        m_bToRemove = true;
+    } else {
+        forceRemoveDelegate(pDelegate);
+    }
 }
 
 void CCMouseDispatcher::forceAddDelegate(CCMouseDelegate* pDelegate) {
-    ROB_UNIMPLEMENTED();
+    m_pMouseHandlers->addObject(CCMouseHandler::handlerWithDelegate(pDelegate));
 }
 
 void CCMouseDispatcher::forceRemoveDelegate(CCMouseDelegate* pDelegate) {
-    ROB_UNIMPLEMENTED();
+    CCMouseHandler* pHandler = nullptr;
+    CCObject* pObj = nullptr;
+    CCARRAY_FOREACH(m_pMouseHandlers, pObj) {
+        pHandler = (CCMouseHandler*)pObj;
+        if (pHandler && pHandler->getDelegate() == pDelegate) {
+            m_pMouseHandlers->removeObject(pHandler);
+            break;
+        }
+    }
 }
 
 bool CCMouseDispatcher::dispatchScrollMSG(float x, float y) {
-    ROB_UNIMPLEMENTED();
+    m_bLocked = true;
+    auto count = m_pMouseHandlers->count();
+    CCMouseHandler* pHandler = nullptr;
+    CCObject* pObj = nullptr;
+    CCARRAY_FOREACH(m_pMouseHandlers, pObj) {
+        pHandler = (CCMouseHandler*)pObj;
+        pHandler->getDelegate()->scrollWheel(x, y);
+    }
+
+    if (m_bToRemove) {
+        m_bToRemove = false;
+        for (unsigned int i = 0; i < m_pHandlersToRemove->num; ++i) {
+            forceRemoveDelegate((CCMouseDelegate*)m_pHandlersToRemove->arr[i]);
+        }
+        ccCArrayRemoveAllValues(m_pHandlersToRemove);
+    }
+    if (m_bToAdd) {
+        m_bToAdd = false;
+        for (unsigned int i = 0; i < m_pHandlersToAdd->num; ++i) {
+            forceAddDelegate((CCMouseDelegate*)m_pHandlersToAdd->arr[i]);
+        }
+        ccCArrayRemoveAllValues(m_pHandlersToAdd);
+    }
+
+    m_bLocked = false;
+
+    return true;
 }
 
 // CCMouseHandler
 
 CCMouseHandler::~CCMouseHandler() {}
 
-CCMouseHandler& CCMouseHandler::operator=(const CCMouseHandler&) {
-    ROB_UNIMPLEMENTED();
-    return *this;
-}
+CCMouseHandler& CCMouseHandler::operator=(const CCMouseHandler&) = default;
 
 CCMouseDelegate* CCMouseHandler::getDelegate() {
     return m_pDelegate;
