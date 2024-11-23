@@ -808,11 +808,21 @@ void CCLayerColor::setOpacity(GLubyte opacity)
     updateColor();
 }
 
-void CCLayerColor::addToVertices(CCPoint, CCPoint, CCPoint) {
-    ROB_UNIMPLEMENTED();
+void CCLayerColor::addToVertices(CCPoint p1, CCPoint p2, CCPoint p3) {
+    m_pSquareVertices[1].x += p1.x;
+    m_pSquareVertices[1].y += p1.y;
+    m_pSquareVertices[2].x += p2.x;
+    m_pSquareVertices[2].y += p2.y;
+    m_pSquareVertices[3].x += p3.x;
+    m_pSquareVertices[3].y += p3.y;
 }
-void CCLayerColor::setVertices(CCPoint, CCPoint, CCPoint) {
-    ROB_UNIMPLEMENTED();
+void CCLayerColor::setVertices(CCPoint p1, CCPoint p2, CCPoint p3) {
+    m_pSquareVertices[1].x = p1.x;
+    m_pSquareVertices[1].y = p1.y;
+    m_pSquareVertices[2].x = p2.x;
+    m_pSquareVertices[2].y = p2.y;
+    m_pSquareVertices[3].x = p3.x;
+    m_pSquareVertices[3].y = p3.y;
 }
 
 //
@@ -1003,12 +1013,20 @@ void CCLayerGradient::setCompressedInterpolation(bool compress)
     updateColor();
 }
 
-void CCLayerGradient::setValues(_ccColor3B const &, unsigned char, _ccColor3B const &, unsigned char, CCPoint const &) {
-    ROB_UNIMPLEMENTED();
+void CCLayerGradient::setValues(_ccColor3B const& color1, unsigned char opacity1, _ccColor3B const& color2, unsigned char opacity2, CCPoint const& vector) {
+    setStartColor(color1);
+    setStartOpacity(opacity1);
+    setEndColor(color2);
+    setEndOpacity(opacity2);
+    setVector(vector);
+    updateColor();
 }
 
 void CCLayerGradient::visit() {
-    ROB_UNIMPLEMENTED();
+    if (m_cStartOpacity < 2 && m_cEndOpacity < 2) {
+        return;
+    }
+    CCLayerColor::visit();
 }
 
 /// MultiplexLayer
@@ -1141,30 +1159,28 @@ void CCLayerMultiplex::switchToAndReleaseMe(unsigned int n)
     this->addChild((CCNode*)m_pLayers->objectAtIndex(n));
 }
 
-bool cocos2d::CCLayer::isKeyboardEnabled(void) {
-    ROB_UNIMPLEMENTED();
-    return false;
+bool CCLayer::isKeyboardEnabled() {
+    return m_bKeyboardEnabled;
 }
-void cocos2d::CCLayer::setKeyboardEnabled(bool) {
-    ROB_UNIMPLEMENTED();
-
+void CCLayer::setKeyboardEnabled(bool value) {
+    m_bKeyboardEnabled = value;
 }
-bool cocos2d::CCLayer::isMouseEnabled(void) {
-    ROB_UNIMPLEMENTED();
-    return false;
+bool CCLayer::isMouseEnabled() {
+    return m_bMouseEnabled;
 }
-void cocos2d::CCLayer::setMouseEnabled(bool) {
-    ROB_UNIMPLEMENTED();
+void CCLayer::setMouseEnabled(bool value) {
+    m_bMouseEnabled = value;
 }
-void cocos2d::CCLayer::setPreviousPriority(int) {
-    ROB_UNIMPLEMENTED();
+void CCLayer::keyDown(enumKeyCodes key) {
+    if (key == KEY_Escape || key == CONTROLLER_B) {
+        CCDirector::sharedDirector()->getKeypadDispatcher()->dispatchKeypadMSG(kTypeBackClicked);
+    }
 }
-int cocos2d::CCLayer::getPreviousPriority(void) {
-    ROB_UNIMPLEMENTED();
-    return 0;
+void CCLayer::setPreviousPriority(int uPreviousPriority) {
+    m_uPreviousPriority = uPreviousPriority;
 }
-void cocos2d::CCLayer::keyDown(cocos2d::enumKeyCodes) {
-    ROB_UNIMPLEMENTED();
+int CCLayer::getPreviousPriority(void) {
+    return m_uPreviousPriority;
 }
 
 NS_CC_END

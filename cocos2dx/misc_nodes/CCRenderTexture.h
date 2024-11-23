@@ -185,6 +185,10 @@ protected:
     GLclampf     m_fClearDepth;
     GLint        m_nClearStencil;
     bool         m_bAutoDraw;
+
+    // 2.2 robtop additions
+    float        m_fInternalScaleX;
+    float        m_fInternalScaleY;
 };
 
 // end of textures group

@@ -69,15 +69,9 @@ CCScene *CCScene::create()
     }
 }
 
-CCScene::CCScene(const CCScene &scene) {
-    ROB_UNIMPLEMENTED();
-    // CCNode::operator=(scene);
-}
+CCScene::CCScene(const CCScene &scene) = default;
 
-CCScene& CCScene::operator=(const CCScene &scene) {
-    ROB_UNIMPLEMENTED();
-    return *this;
-}
+CCScene& CCScene::operator=(const CCScene &scene) = default;
 
 int CCScene::getHighestChildZ() {
     int highest = 0;

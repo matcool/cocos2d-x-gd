@@ -148,6 +148,9 @@ public:
 private:
     void ensureCapacity(unsigned int count);
     void render();
+
+    bool is_circle_on_screen(CCRect const& rect, CCPoint const& center, float radius);
+    bool is_segment_on_screen(CCRect const& rect, CCPoint const& from, CCPoint const& to);
 };
 
 NS_CC_END

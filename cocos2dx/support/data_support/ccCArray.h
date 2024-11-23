@@ -131,6 +131,19 @@ void ccArrayRemoveArray(ccArray *arr, ccArray *minusArr);
  matching instances in arr will be removed. */
 void ccArrayFullRemoveArray(ccArray *arr, ccArray *minusArr);
 
+/** Appends an object. Behavior undefined if array doesn't have enough capacity. Sets the index in CCObject appropriately. */
+void ccArrayAppendObjectNew(ccArray *arr, CCObject* object);
+/** Appends an object. Capacity of arr is increased if needed. Sets the index in CCObject appropriately. */
+void ccArrayAppendObjectWithResizeNew(ccArray *arr, CCObject* object);
+/** Removes object at specified index and fills the gap with the last object,
+ thereby avoiding the need to push back subsequent objects.
+ Behavior undefined if index outside [0, num-1]. 
+ Sets the index in CCObject appropriately. */
+void ccArrayFastRemoveObjectAtIndexNew(ccArray *arr, unsigned int index);
+
+/** Updates the index of a child in a ccArray. Removes null values and moves children to the left. */
+void ccArrayUpdateChildIndexes(ccArray *arr);
+
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 // #pragma mark -
 // #pragma mark ccCArray for Values (c structures)

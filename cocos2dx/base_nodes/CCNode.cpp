@@ -41,6 +41,8 @@ THE SOFTWARE.
 #include "support/component/CCComponent.h"
 #include "support/component/CCComponentContainer.h"
 
+#include <algorithm>
+
 #if CC_NODE_RENDER_SUBPIXEL
 #define RENDER_IN_SUBPIXEL
 #else
@@ -1463,43 +1465,63 @@ CCSize CCNode::getScaledContentSize() {
 }
 
 void CCNode::removeMeAndCleanup() {
-    ROB_UNIMPLEMENTED();
-    removeFromParentAndCleanup(true);
+    return removeFromParent();
 }
 
 const CCAffineTransform CCNode::nodeToParentTransformFast() {
     ROB_UNIMPLEMENTED();
-    return {};
+    return nodeToParentTransform();
 }
 
 CCAffineTransform CCNode::nodeToWorldTransformFast() {
     ROB_UNIMPLEMENTED();
-    return {};
+    return nodeToWorldTransform();
 }
 
 void cocos2d::CCNode::updateTweenAction(float, char const *) {
-    ROB_UNIMPLEMENTED();
+
 }
 void cocos2d::CCNode::updateTweenActionInt(float, int) {
-    ROB_UNIMPLEMENTED();
+    
 }
 
-CCNode& CCNode::operator=(CCNode const&) {
-    ROB_UNIMPLEMENTED();
-    return *this;
-}
+CCNode& CCNode::operator=(CCNode const&) = default;
 
 void CCNode::qsortAllChildrenWithIndex(void) {
-    ROB_UNIMPLEMENTED();
+    if (m_bReorderChildDirty) {
+        if (m_bUseChildIndex) { // this basically "erases" nullptr values from the array, which is weird
+            ccArrayUpdateChildIndexes(m_pChildren->data);
+        }
+        std::sort(m_pChildren->data->arr, m_pChildren->data->arr + m_pChildren->data->num, [](CCNode* a, CCNode* b) {
+            if (a->m_nZOrder == b->m_nZOrder) {
+                return a->m_uOrderOfArrival < b->m_uOrderOfArrival;
+            }
+            return a->m_nZOrder < b->m_nZOrder;
+        });
+    }
 }
 void CCNode::resetGlobalOrderOfArrival(void) {
-    ROB_UNIMPLEMENTED();
+    s_globalOrderOfArrival = 1;
 }
-void CCNode::setUseChildIndex(bool) {
-    ROB_UNIMPLEMENTED();
+void CCNode::setUseChildIndex(bool use) {
+    if (m_bUseChildIndex != use) {
+        m_bUseChildIndex = use;
+        if (use && m_pChildren && m_pChildren->count() > 0) {
+            auto num = m_pChildren->data->num;
+            auto max = m_pChildren->data->max;
+            for (int i4 = 0; i4 < num; ++i4) {
+                CCObject* i3 = m_pChildren->data->arr[i4];
+                if (i3) {
+                    i3->m_uChildIndex = i4;
+                }
+            }
+        }
+    }
 }
 void CCNode::updateChildIndexes(void) {
-    ROB_UNIMPLEMENTED();
+    if (m_bUseChildIndex) {
+        ccArrayUpdateChildIndexes(m_pChildren->data);
+    }
 }
 
 NS_CC_END

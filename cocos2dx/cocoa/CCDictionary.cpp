@@ -426,7 +426,18 @@ bool CCDictionary::writeToFile(const char *fullPath)
 }
 
 std::string CCDictionary::getFirstKey() {
-    ROB_UNIMPLEMENTED();
+    if (m_eDictType == kCCDictUnknown) {
+        return "";
+    }
+    
+    CCDictElement *pElement = NULL, *tmp;
+    if (m_eDictType == kCCDictStr) {
+        HASH_ITER(hh, m_pElements, pElement, tmp) {
+            return pElement->getStrKey();
+        }
+    }
+    
+    return "";
 }
 
 

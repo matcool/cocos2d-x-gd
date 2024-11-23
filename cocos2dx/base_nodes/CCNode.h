@@ -1839,7 +1839,7 @@ protected:
     CCComponentContainer *m_pComponentContainer;        ///< Dictionary of components
 
     // 2.2 additions
-    bool m_bUnkBool1;
+    bool m_bUseChildIndex;
     bool m_bUnkBool2;
 };
 

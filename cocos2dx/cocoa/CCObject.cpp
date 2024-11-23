@@ -120,11 +120,10 @@ void CCObject::setTag(int var)
 
 void CCObject::encodeWithCoder(DS_Dictionary* encoder)
 {
-    ROB_UNIMPLEMENTED();
+
 }
 
 bool CCObject::canEncode() {
-    ROB_UNIMPLEMENTED();
     return false;
 }
 

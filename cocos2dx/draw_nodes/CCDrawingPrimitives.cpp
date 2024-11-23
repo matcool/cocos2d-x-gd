@@ -533,15 +533,118 @@ void ccDrawColor4B( GLubyte r, GLubyte g, GLubyte b, GLubyte a )
 }
 
 void ccDrawLines(const CCPoint* lines, unsigned int count) {
-    ROB_UNIMPLEMENTED();
+    lazy_init();
+
+    ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
+
+    s_pShader->use();
+    s_pShader->setUniformsForBuiltins();
+    s_pShader->setUniformLocationWith4fv(s_nColorLocation, (GLfloat*) &s_tColor.r, 1);
+    s_pShader->setUniformLocationWith1f(s_nPointSizeLocation, s_fPointSize);
+
+    auto vertices = new ccVertex2F[count];
+    for (unsigned int i = 0; i < count; i++) {
+        vertices[i].x = lines[i].x;
+        vertices[i].y = lines[i].y;
+    }
+
+#ifdef EMSCRIPTEN
+    setGLBufferData(vertices, sizeof(ccVertex2F) * count);
+    glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, 0);
+#else
+    glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, vertices);
+#endif // EMSCRIPTEN
+
+    glDrawArrays(GL_LINES, 0, count);
+    
+    CC_SAFE_DELETE_ARRAY(vertices);
+
+    CC_INCREMENT_GL_DRAWS(1);
 }
 
-void ccDrawCircleSegment(CCPoint const&, float, float, float, unsigned int, bool, float, float) {
-    ROB_UNIMPLEMENTED();
+void ccDrawCircleSegment(CCPoint const& center, float radius, float angle, float until, unsigned int segments, bool drawLineToCenter, float scaleX, float scaleY) {
+    lazy_init();
+
+    int additionalSegment = 1;
+    if (drawLineToCenter)
+        additionalSegment++;
+
+    const float coef = until/segments;
+
+    GLfloat *vertices = (GLfloat*)calloc( sizeof(GLfloat)*2*(segments+2), 1);
+    if( ! vertices )
+        return;
+
+    for(unsigned int i = 0;i <= segments; i++) {
+        float rads = i*coef;
+        GLfloat j = radius * cosf(rads + angle) * scaleX + center.x;
+        GLfloat k = radius * sinf(rads + angle) * scaleY + center.y;
+
+        vertices[i*2] = j;
+        vertices[i*2+1] = k;
+    }
+    vertices[(segments+1)*2] = center.x;
+    vertices[(segments+1)*2+1] = center.y;
+
+    s_pShader->use();
+    s_pShader->setUniformsForBuiltins();
+    s_pShader->setUniformLocationWith4fv(s_nColorLocation, (GLfloat*) &s_tColor.r, 1);
+
+    ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
+
+#ifdef EMSCRIPTEN
+    setGLBufferData(vertices, sizeof(GLfloat)*2*(segments+2));
+    glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, 0);
+#else
+    glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, vertices);
+#endif // EMSCRIPTEN
+    glDrawArrays(GL_LINE_STRIP, 0, (GLsizei) segments+additionalSegment);
+
+    free( vertices );
+
+    CC_INCREMENT_GL_DRAWS(1);
 }
 
-void ccDrawFilledCircle(const CCPoint&, float, float, unsigned int) {
-    ROB_UNIMPLEMENTED();
+void ccDrawFilledCircle(const CCPoint& center, float radius, float angle, unsigned int segments) {
+    lazy_init();
+
+    const float coef = 2.0f * (float)M_PI/segments;
+
+    GLfloat *vertices = (GLfloat*)calloc( sizeof(GLfloat)*2*(segments+2), 1);
+
+    if( ! vertices )
+        return;
+
+    for(unsigned int i = 0;i <= segments; i++) {
+        float rads = i*coef;
+        GLfloat j = radius * cosf(rads + angle) + center.x;
+        GLfloat k = radius * sinf(rads + angle) + center.y;
+
+        vertices[i*2] = j;
+        vertices[i*2+1] = k;
+    }
+
+    vertices[(segments+1)*2] = center.x;
+    vertices[(segments+1)*2+1] = center.y;
+
+    s_pShader->use();
+    s_pShader->setUniformsForBuiltins();
+    s_pShader->setUniformLocationWith4fv(s_nColorLocation, (GLfloat*) &s_tColor.r, 1);
+
+    ccGLEnableVertexAttribs( kCCVertexAttribFlag_Position );
+
+#ifdef EMSCRIPTEN
+    setGLBufferData(vertices, sizeof(GLfloat)*2*(segments+2));
+    glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, 0);
+#else
+    glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, vertices);
+#endif // EMSCRIPTEN
+
+    glDrawArrays(GL_TRIANGLE_FAN, 0, (GLsizei) segments+1);
+
+    free( vertices );
+
+    CC_INCREMENT_GL_DRAWS(1);
 }
 
 NS_CC_END

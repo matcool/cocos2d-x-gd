@@ -263,6 +263,9 @@ bool CCDrawNode::drawDot(const CCPoint &pos, float radius, const ccColor4F &colo
 
 bool CCDrawNode::drawSegment(const CCPoint &from, const CCPoint &to, float radius, const ccColor4F &color)
 {
+    if (m_bUseArea && !is_segment_on_screen(m_rDrawArea, from, to))
+        return false;
+
     unsigned int vertex_count = 6*3;
     ensureCapacity(vertex_count);
 	
@@ -471,23 +474,65 @@ void CCDrawNode::listenBackToForeground(CCObject *obj)
 
 // rob
 
+bool CCDrawNode::is_circle_on_screen(CCRect const& rect, CCPoint const& center, float radius) {
+    if (center.x + radius < m_fMinAreaX) return false;
+    if (center.x - radius > m_fMaxAreaX) return false;
+    if (center.y + radius < m_fMinAreaY) return false;
+    if (center.y - radius > m_fMaxAreaY) return false;
+    return true;
+}
+bool CCDrawNode::is_segment_on_screen(CCRect const& rect, CCPoint const& from, CCPoint const& to) {
+    if (from.x < m_fMinAreaX && to.x < m_fMinAreaX) return false;
+    if (from.x > m_fMaxAreaX && to.x > m_fMaxAreaX) return false;
+    if (from.y < m_fMinAreaY && to.y < m_fMinAreaY) return false;
+    if (from.y > m_fMaxAreaY && to.y > m_fMaxAreaY) return false;
+    return true;
+}
+
 void CCDrawNode::disableDrawArea(void) {
-    ROB_UNIMPLEMENTED();
+    m_bUseArea = false;
 }
-bool CCDrawNode::drawCircle(CCPoint const &, float, struct _ccColor4F const &, float, struct _ccColor4F const &, unsigned int) {
-    ROB_UNIMPLEMENTED();
+bool CCDrawNode::drawCircle(CCPoint const& center, float radius, struct _ccColor4F const& fillColor, float borderWidth, struct _ccColor4F const& borderColor, unsigned int segments) {
+    if (m_bUseArea && !is_circle_on_screen(m_rDrawArea, center, radius)) return false;
+    auto vertices = new CCPoint[segments];
+    for (unsigned int i = 0; i < segments; i++) {
+        float rads = i * (2.0f * M_PI / segments);
+        vertices[i].x = radius * cosf(rads) + center.x;
+        vertices[i].y = radius * sinf(rads) + center.y;
+    }
+    drawPolygon(vertices, segments, fillColor, borderWidth, borderColor);
+    delete[] vertices;
 }
-bool CCDrawNode::drawLines(CCPoint *, unsigned int, float, struct _ccColor4F const &) {
-    ROB_UNIMPLEMENTED();
+bool CCDrawNode::drawLines(CCPoint* vertices, unsigned int count, float lineWidth, struct _ccColor4F const& color) {
+    for (unsigned int i = 0; i < count - 1; i++) {
+        drawSegment(vertices[i], vertices[i + 1], lineWidth, color);
+    }
 }
-bool CCDrawNode::drawRect(CCPoint const &, CCPoint const &, struct _ccColor4F const &, float, struct _ccColor4F const &) {
-    ROB_UNIMPLEMENTED();
+bool CCDrawNode::drawRect(CCPoint const& bottomLeft, CCPoint const& topRight, struct _ccColor4F const& fillColor, float borderWidth, struct _ccColor4F const& borderColor) {
+    CCPoint verts[4] = {
+        bottomLeft,
+        ccp(topRight.x, bottomLeft.y),
+        topRight,
+        ccp(bottomLeft.x, topRight.y)
+    };
+    return drawPolygon(verts, 4, fillColor, borderWidth, borderColor);
 }
-bool CCDrawNode::drawRect(class CCRect const &, struct _ccColor4F const &, float, struct _ccColor4F const &) {
-    ROB_UNIMPLEMENTED();
+bool CCDrawNode::drawRect(class CCRect const& rect, struct _ccColor4F const& fillColor, float borderWidth, struct _ccColor4F const& borderColor) {
+    CCPoint verts[4] = {
+        ccp(rect.getMinX(), rect.getMinY()),
+        ccp(rect.getMaxX(), rect.getMinY()),
+        ccp(rect.getMaxX(), rect.getMaxY()),
+        ccp(rect.getMinX(), rect.getMaxY())
+    };
+    return drawPolygon(verts, 4, fillColor, borderWidth, borderColor);
 }
-void CCDrawNode::enableDrawArea(class CCRect &) {
-    ROB_UNIMPLEMENTED();
+void CCDrawNode::enableDrawArea(class CCRect& drawArea) {
+    m_bUseArea = true;
+    m_rDrawArea = drawArea;
+    m_fMinAreaX = m_rDrawArea.getMinX();
+    m_fMinAreaY = m_rDrawArea.getMinY();
+    m_fMaxAreaX = m_rDrawArea.getMaxX();
+    m_fMaxAreaY = m_rDrawArea.getMaxY();
 }
 
 NS_CC_END

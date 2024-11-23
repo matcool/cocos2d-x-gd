@@ -71,8 +71,10 @@ CCActionInterval* CCActionTween::reverse()
     return CCActionTween::create(m_fDuration, m_strKey.c_str(), m_fTo, m_fFrom);
 }
 
-CCActionTween* CCActionTween::create(float, int, float, float) {
-    ROB_UNIMPLEMENTED();
+CCActionTween* CCActionTween::create(float aDuration, int nTag, float from, float to) {
+    auto ret = CCActionTween::create(aDuration, "", from, to);
+    ret->m_nTag = nTag;
+    return ret;
 }
 
 NS_CC_END

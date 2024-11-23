@@ -472,4 +472,50 @@ void ccCArrayFullRemoveArray(ccCArray *arr, ccCArray *minusArr)
 	arr->num -= back;
 }
 
+/** Updates the index of a child in a ccArray. Removes null values and moves children to the left. */
+void ccArrayUpdateChildIndexes(ccArray *arr) {
+	if (arr->unknown != -1) {
+		int i5 = 0;
+		for (int i4 = 0; i4 < arr->unknown; ++i4) {
+			CCObject* i3 = arr->arr[i4];
+			if (i3 == nullptr) {
+				++i5;
+			} else if (i5 > 0) {
+				arr->arr[i4 - i5] = i3;
+				i3->m_uChildIndex = i4 - i5;
+			}
+		}
+		arr->unknown = -1;
+	}
+}
+
+/** Appends an object. Behavior undefined if array doesn't have enough capacity. Sets the index in CCObject appropriately. */
+void ccArrayAppendObjectNew(ccArray *arr, CCObject* object)
+{
+    CCAssert(object != NULL, "Invalid parameter!");
+    object->retain();
+	arr->arr[arr->num] = object;
+	object->m_uIndexInArray = arr->num;
+	arr->num++;
+}
+
+/** Appends objects from plusArr to arr. Capacity of arr is increased if needed. Sets the index in CCObject appropriately. */
+void ccArrayAppendObjectWithResizeNew(ccArray *arr, CCObject* object)
+{
+	ccArrayEnsureExtraCapacity(arr, 1);
+	ccArrayAppendObjectNew(arr, object);
+}
+
+/** Removes object at specified index and fills the gap with the last object,
+ thereby avoiding the need to push back subsequent objects.
+ Behavior undefined if index outside [0, num-1]. 
+ Sets the index in CCObject appropriately. */
+void ccArrayFastRemoveObjectAtIndexNew(ccArray *arr, unsigned int index)
+{
+	CC_SAFE_RELEASE(arr->arr[index]);
+	unsigned int last = --arr->num;
+	arr->arr[index] = arr->arr[last];
+	arr->arr[last]->m_uIndexInArray = index;
+}
+
 NS_CC_END

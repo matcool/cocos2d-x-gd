@@ -621,7 +621,7 @@ void CCLabelBMFont::createFontChars()
             continue;      
         }
 
-        kerningAmount = this->kerningAmountForFirst(prev, c);
+        kerningAmount = this->kerningAmountForFirst(prev, c) + m_nExtraKerning;
         
         tCCFontDefHashElement *element = NULL;
 
@@ -668,7 +668,12 @@ void CCLabelBMFont::createFontChars()
             {
                 fontChar = new CCSprite();
                 fontChar->initWithTexture(m_pobTextureAtlas->getTexture(), rect);
-                addChild(fontChar, i, i);
+                if (m_bIsBatched) {
+                    m_pTargetArray->addObject(fontChar);
+                }
+                else {
+                    addChild(fontChar, i, i);
+                }
                 fontChar->release();
 			}
             
@@ -1244,11 +1249,36 @@ void CCLabelBMFont::draw()
 
 #endif // CC_LABELBMFONT_DEBUG_DRAW
 
-CCLabelBMFont* CCLabelBMFont::createBatched(char const *, char const *, CCArray *, int) {
-    ROB_UNIMPLEMENTED();
+CCLabelBMFont* CCLabelBMFont::createBatched(char const * str, char const * fntFile, CCArray * targetArray, int extraKerning) {
+    CCLabelBMFont *pRet = new CCLabelBMFont();
+    pRet->m_pTargetArray = targetArray;
+    pRet->m_nExtraKerning = extraKerning;
+    pRet->m_bIsBatched = true;
+    if(pRet && pRet->initWithString(str, fntFile, kCCLabelAutomaticWidth, kCCTextAlignmentLeft, CCPointZero))
+    {
+        pRet->autorelease();
+        return pRet;
+    }
+    CC_SAFE_DELETE(pRet);
+    return NULL;
 }
-void CCLabelBMFont::limitLabelWidth(float, float, float) {
-    ROB_UNIMPLEMENTED();
+void CCLabelBMFont::limitLabelWidth(float maxWidth, float minScale, float maxScale) {
+    if (maxWidth <= 0) {
+        return;
+    }
+    float currentScale = getScale();
+    float currentWidth = getContentSize().width;
+    float newScale = currentScale;
+    if (currentWidth > maxWidth) {
+        newScale = maxWidth / currentWidth * currentScale;
+    }
+    if (newScale < minScale) {
+        newScale = minScale;
+    }
+    if (newScale > maxScale) {
+        newScale = maxScale;
+    }
+    setScale(newScale);
 }
 
 NS_CC_END

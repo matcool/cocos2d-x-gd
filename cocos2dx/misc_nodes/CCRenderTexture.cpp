@@ -42,6 +42,8 @@ THE SOFTWARE.
 #include "kazmath/GL/matrix.h"
 #include "CCEGLView.h"
 
+#include <algorithm>
+
 NS_CC_BEGIN
 
 // implementation CCRenderTexture
@@ -379,7 +381,14 @@ void CCRenderTexture::begin()
     kmGLMatrixMode(KM_GL_MODELVIEW);
 #endif
 
-    const CCSize& texSize = m_pTexture->getContentSizeInPixels();
+    CCSize texSize = m_pTexture->getContentSizeInPixels();
+
+    if (m_fInternalScaleX > 0.f) {
+        texSize.width *= m_fInternalScaleX;
+    }
+    if (m_fInternalScaleY > 0.f) {
+        texSize.height *= m_fInternalScaleY;
+    }
 
     // Calculate the adjustment ratios based on the old and new projections
     CCSize size = director->getWinSizeInPixels();
@@ -712,8 +721,9 @@ CCImage* CCRenderTexture::newCCImage(bool flipImage)
     return pImage;
 }
 
-void CCRenderTexture::updateInternalScale(float, float) {
-    ROB_UNIMPLEMENTED();
+void CCRenderTexture::updateInternalScale(float scaleX, float scaleY) {
+    m_fInternalScaleX = std::clamp(scaleX, 0.0f, 1.0f);
+    m_fInternalScaleY = std::clamp(scaleY, 0.0f, 1.0f);
 }
 
 NS_CC_END

@@ -92,11 +92,12 @@ protected:
 
     CCObjectType m_eObjType;
 
+public:
     int m_uIndexInArray; // used in some ccarray stuff, I don't remember what it does rn
 
     // 2.2 additions
 
-    int m_uUnknown; // -1 by default
+    int m_uChildIndex; // -1 by default
     int m_unknown2;
     int m_nZOrder = 0; // moved from CCNode, why rob
     int m_uOrderOfArrival = 0; // moved from CCNode, why rob
