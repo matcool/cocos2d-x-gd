@@ -946,6 +946,7 @@ void CCDirector::createStatsLabel()
 
 void CCDirector::setContentScaleFactor(float scaleFactor)
 {
+    // TODO: this not how rob has it implemented, this is just a lazy version
     if (scaleFactor != m_fContentScaleFactor)
     {
         m_fContentScaleFactor = scaleFactor;
