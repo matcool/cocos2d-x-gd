@@ -623,14 +623,14 @@ std::string CCFileUtils::fullPathForFilename(const char* pszFileName, bool skipS
         for (std::vector<std::string>::iterator resOrderIter = m_searchResolutionsOrderArray.begin();
              resOrderIter != m_searchResolutionsOrderArray.end(); ++resOrderIter) {
             
-            //CCLOG("\n\nSEARCHING: %s, %s, %s", newFilename.c_str(), resOrderIter->c_str(), searchPathsIter->c_str());
+            // CCLOG("\n\nSEARCHING: %s, %s, %s", newFilename.c_str(), resOrderIter->c_str(), searchPathsIter->c_str());
 
             if (!skipSuffix) {
                 if (CCDirector::sharedDirector()->getContentScaleFactor() >= 4.f) {
-                    addSuffix(newFilename, "-uhd");
+                    newFilename = addSuffix(newFilename, "-uhd");
                 }
                 else if (CCDirector::sharedDirector()->getContentScaleFactor() >= 2.f) {
-                    addSuffix(newFilename, "-hd");
+                    newFilename = addSuffix(newFilename, "-hd");
                 }
             }
             
@@ -640,7 +640,7 @@ std::string CCFileUtils::fullPathForFilename(const char* pszFileName, bool skipS
             {
                 // Using the filename passed in as key.
                 m_fullPathCache.insert(std::pair<std::string, std::string>(pszFileName, fullpath));
-                //CCLOG("Returning path: %s", fullpath.c_str());
+                // CCLOG("Returning path: %s", fullpath.c_str());
                 return fullpath;
             }
         }
