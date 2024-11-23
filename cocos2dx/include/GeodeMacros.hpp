@@ -4,6 +4,7 @@
 #pragma warning(disable : 4244) // narrowing conversion
 
 #define GEODE_FRIEND_MODIFY
+#define NOMINMAX
 
 #define GEODE_CUSTOM_CONSTRUCTOR_BEGIN(...)
 #define GEODE_CUSTOM_CONSTRUCTOR_COCOS(...)

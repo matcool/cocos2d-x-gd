@@ -1076,7 +1076,22 @@ void CCDirector::setupScreenScale(CCSize someSize, CCSize pixelSize, TextureQual
 
 void CCDirector::updateScreenScale(CCSize size) {
     m_obResolutionInPixels = size;
-    m_pobOpenGLView->setDesignResolutionSize(m_obScaleFactor.width, m_obScaleFactor.height, kResolutionNoBorder);
+    ResolutionPolicy policy = kResolutionFixedWidth;
+    if (m_obScaleFactor.width / m_obResolutionInPixels.width > m_obScaleFactor.height / m_obResolutionInPixels.height) {
+        policy = kResolutionFixedHeight;
+    }
+    m_pobOpenGLView->setDesignResolutionSize(m_obScaleFactor.width, m_obScaleFactor.height, policy);
+    auto winSize = getWinSize();
+    auto scaledWidth = winSize.width / m_obScaleFactor.width;
+    auto scaledHeight = winSize.height / m_obScaleFactor.height;
+    m_fScreenTop = winSize.height;
+    m_fScreenBottom = 0;
+    m_fScreenLeft = 0;
+    m_fScreenRight = winSize.width;
+    m_fScreenScaleFactorW = scaledWidth;
+    m_fScreenScaleFactorH = scaledHeight;
+    m_fScreenScaleFactor = std::min(scaledWidth, scaledHeight);
+    m_fScreenScaleFactorMax = std::max(scaledWidth, scaledHeight);
 }
 
 void CCDirector::updateContentScale(TextureQuality qual) {
@@ -1109,8 +1124,8 @@ void CCDirector::removeStatsLabel() {
 void CCDirector::resetSmoothFixCounter(void) {
     ROB_UNIMPLEMENTED();
 }
-void CCDirector::setDeltaTime(float) {
-    ROB_UNIMPLEMENTED();
+void CCDirector::setDeltaTime(float dt) {
+    m_fDeltaTime = dt;
 }
 int CCDirector::sceneCount() {
     ROB_UNIMPLEMENTED();
