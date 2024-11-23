@@ -626,11 +626,22 @@ std::string CCFileUtils::fullPathForFilename(const char* pszFileName, bool skipS
             // CCLOG("\n\nSEARCHING: %s, %s, %s", newFilename.c_str(), resOrderIter->c_str(), searchPathsIter->c_str());
 
             if (!skipSuffix) {
+                std::string suffixedFilename;
                 if (CCDirector::sharedDirector()->getContentScaleFactor() >= 4.f) {
-                    newFilename = addSuffix(newFilename, "-uhd");
+                    suffixedFilename = addSuffix(newFilename, "-uhd");
                 }
                 else if (CCDirector::sharedDirector()->getContentScaleFactor() >= 2.f) {
-                    newFilename = addSuffix(newFilename, "-hd");
+                    suffixedFilename = addSuffix(newFilename, "-hd");
+                }
+
+                fullpath = this->getPathForFilename(suffixedFilename, *resOrderIter, *searchPathsIter);
+                
+                if (fullpath.length() > 0)
+                {
+                    // Using the filename passed in as key.
+                    m_fullPathCache.insert(std::pair<std::string, std::string>(pszFileName, fullpath));
+                    // CCLOG("Returning path: %s", fullpath.c_str());
+                    return fullpath;
                 }
             }
             
