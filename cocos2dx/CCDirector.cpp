@@ -165,6 +165,8 @@ bool CCDirector::init(void)
     // Accelerometer
     m_pAccelerometer = new CCAccelerometer();
 
+    m_pFPSNode = NULL;
+
     // create autorelease pool
     CCPoolManager::sharedPoolManager()->push();
 
@@ -196,6 +198,8 @@ CCDirector::~CCDirector(void)
     CC_SAFE_DELETE(m_pLastUpdate);
     // delete fps string
     delete []m_pszFPS;
+
+    CC_SAFE_DELETE(m_pFPSNode);
 
     s_SharedDirector = NULL;
 }
@@ -289,6 +293,10 @@ void CCDirector::drawScene(void)
     if (m_bDisplayStats)
     {
         showStats();
+    }
+    if (m_bDisplayFPS)
+    {
+        showFPSLabel();
     }
     
     kmGLPopMatrix();
@@ -865,6 +873,28 @@ void CCDirector::showStats(void)
     g_uNumberOfDraws = 0;
 }
 
+void CCDirector::showFPSLabel()
+{
+    if (m_pFPSNode)
+    {
+        m_uFrames += 1;
+        m_fFpsAccumDt += m_fDeltaTime;
+
+        if (m_fFpsAccumDt > 0.1f)
+        {
+            m_fFrameRate = m_uFrames / m_fFpsAccumDt;
+            m_uFrames = 0;
+            m_fFpsAccumDt = 0;
+
+            char fps[16];
+            sprintf(fps, "FPS: %.2f", roundf(m_fFrameRate));
+
+            m_pFPSNode->setString(fps);
+            m_pFPSNode->visit();
+        }
+    }
+}
+
 void CCDirector::calculateMPF()
 {
     struct cc_timeval now;
@@ -1142,26 +1172,81 @@ float CCDirector::getScreenBottom() { return m_fScreenBottom; }
 float CCDirector::getScreenLeft() { return m_fScreenLeft; }
 float CCDirector::getScreenRight() { return m_fScreenRight; }
 
-bool CCDirector::popSceneWithTransition(float, PopTransition) {
-    ROB_UNIMPLEMENTED();
+bool CCDirector::popSceneWithTransition(float duration, PopTransition transition) {
+    if (m_bIsTransitioning) {
+        return false;
+    }
+    if (m_pSceneReference) {
+        auto otherScene = m_pobScenesStack->lastObject();
+        if (otherScene == m_pSceneReference) {
+            m_pSceneReference = NULL;
+        }
+    }
+    m_pobScenesStack->removeLastObject();
+    if (m_pobScenesStack->count() == 0) {
+        end();
+        return true;
+    }
+    m_bSendCleanupToScene = true;
+    // m_pNextScene = (CCScene*)m_pobScenesStack->lastObject();
+    switch (transition) {
+        case kPopTransitionFade:
+            m_pNextScene = CCTransitionFade::create(duration, (CCScene*)m_pobScenesStack->lastObject());
+            break;
+        case kPopTransitionMoveInT:
+            m_pNextScene = CCTransitionMoveInT::create(duration, (CCScene*)m_pobScenesStack->lastObject());
+            break;
+    }
+    m_bIsTransitioning = true;
+    return true;
 }
-void CCDirector::popToSceneInStack(CCScene*) {
-    ROB_UNIMPLEMENTED();
+void CCDirector::popToSceneInStack(CCScene* scene) {
+    int index = m_pobScenesStack->indexOfObject(scene);
+    if (index == -1) {
+        return;
+    }
+    popToSceneStackLevel(index + 1);
 }
 void CCDirector::removeStatsLabel() {
-    ROB_UNIMPLEMENTED();
+    if (m_pFPSLabel) {
+        m_pFPSLabel->removeFromParentAndCleanup(true);
+        m_pSPFLabel->removeFromParentAndCleanup(true);
+        m_pDrawsLabel->removeFromParentAndCleanup(true);
+        CC_SAFE_RELEASE_NULL(m_pFPSLabel);
+        CC_SAFE_RELEASE_NULL(m_pSPFLabel);
+        CC_SAFE_RELEASE_NULL(m_pDrawsLabel);
+
+        CCTextureCache::sharedTextureCache()->removeTextureForKey("cc_fps_images");
+    }
+    if (m_pFPSNode) {
+        m_pFPSNode->removeFromParentAndCleanup(true);
+        CC_SAFE_RELEASE_NULL(m_pFPSNode);
+    }
+    m_bDisplayFPS = false;
 }
 void CCDirector::resetSmoothFixCounter(void) {
-    ROB_UNIMPLEMENTED();
+    m_nSmoothFixCounter = -100;
 }
 void CCDirector::setDeltaTime(float dt) {
     m_fDeltaTime = dt;
 }
 int CCDirector::sceneCount() {
-    ROB_UNIMPLEMENTED();
+    return m_pobScenesStack->count();
 }
-void CCDirector::toggleShowFPS(bool, std::string, CCPoint) {
-    ROB_UNIMPLEMENTED();
+void CCDirector::toggleShowFPS(bool toggle, std::string font, CCPoint pos) {
+    if (m_pFPSNode) {
+        m_pFPSNode->removeFromParentAndCleanup(true);
+        CC_SAFE_RELEASE_NULL(m_pFPSNode);
+    }
+    m_bDisplayFPS = toggle;
+    if (toggle) {
+        auto label = CCLabelBMFont::create("FPS: 0", font.c_str());
+        m_pFPSNode = label;
+        label->setScale(.5f);
+        label->setAnchorPoint(ccp(0, 1));
+        label->retain();
+        label->setPosition(pos + ccp(1.f, m_obWinSizeInPoints.height));
+    }
 }
 
 

@@ -1266,16 +1266,20 @@ CCLabelBMFont* CCLabelBMFont::createBatched(char const * str, char const * fntFi
     CC_SAFE_DELETE(pRet);
     return NULL;
 }
-void CCLabelBMFont::limitLabelWidth(float maxWidth, float minScale, float maxScale) {
+void CCLabelBMFont::limitLabelWidth(float maxWidth, float maxScale, float minScale) {
     if (maxWidth <= 0) {
         return;
     }
+    setScale(1.f);
     float currentScale = getScale();
+    CCLOG("scale: %f<%f<%f", minScale, currentScale, maxScale);
     float currentWidth = getContentSize().width;
+    CCLOG("width: %f<%f", currentWidth, maxWidth);
     float newScale = currentScale;
     if (currentWidth > maxWidth) {
         newScale = maxWidth / currentWidth * currentScale;
     }
+    CCLOG("new scale: %f", newScale);
     if (newScale < minScale) {
         newScale = minScale;
     }
