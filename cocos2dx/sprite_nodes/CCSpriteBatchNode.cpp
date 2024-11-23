@@ -245,7 +245,7 @@ void CCSpriteBatchNode::removeAllChildrenWithCleanup(bool bCleanup)
 //override sortAllChildren
 void CCSpriteBatchNode::sortAllChildren()
 {
-    if (m_bReorderChildDirty)
+    if (m_bReorderChildDirty && (!m_bManualSortChildren || m_bManualSortAllChildrenDirty))
     {
         int i = 0,j = 0,length = m_pChildren->data->num;
         CCNode ** x = (CCNode**)m_pChildren->data->arr;
@@ -286,6 +286,7 @@ void CCSpriteBatchNode::sortAllChildren()
         }
 
         m_bReorderChildDirty=false;
+        m_bManualSortAllChildrenDirty = false;
     }
 }
 
@@ -780,20 +781,21 @@ int CCSpriteBatchNode::getAtlasCapacity(void) {
     return m_pobTextureAtlas->getCapacity();
 }
 int CCSpriteBatchNode::getUsedAtlasCapacity(void) {
-    ROB_UNIMPLEMENTED();
+    return m_pobTextureAtlas->m_uUsedCapacity;
 }
-void CCSpriteBatchNode::increaseAtlasCapacity(unsigned int) {
-    ROB_UNIMPLEMENTED();
+void CCSpriteBatchNode::increaseAtlasCapacity(unsigned int newCapacity) {
+    auto capacity = m_pobTextureAtlas->getCapacity();
+    if (newCapacity > capacity) {
+        m_pobTextureAtlas->resizeCapacity(newCapacity);
+    }
 }
 void CCSpriteBatchNode::manualSortAllChildren(void) {
-    ROB_UNIMPLEMENTED();
+    m_bManualSortAllChildrenDirty = true;
 }
 void CCSpriteBatchNode::setManualSortChildren(bool) {
-    ROB_UNIMPLEMENTED();
     m_bManualSortChildren = true;
 }
-bool CCSpriteBatchNode::getManualSortChildren(void)const {
-    ROB_UNIMPLEMENTED();
+bool CCSpriteBatchNode::getManualSortChildren(void) const {
     return m_bManualSortChildren;
 }
 
