@@ -11,6 +11,8 @@
     #include "android/CCGL.h"
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
     #include "mac/CCGL.h"
+#elif defined(EMSCRIPTEN)
+    #include "emscripten/CCGL.h"
 #endif
 
 #endif

@@ -44,6 +44,7 @@ THE SOFTWARE.
 
 extern "C" {
 void glutInit(int *argcp, char **argv);
+void glutInitWindowSize(int width, int height);
 void glutMouseFunc(void (*func)(int button, int state, int x, int y));
 void glutMotionFunc(void (*func)(int x, int y));
 void glutPassiveMotionFunc(void (*func)(int x, int y));
@@ -132,8 +133,7 @@ CCEGLView::CCEGLView()
     char **dummyArgv = (char**)malloc(sizeof(char*));
     dummyArgv[0] = arg1;
     glutInit(0, dummyArgv);
-    free(dummyArgv[0]);
-    free(dummyArgv);
+    glutInitWindowSize(m_obScreenSize.width, m_obScreenSize.height);
 
     glutMouseFunc(&mouseCB);
     glutMotionFunc(&motionCB);
@@ -347,15 +347,16 @@ bool CCEGLView::initGL()
         return false;
     }
 
-    // FIXME: Get the actual canvas size somehow.
-    EGLint width;
-    EGLint height;
+    // MAT: unhardcode this
+    EGLint width = 1280;
+    EGLint height = 720;
 
     if ((m_eglDisplay == EGL_NO_DISPLAY) || (m_eglSurface == EGL_NO_SURFACE) )
     	return EXIT_FAILURE;
 
-	eglQuerySurface(m_eglDisplay, m_eglSurface, EGL_WIDTH, &width);
-    eglQuerySurface(m_eglDisplay, m_eglSurface, EGL_HEIGHT, &height);
+    // returns 300x150 for some reason..
+	// eglQuerySurface(m_eglDisplay, m_eglSurface, EGL_WIDTH, &width);
+    // eglQuerySurface(m_eglDisplay, m_eglSurface, EGL_HEIGHT, &height);
 
     m_obScreenSize.width = width;
     m_obScreenSize.height = height;

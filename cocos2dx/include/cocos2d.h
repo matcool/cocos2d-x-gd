@@ -229,12 +229,12 @@ THE SOFTWARE.
 #endif // CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_EMSCRIPTEN)
-	#error "Unsupported platform with Geode!"
-    // #include "../platform/emscripten/CCAccelerometer.h"
-    // #include "../platform/emscripten/CCApplication.h"
-    // #include "../platform/emscripten/CCEGLView.h"
-    // #include "../platform/emscripten/CCGL.h"
-    // #include "../platform/emscripten/CCStdC.h"
+	// #error "Unsupported platform with Geode!"
+    #include "../platform/emscripten/CCAccelerometer.h"
+    #include "../platform/emscripten/CCApplication.h"
+    #include "../platform/emscripten/CCEGLView.h"
+    #include "../platform/emscripten/CCGL.h"
+    #include "../platform/emscripten/CCStdC.h"
 #endif // CC_TARGET_PLATFORM == CC_PLATFORM_EMSCRIPTEN
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_TIZEN)

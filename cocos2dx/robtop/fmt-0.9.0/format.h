@@ -28,6 +28,12 @@
 #ifndef FMT_FORMAT_H_
 #define FMT_FORMAT_H_
 
+#ifdef _WIN32
+#define FMT_DLL __declspec(dllexport)
+#else
+#define FMT_DLL
+#endif
+
 #include <stdint.h>
 
 #include <cassert>
@@ -1859,7 +1865,7 @@ inline void FormatDec(char *&buffer, T value) {
 # pragma warning(pop)
 #endif
 
-template class __declspec(dllexport) fmt::BasicWriter<char>;
-template class __declspec(dllexport) fmt::BasicStringRef<char>;
+template class FMT_DLL fmt::BasicWriter<char>;
+template class FMT_DLL fmt::BasicStringRef<char>;
 
 #endif  // FMT_FORMAT_H_

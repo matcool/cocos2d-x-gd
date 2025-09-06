@@ -11,6 +11,8 @@
     #include "android/CCStdC.h"
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
     #include "mac/CCStdC.h"
+#elif defined(EMSCRIPTEN)
+    #include "emscripten/CCStdC.h"
 #endif
 
 #endif

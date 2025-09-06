@@ -31,8 +31,10 @@ THE SOFTWARE.
 #include "CCCommon.h"
 #include "CCStdC.h"
 #include "CCFileUtils.h"
+#if !defined(EMSCRIPTEN)
 #include "png.h"
 #include "jpeglib.h"
+#endif
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
 #include "CCFreeTypeFont.h"
@@ -68,21 +70,6 @@ typedef struct
     int size;
     int offset;
 }tImageSource;
-
-static void pngReadCallback(png_structp png_ptr, png_bytep data, png_size_t length)
-{
-    tImageSource* isource = (tImageSource*)png_get_io_ptr(png_ptr);
-
-    if((int)(isource->offset + length) <= isource->size)
-    {
-        memcpy(data, isource->data+isource->offset, length);
-        isource->offset += length;
-    }
-    else
-    {
-        png_error(png_ptr, "pngReaderCallback failed");
-    }
-}
 
 //////////////////////////////////////////////////////////////////////////
 // Implement CCImage
@@ -268,6 +255,7 @@ bool CCImage::saveToFile(const char *pszFilePath, bool bIsToRGB)
 
 bool CCImage::_saveImageToPNG(const char * pszFilePath, bool bIsToRGB)
 {
+#if !defined(EMSCRIPTEN)
     bool bRet = false;
     do 
     {
@@ -405,9 +393,13 @@ bool CCImage::_saveImageToPNG(const char * pszFilePath, bool bIsToRGB)
         bRet = true;
     } while (0);
     return bRet;
+#else
+    return false;
+#endif
 }
 bool CCImage::_saveImageToJPG(const char * pszFilePath)
 {
+#if !defined(EMSCRIPTEN)
     bool bRet = false;
     do 
     {
@@ -482,6 +474,9 @@ bool CCImage::_saveImageToJPG(const char * pszFilePath)
         bRet = true;
     } while (0);
     return bRet;
+#else
+    return false;
+#endif
 }
 
 NS_CC_END

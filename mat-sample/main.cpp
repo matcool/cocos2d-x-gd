@@ -4,9 +4,12 @@
 int main() {
 	AppDelegate app;
 
-    // auto* eglView = CCEGLView::sharedOpenGLView();
+#ifdef EMSCRIPTEN
+    auto* eglView = CCEGLView::sharedOpenGLView();
     // eglView->setViewName("HelloCpp");
     // eglView->setFrameSize(1280, 720);
+#endif
+
 
 	CCApplication::sharedApplication()->run();
 }

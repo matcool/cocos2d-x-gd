@@ -84,6 +84,7 @@ build_*_vc10/
 *.xcuserstate
 xcschememanagement.plist
 build/
+build-*/
 .DS_Store
 ._.*
 xcuserdata/

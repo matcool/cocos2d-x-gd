@@ -19,7 +19,9 @@ ObjectDecoder* ObjectDecoder::sharedDecoder() {
     return sharedDecoder;
 }
 
+#ifdef _WIN32
 static_assert(sizeof(ObjectDecoder) == 0x148);
+#endif
 
 CCObject* ObjectDecoder::getDecodedObject(int key, DS_Dictionary* dict) {
     if (m_delegate) {

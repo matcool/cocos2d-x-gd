@@ -37,6 +37,8 @@ NS_CC_END
 
 #include <fstream>
 
+#ifdef _WIN32
+
 namespace matdash {
     struct Console {
         std::ofstream out, in;
@@ -60,6 +62,8 @@ namespace matdash {
 }
 
 static matdash::Console console;
+
+#endif
 
 void impl_ROB_UNIMPLEMENTED(std::source_location loc) {
     std::stringstream ss;

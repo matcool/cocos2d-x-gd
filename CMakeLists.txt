@@ -4,6 +4,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(libcocos2d VERSION 0.1.0)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+
 add_library(libcocos2d SHARED
 external/chipmunk/src/chipmunk.c
 external/chipmunk/src/cpArbiter.c
@@ -93,14 +95,6 @@ cocos2dx/platform/CCImageCommonWebp.cpp
 cocos2dx/platform/CCSAXParser.cpp
 cocos2dx/platform/CCThread.cpp
 cocos2dx/platform/platform.cpp
-cocos2dx/platform/win32/CCAccelerometer.cpp
-cocos2dx/platform/win32/CCApplication.cpp
-cocos2dx/platform/win32/CCCommon.cpp
-cocos2dx/platform/win32/CCDevice.cpp
-cocos2dx/platform/win32/CCEGLView.cpp
-cocos2dx/platform/win32/CCFileUtilsWin32.cpp
-cocos2dx/platform/win32/CCImage.cpp
-cocos2dx/platform/win32/CCStdC.cpp
 cocos2dx/shaders/CCGLProgram.cpp
 cocos2dx/shaders/ccGLStateCache.cpp
 cocos2dx/shaders/CCShaderCache.cpp
@@ -331,32 +325,79 @@ external/chipmunk/include/chipmunk
 cocos2dx
 cocos2dx/include
 cocos2dx/kazmath/include
-cocos2dx/platform/win32
-cocos2dx/platform/third_party/win32
-cocos2dx/platform/third_party/win32/OGLES
-cocos2dx/platform/third_party/win32/zlib
-cocos2dx/platform/third_party/win32/pthread
-cocos2dx/platform/third_party/win32/libpng
-cocos2dx/platform/third_party/win32/curl
-cocos2dx/platform/third_party/win32/libjpeg
-cocos2dx/platform/third_party/win32/iconv
-cocos2dx/platform/third_party/win32/libwebp
 extensions
 )
 
-target_link_libraries(libcocos2d PRIVATE
-opengl32
-${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/glew32.lib
-${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/libwebp.lib
-${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/pthreadVC2.lib
-${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/zlibstatic.lib
-${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/libpng16_static.lib
-${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/jpeg.lib
-${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/glfw3.lib
+if (WIN32)
+	target_sources(libcocos2d PRIVATE
+		cocos2dx/platform/win32/CCAccelerometer.cpp
+		cocos2dx/platform/win32/CCApplication.cpp
+		cocos2dx/platform/win32/CCCommon.cpp
+		cocos2dx/platform/win32/CCDevice.cpp
+		cocos2dx/platform/win32/CCEGLView.cpp
+		cocos2dx/platform/win32/CCFileUtilsWin32.cpp
+		cocos2dx/platform/win32/CCImage.cpp
+		cocos2dx/platform/win32/CCStdC.cpp
+	)
 
-Winmm.lib
-legacy_stdio_definitions.lib
-)
+	target_link_libraries(libcocos2d PRIVATE
+		opengl32
+		${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/glew32.lib
+		${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/libwebp.lib
+		${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/pthreadVC2.lib
+		${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/zlibstatic.lib
+		${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/libpng16_static.lib
+		${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/jpeg.lib
+		${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/glfw3.lib
+
+		Winmm.lib
+		legacy_stdio_definitions.lib
+	)
+
+	target_compile_definitions(libcocos2d PUBLIC CC_TARGET_OS_WIN32=1)
+
+	target_include_directories(libcocos2d PUBLIC
+		cocos2dx/platform/win32
+		cocos2dx/platform/third_party/win32
+		cocos2dx/platform/third_party/win32/OGLES
+		cocos2dx/platform/third_party/win32/zlib
+		cocos2dx/platform/third_party/win32/pthread
+		cocos2dx/platform/third_party/win32/libpng
+		cocos2dx/platform/third_party/win32/curl
+		cocos2dx/platform/third_party/win32/libjpeg
+		cocos2dx/platform/third_party/win32/iconv
+		cocos2dx/platform/third_party/win32/libwebp
+	)
+endif()
+
+if (EMSCRIPTEN)
+	target_sources(libcocos2d PRIVATE
+		cocos2dx/base_nodes/CCGLBufferedNode.cpp
+		cocos2dx/platform/emscripten/CCApplication.cpp
+		cocos2dx/platform/emscripten/CCCommon.cpp
+		cocos2dx/platform/emscripten/CCDevice.cpp
+		cocos2dx/platform/emscripten/CCEGLView.cpp
+		cocos2dx/platform/emscripten/CCFileUtilsEmscripten.cpp
+		cocos2dx/platform/emscripten/CCImage.cpp
+	)
+
+	target_include_directories(libcocos2d PUBLIC
+		cocos2dx/platform/emscripten
+		cocos2dx/platform/third_party/emscripten
+		cocos2dx/platform/third_party/emscripten/libz
+		cocos2dx/platform/third_party/emscripten/libpng
+		cocos2dx/platform/third_party/emscripten/libjpeg
+		cocos2dx/platform/third_party/emscripten/libwebp
+		# stbi is there.. sh
+		cocos2dx/platform/third_party/win32/libpng
+	)
+
+	set_target_properties(libcocos2d PROPERTIES LINK_FLAGS "${LINK_FLAGS} -sUSE_ZLIB")
+
+	target_link_libraries(libcocos2d PRIVATE z)
+
+	set(CMAKE_EXECUTABLE_SUFFIX ".html")
+endif()
 
 # disable the "needs to have dll-interface" warning
 if (MSVC)
@@ -365,7 +406,6 @@ else()
 	target_compile_options(libcocos2d PRIVATE -Wno-deprecated-declarations)
 endif()
 target_compile_definitions(libcocos2d PUBLIC
-	CC_TARGET_OS_WIN32=1
 	GEODE_IS_MEMBER_TEST=1
 	GEODE_COMP_GD_VERSION=22074
 )

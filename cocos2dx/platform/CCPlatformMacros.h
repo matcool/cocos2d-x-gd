@@ -37,6 +37,8 @@
     #include "android/CCPlatformDefine.h"
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
     #include "mac/CCPlatformDefine.h"
+#elif defined(EMSCRIPTEN)
+    #include "emscripten/CCPlatformDefine.h"
 #endif
 
 /**
@@ -84,7 +86,7 @@ It's new in cocos2d-x since v0.99.5
 */
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID) || \
     (CC_TARGET_PLATFORM == CC_PLATFORM_EMSCRIPTEN) || (CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
-    #define CC_ENABLE_CACHE_TEXTURE_DATA 1
+    #define CC_ENABLE_CACHE_TEXTURE_DATA 0
 #else
     #define CC_ENABLE_CACHE_TEXTURE_DATA 0
 #endif

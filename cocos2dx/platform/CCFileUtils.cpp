@@ -597,7 +597,7 @@ std::string CCFileUtils::getPathForFilename(const std::string& filename, const s
 std::string CCFileUtils::fullPathForFilename(const char* pszFileName, bool skipSuffix)
 {
     CCAssert(pszFileName != NULL, "CCFileUtils: Invalid path");
-    
+
     std::string strFileName = pszFileName;
     if (isAbsolutePath(pszFileName))
     {
@@ -606,7 +606,7 @@ std::string CCFileUtils::fullPathForFilename(const char* pszFileName, bool skipS
     }
     
     // Already Cached ?
-    std::map<std::string, std::string>::iterator cacheIter = m_fullPathCache.find(pszFileName);
+    auto cacheIter = m_fullPathCache.find(pszFileName);
     if (cacheIter != m_fullPathCache.end())
     {
         //CCLOG("Return full path from cache: %s", cacheIter->second.c_str());
@@ -618,15 +618,15 @@ std::string CCFileUtils::fullPathForFilename(const char* pszFileName, bool skipS
     
     string fullpath = "";
     
-    for (std::vector<std::string>::iterator searchPathsIter = m_searchPathArray.begin();
+    for (auto searchPathsIter = m_searchPathArray.begin();
          searchPathsIter != m_searchPathArray.end(); ++searchPathsIter) {
-        for (std::vector<std::string>::iterator resOrderIter = m_searchResolutionsOrderArray.begin();
+        for (auto resOrderIter = m_searchResolutionsOrderArray.begin();
              resOrderIter != m_searchResolutionsOrderArray.end(); ++resOrderIter) {
             
             // CCLOG("\n\nSEARCHING: %s, %s, %s", newFilename.c_str(), resOrderIter->c_str(), searchPathsIter->c_str());
 
             if (!skipSuffix) {
-                std::string suffixedFilename;
+                std::string suffixedFilename = newFilename;
                 if (CCDirector::sharedDirector()->getContentScaleFactor() >= 4.f) {
                     suffixedFilename = addSuffix(newFilename, "-uhd");
                 }
@@ -640,7 +640,6 @@ std::string CCFileUtils::fullPathForFilename(const char* pszFileName, bool skipS
                 {
                     // Using the filename passed in as key.
                     m_fullPathCache.insert(std::pair<std::string, std::string>(pszFileName, fullpath));
-                    // CCLOG("Returning path: %s", fullpath.c_str());
                     return fullpath;
                 }
             }
@@ -651,7 +650,6 @@ std::string CCFileUtils::fullPathForFilename(const char* pszFileName, bool skipS
             {
                 // Using the filename passed in as key.
                 m_fullPathCache.insert(std::pair<std::string, std::string>(pszFileName, fullpath));
-                // CCLOG("Returning path: %s", fullpath.c_str());
                 return fullpath;
             }
         }

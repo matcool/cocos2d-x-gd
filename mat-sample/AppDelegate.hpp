@@ -15,5 +15,5 @@ public:
 
 	void applicationWillEnterForeground() override;
 
-	void setupGLView() override;
+	void setupGLView();
 };

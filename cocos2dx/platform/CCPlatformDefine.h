@@ -11,6 +11,8 @@
     #include "android/CCPlatformDefine.h"
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
     #include "mac/CCPlatformDefine.h"
+#elif defined(EMSCRIPTEN)
+    #include "emscripten/CCPlatformDefine.h"
 #endif
 
 #endif
