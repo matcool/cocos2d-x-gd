@@ -55,6 +55,8 @@ public:
 	 */
 	CC_DEPRECATED_ATTRIBUTE const std::string& getResourceRootPath(void);
 
+	// robtop
+    virtual void setupGLView();
 
 
 protected:

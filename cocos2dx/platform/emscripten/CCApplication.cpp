@@ -46,6 +46,8 @@ int CCApplication::run()
 	struct timespec time_struct;
 	long update_time;
 
+	this->setupGLView();
+
 	// Initialize instance and cocos2d.
 	if (!applicationDidFinishLaunching())
 	{
@@ -89,6 +91,11 @@ TargetPlatform CCApplication::getTargetPlatform()
 {
     return kTargetEmscripten;
 }
+
+void CCApplication::setupGLView() {
+    CCLOG("setupGLView not overwritten.. will crash");
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 // static member function

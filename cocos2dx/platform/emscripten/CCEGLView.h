@@ -35,8 +35,8 @@ NS_CC_BEGIN
 
 class CC_DLL CCEGLView : public CCEGLViewProtocol
 {
+    CCEGLView(int width, int height);
 public:
-    CCEGLView();
     virtual ~CCEGLView();
 
     bool    isOpenGLReady();
@@ -55,6 +55,9 @@ public:
     static CCEGLView* sharedOpenGLView();
 
     bool    handleEvents();
+
+    // robtop additions:
+	static cocos2d::CCEGLView* createWithRect(gd::string const&, cocos2d::CCRect, float);
 
 private:
     void        release();

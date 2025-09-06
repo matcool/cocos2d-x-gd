@@ -107,8 +107,11 @@ extern "C" void motionCB(int x, int y)
     }
 }
 
-CCEGLView::CCEGLView()
+CCEGLView::CCEGLView(int width, int height)
 {
+    m_obScreenSize.width = width;
+    m_obScreenSize.height = height;
+
 	m_eglDisplay = EGL_NO_DISPLAY;
 	m_eglContext = EGL_NO_CONTEXT;
 	m_eglSurface = EGL_NO_SURFACE;
@@ -202,13 +205,15 @@ void CCEGLView::swapBuffers()
 
 CCEGLView* CCEGLView::sharedOpenGLView()
 {
-	if (!s_pInstance)
-	{
-		s_pInstance = new CCEGLView();
-	}
+    return CCDirector::get()->getOpenGLView();
 
-	CCAssert(s_pInstance != NULL, "CCEGLView wasn't constructed yet");
-	return s_pInstance;
+	// if (!s_pInstance)
+	// {
+	// 	s_pInstance = new CCEGLView();
+	// }
+
+	// CCAssert(s_pInstance != NULL, "CCEGLView wasn't constructed yet");
+	// return s_pInstance;
 }
 
 void CCEGLView::showKeyboard()
@@ -347,9 +352,8 @@ bool CCEGLView::initGL()
         return false;
     }
 
-    // MAT: unhardcode this
-    EGLint width = 1280;
-    EGLint height = 720;
+    EGLint width = m_obScreenSize.width;
+    EGLint height = m_obScreenSize.height;
 
     if ((m_eglDisplay == EGL_NO_DISPLAY) || (m_eglSurface == EGL_NO_SURFACE) )
     	return EXIT_FAILURE;
@@ -379,6 +383,10 @@ static long time2millis(struct timespec *times)
 bool CCEGLView::handleEvents()
 {
 	return true;
+}
+
+CCEGLView* CCEGLView::createWithRect(const std::string& name, cocos2d::CCRect rect, float unk) {
+    return new CCEGLView(rect.size.width, rect.size.height);
 }
 
 NS_CC_END
