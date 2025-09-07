@@ -75,7 +75,10 @@ CCSet * CCSet::create()
 
 CCSet* CCSet::copy(void)
 {
-    CCSet *pSet = new CCSet(*this);
+    CCSet *pSet = new CCSet();
+    // mat
+    delete pSet->m_pSet;
+    pSet->m_pSet = new set<CCObject *>(*m_pSet);
 
     return pSet;
 }
