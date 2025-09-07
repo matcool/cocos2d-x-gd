@@ -243,6 +243,9 @@ bool CCEGLView::initWithRect(const std::string& name, cocos2d::CCRect rect, floa
     glfwSetMouseButtonCallback(m_pMainWindow, [](GLFWwindow* window, int button, int action, int mods) {
         CCEGLView::sharedOpenGLView()->onGLFWMouseCallBack(window, button, action, mods);
     });
+    glfwSetCursorPosCallback(m_pMainWindow, [](GLFWwindow* window, double x, double y) {
+        CCEGLView::sharedOpenGLView()->onGLFWMouseMoveCallBack(window, x, y);
+    });
 
     this->initGlew();
 
@@ -318,8 +321,8 @@ void CCEGLView::onGLFWKeyCallback(GLFWwindow* window, int key, int scancode, int
 }
 
 void CCEGLView::onGLFWMouseCallBack(GLFWwindow* window, int button, int action, int mods) {
-    auto* dir = CCDirector::sharedDirector();
-    auto* mouse = dir->getMouseDispatcher();
+    // auto* dir = CCDirector::sharedDirector();
+    // auto* mouse = dir->getMouseDispatcher();
 
     // TODO: some stuff with set window pos??
 
@@ -330,9 +333,24 @@ void CCEGLView::onGLFWMouseCallBack(GLFWwindow* window, int button, int action, 
             // TODO: mouse locked stuff
             this->handleTouchesBegin(1, &touchID, &m_fMouseX, &m_fMouseY);
         } else if (action == GLFW_RELEASE) {
-            m_bCaptured = false;
-            this->handleTouchesEnd(1, &touchID, &m_fMouseX, &m_fMouseY);
+            if (m_bCaptured) {
+                m_bCaptured = false;
+                this->handleTouchesEnd(1, &touchID, &m_fMouseX, &m_fMouseY);
+            }
         }
+    }
+}
+
+void CCEGLView::onGLFWMouseMoveCallBack(GLFWwindow* window, double x, double y) {
+    float fx = x;
+    float fy = y;
+    int touchID = 0;
+
+    m_fMouseX = x;
+    m_fMouseY = y;
+
+    if (m_bCaptured) {
+        this->handleTouchesMove(1, &touchID, &fx, &fy);
     }
 }
 

@@ -350,8 +350,8 @@ if (WIN32)
 		URL_HASH "SHA256=ea6b14a1c6c968d0034e61ff6cb242cff2ce0ede79267a0f2b47b1b0b652c164"
 		DOWNLOAD_ONLY
 	)
-	set(GLEW_LIB_PATH ${glew_SOURCE_DIR}/lib/Release/x64/glew32s.lib)
-	target_compile_definitions(libcocos2d PRIVATE PTW32_STATIC_LIB=1 GLEW_STATIC=1)
+	set(GLEW_LIB_PATH ${glew_SOURCE_DIR}/lib/Release/x64/glew32.lib)
+	target_compile_definitions(libcocos2d PRIVATE PTW32_STATIC_LIB=1)
 
 	target_sources(libcocos2d PRIVATE
 		cocos2dx/platform/win32/CCAccelerometer.cpp
@@ -451,7 +451,14 @@ target_link_options(libcocos2d PRIVATE -Wl,/errorlimit:0)
 if (PROJECT_IS_TOP_LEVEL)
 	add_subdirectory(mat-sample)
 
-	install(TARGETS libcocos2d RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/dlls)
+	if (WIN32)
+		install(TARGETS libcocos2d RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/dlls)
+		add_custom_command(
+			TARGET ${PROJECT_NAME} POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E copy
+					${glew_SOURCE_DIR}/bin/Release/x64/glew32.dll
+					${CMAKE_CURRENT_SOURCE_DIR}/dlls/glew32.dll)
+	endif()
 
 	if (DEFINED ENV{GD_INSTALL_PATH})
 		install(TARGETS libcocos2d RUNTIME DESTINATION $ENV{GD_INSTALL_PATH})

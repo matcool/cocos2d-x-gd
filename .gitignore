@@ -117,3 +117,4 @@ tags
 .vscode/
 dlls/cocos2d.dll
 dlls/libcocos2d.dll
+dlls/glew32.dll
