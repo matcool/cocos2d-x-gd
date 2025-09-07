@@ -328,7 +328,31 @@ cocos2dx/kazmath/include
 extensions
 )
 
+include(get_cpm.cmake)
+
 if (WIN32)
+	CPMAddPackage(
+		NAME "pthreadswin32"
+		VERSION 2.9.1
+		URL "https://mirrors.kernel.org/sourceware/pthreads-win32/pthreads-w32-2-9-1-release.zip"
+		URL_HASH "SHA256=b9bd02958639a854461a72f72bf3e89a3c4181843b65924a54df8a50b4e5d15d"
+		DOWNLOAD_ONLY
+	)
+
+	add_library(pthreadswin32 STATIC ${pthreadswin32_SOURCE_DIR}/pthreads.2/pthread.c)
+	target_include_directories(pthreadswin32 PRIVATE ${pthreadswin32_SOURCE_DIR}/pthreads.2)
+	target_compile_definitions(pthreadswin32 PRIVATE PTW32_INCLUDE_WINDOWS_H=1 HAVE_STRUCT_TIMESPEC=1 PTW32_STATIC_LIB=1)
+
+	CPMAddPackage(
+		NAME "glew"
+		VERSION 2.2.0
+		URL "https://github.com/nigels-com/glew/releases/download/glew-2.2.0/glew-2.2.0-win32.zip"
+		URL_HASH "SHA256=ea6b14a1c6c968d0034e61ff6cb242cff2ce0ede79267a0f2b47b1b0b652c164"
+		DOWNLOAD_ONLY
+	)
+	set(GLEW_LIB_PATH ${glew_SOURCE_DIR}/lib/Release/x64/glew32s.lib)
+	target_compile_definitions(libcocos2d PRIVATE PTW32_STATIC_LIB=1 GLEW_STATIC=1)
+
 	target_sources(libcocos2d PRIVATE
 		cocos2dx/platform/win32/CCAccelerometer.cpp
 		cocos2dx/platform/win32/CCApplication.cpp
@@ -342,9 +366,11 @@ if (WIN32)
 
 	target_link_libraries(libcocos2d PRIVATE
 		opengl32
-		${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/glew32.lib
+		# ${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/glew32.lib
+		${GLEW_LIB_PATH}
 		${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/libwebp.lib
-		${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/pthreadVC2.lib
+		# ${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/pthreadVC2.lib
+		pthreadswin32
 		${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/zlibstatic.lib
 		${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/libpng16_static.lib
 		${CMAKE_CURRENT_SOURCE_DIR}/cocos2dx/platform/third_party/win32/libraries/jpeg.lib
