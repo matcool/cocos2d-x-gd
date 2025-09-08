@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(libcocos2d VERSION 0.1.0)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+set(CMAKE_MSVC_RUNTIME_LIBRARY MultiThreadedDLL)
 
 add_library(libcocos2d SHARED
 external/chipmunk/src/chipmunk.c

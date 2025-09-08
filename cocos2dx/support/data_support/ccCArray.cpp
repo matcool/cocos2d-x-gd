@@ -38,6 +38,7 @@ ccArray* ccArrayNew(unsigned int capacity)
 	arr->num = 0;
 	arr->arr =  (CCObject**)calloc(capacity, sizeof(CCObject*));
 	arr->max = capacity;
+	arr->unknown = -1;
 	
 	return arr;
 }
@@ -476,13 +477,13 @@ void ccCArrayFullRemoveArray(ccCArray *arr, ccCArray *minusArr)
 void ccArrayUpdateChildIndexes(ccArray *arr) {
 	if (arr->unknown != -1) {
 		int i5 = 0;
-		for (int i4 = 0; i4 < arr->unknown; ++i4) {
-			CCObject* i3 = arr->arr[i4];
-			if (i3 == nullptr) {
+		for (int i = 0; i < arr->unknown; ++i) {
+			CCObject* child = arr->arr[i];
+			if (child == nullptr) {
 				++i5;
 			} else if (i5 > 0) {
-				arr->arr[i4 - i5] = i3;
-				i3->m_uChildIndex = i4 - i5;
+				arr->arr[i - i5] = child;
+				child->m_uChildIndex = i - i5;
 			}
 		}
 		arr->unknown = -1;

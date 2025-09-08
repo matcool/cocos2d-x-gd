@@ -28,6 +28,7 @@
 #include "ZipUtils.h"
 #include "ccMacros.h"
 #include "platform/CCFileUtils.h"
+#include "support/base64.h"
 #include "unzip.h"
 #include <map>
 
@@ -593,26 +594,49 @@ std::string ZipUtils::base64URLEncode(std::string const&) { ROB_UNIMPLEMENTED();
 int ZipUtils::ccDeflateMemory(unsigned char*, unsigned int, unsigned char**) { ROB_UNIMPLEMENTED(); }
 int ZipUtils::ccDeflateMemoryWithHint(unsigned char*, unsigned int, unsigned char**, unsigned int) { ROB_UNIMPLEMENTED(); }
 std::string ZipUtils::compressString(std::string const&, bool, int) { ROB_UNIMPLEMENTED(); }
-std::string ZipUtils::decompressString(std::string const&, bool, int) { ROB_UNIMPLEMENTED(); }
+std::string ZipUtils::decompressString(std::string const& str, bool encrypted, int key) {
+    auto x = decompressString2((unsigned char*)str.data(), encrypted, str.size(), key);
+    // CCLOG("decompressString output= %s", x.c_str());
+    return x;
+}
 std::string ZipUtils::decompressString2(unsigned char* data, bool encrypted, int size, int key) {
-    if (!data || key <= 0) return "";
+    if (!data || size <= 0) return "";
 
-    unsigned long outSize = 0;
-    unsigned char* out = nullptr;
-    outSize = ccInflateMemory(data, size, &out);
-    if (!out || outSize == 0) return "";
+    unsigned char* dataDecoded = nullptr;
+    unsigned int dataDecodedSize = 0;
 
     if (encrypted) {
-        for (size_t i = 0; i < outSize; ++i) {
-            out[i] ^= key;
-        }
+        auto str = encryptDecrypt(reinterpret_cast<char*>(data), key);
+        dataDecodedSize = base64Decode(reinterpret_cast<unsigned char*>(str.data()), str.size(), &dataDecoded, true);
+    } else {
+        dataDecodedSize = base64Decode(data, size, &dataDecoded, true);
+    }
+
+    if (!dataDecoded || dataDecodedSize <= 0) {
+        free(dataDecoded);
+        return "";
+    }
+
+    unsigned char* out = nullptr;
+    auto outSize = ccInflateMemory(dataDecoded, dataDecodedSize, &out);
+    if (!out || outSize <= 0) {
+        delete[] out;
+        return "";
     }
 
     std::string result(reinterpret_cast<char*>(out), outSize);
     delete[] out;
     return result;
 }
-std::string ZipUtils::encryptDecrypt(std::string const&, int) { ROB_UNIMPLEMENTED(); }
+
+std::string ZipUtils::encryptDecrypt(std::string const& str, int xorKey) {
+    auto out = str;
+    for (size_t i = 0; i < out.size(); ++i) {
+        out[i] ^= xorKey;
+    }
+    return out;
+}
+
 std::string ZipUtils::encryptDecryptWKey(std::string const&, std::string) { ROB_UNIMPLEMENTED(); }
 unsigned char ZipUtils::hexToChar(const std::string&) { ROB_UNIMPLEMENTED(); }
 std::string ZipUtils::urlDecode(const std::string&) { ROB_UNIMPLEMENTED(); }

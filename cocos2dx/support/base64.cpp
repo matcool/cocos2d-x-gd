@@ -29,19 +29,20 @@ THE SOFTWARE.
 namespace cocos2d {
 
 unsigned char alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+unsigned char alphabetURL[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
 
-int _base64Decode( unsigned char *input, unsigned int input_len, unsigned char *output, unsigned int *output_len );
-
-int _base64Decode( unsigned char *input, unsigned int input_len, unsigned char *output, unsigned int *output_len )
+int _base64Decode( unsigned char *input, unsigned int input_len, unsigned char *output, unsigned int *output_len, bool isURL)
 {
     static char inalphabet[256], decoder[256];
     int i, bits, c = 0, char_count, errors = 0;
     unsigned int input_idx = 0;
     unsigned int output_idx = 0;
 
+    unsigned char* alpha = isURL ? alphabetURL : alphabet;
+
     for (i = (sizeof alphabet) - 1; i >= 0 ; i--) {
-        inalphabet[alphabet[i]] = 1;
-        decoder[alphabet[i]] = i;
+        inalphabet[alpha[i]] = 1;
+        decoder[alpha[i]] = i;
     }
 
     char_count = 0;
@@ -95,20 +96,18 @@ int _base64Decode( unsigned char *input, unsigned int input_len, unsigned char *
     return errors;
 }
 
-int base64Decode(unsigned char *in, unsigned int inLength, unsigned char **out)
+int base64Decode(unsigned char *in, unsigned int inLength, unsigned char **out, bool isURL)
 {
     unsigned int outLength = 0;
     
     //should be enough to store 6-bit buffers in 8-bit buffers
     *out = new unsigned char[(size_t)(inLength * 3.0f / 4.0f + 1)];
     if( *out ) {
-        int ret = _base64Decode(in, inLength, *out, &outLength);
+        int ret = _base64Decode(in, inLength, *out, &outLength, isURL);
         
         if (ret > 0 )
         {
-#if (CC_TARGET_PLATFORM != CC_PLATFORM_BADA)
             printf("Base64Utils: error decoding");
-#endif
             delete [] *out;
             *out = NULL;            
             outLength = 0;

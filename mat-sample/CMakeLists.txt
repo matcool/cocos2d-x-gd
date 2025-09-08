@@ -13,3 +13,5 @@ endif()
 if (WIN32)
 	install(TARGETS matapp RUNTIME DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/../dlls)
 endif()
+
+target_compile_definitions(matapp PRIVATE COCOS2D_DEBUG=1)

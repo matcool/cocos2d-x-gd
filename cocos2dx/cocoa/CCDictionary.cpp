@@ -89,7 +89,9 @@ unsigned int CCDictionary::count()
 CCArray* CCDictionary::allKeys()
 {
     int iKeyCount = this->count();
-    if (iKeyCount <= 0) return NULL;
+    if (iKeyCount <= 0) {
+        return CCArray::create();
+    }
 
     CCArray* pArray = CCArray::createWithCapacity(iKeyCount);
 

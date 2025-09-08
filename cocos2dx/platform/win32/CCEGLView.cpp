@@ -402,7 +402,7 @@ void CCEGLView::makeBorderlessTop() {
     ROB_UNIMPLEMENTED();
 }
 void CCEGLView::showCursor(bool show) {
-    ROB_UNIMPLEMENTED();
+    // ROB_UNIMPLEMENTED();
 }
 void CCEGLView::toggleFullScreen(bool, bool, bool) {
     ROB_UNIMPLEMENTED();
