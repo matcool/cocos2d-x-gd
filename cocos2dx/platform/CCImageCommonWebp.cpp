@@ -24,6 +24,8 @@
 
 #include "platform/CCImage.h"
 #include "textures/CCTexture2D.h"
+
+#if 0
 #if defined(__native_client__) || defined(EMSCRIPTEN)
 // TODO(sbc): I'm pretty sure all platforms should be including
 // webph headers in this way.
@@ -31,6 +33,8 @@
 #else
 #include "decode.h"
 #endif
+#endif
+
 #include "ccMacros.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -40,6 +44,9 @@ NS_CC_BEGIN
 
 bool CCImage::_initWithWebpData(void *pData, int nDataLen)
 {
+#if 1
+    return false;
+#else
 	bool bRet = false;
 	do
 	{
@@ -72,6 +79,7 @@ bool CCImage::_initWithWebpData(void *pData, int nDataLen)
         bRet = true;
 	} while (0);
 	return bRet;
+#endif
 }
 
 NS_CC_END

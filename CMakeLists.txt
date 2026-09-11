@@ -6,7 +6,7 @@ project(libcocos2d VERSION 0.1.0)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
-add_library(libcocos2d SHARED
+set(libcocos2d_sources
 external/chipmunk/src/chipmunk.c
 external/chipmunk/src/cpArbiter.c
 external/chipmunk/src/cpArray.c
@@ -127,12 +127,12 @@ cocos2dx/textures/CCTextureAtlas.cpp
 cocos2dx/textures/CCTextureCache.cpp
 cocos2dx/textures/CCTextureETC.cpp
 cocos2dx/textures/CCTexturePVR.cpp
-cocos2dx/tileMap_parallax_nodes/CCParallaxNode.cpp
-cocos2dx/tileMap_parallax_nodes/CCTileMapAtlas.cpp
-cocos2dx/tileMap_parallax_nodes/CCTMXLayer.cpp
-cocos2dx/tileMap_parallax_nodes/CCTMXObjectGroup.cpp
-cocos2dx/tileMap_parallax_nodes/CCTMXTiledMap.cpp
-cocos2dx/tileMap_parallax_nodes/CCTMXXMLParser.cpp
+cocos2dx/tilemap_parallax_nodes/CCParallaxNode.cpp
+cocos2dx/tilemap_parallax_nodes/CCTileMapAtlas.cpp
+cocos2dx/tilemap_parallax_nodes/CCTMXLayer.cpp
+cocos2dx/tilemap_parallax_nodes/CCTMXObjectGroup.cpp
+cocos2dx/tilemap_parallax_nodes/CCTMXTiledMap.cpp
+cocos2dx/tilemap_parallax_nodes/CCTMXXMLParser.cpp
 cocos2dx/touch_dispatcher/CCTouch.cpp
 cocos2dx/touch_dispatcher/CCTouchDispatcher.cpp
 cocos2dx/touch_dispatcher/CCTouchHandler.cpp
@@ -315,6 +315,12 @@ extensions/GUI/CCControlExtension/CCScale9Sprite.cpp
 # samples/Cpp/HelloCpp/Classes/HelloWorldScene.cpp
 )
 
+if (EMSCRIPTEN)
+	add_library(libcocos2d STATIC ${libcocos2d_sources})
+else()
+	add_library(libcocos2d SHARED ${libcocos2d_sources})
+endif()
+
 target_include_directories(libcocos2d PUBLIC
 external
 
@@ -392,9 +398,9 @@ if (EMSCRIPTEN)
 		cocos2dx/platform/third_party/win32/libpng
 	)
 
-	set_target_properties(libcocos2d PROPERTIES LINK_FLAGS "${LINK_FLAGS} -sUSE_ZLIB")
+	target_compile_definitions(libcocos2d PUBLIC EMSCRIPTEN=1)
 
-	target_link_libraries(libcocos2d PRIVATE z)
+	target_link_options(libcocos2d PUBLIC --use-ports=zlib)
 
 	set(CMAKE_EXECUTABLE_SUFFIX ".html")
 endif()
@@ -420,7 +426,7 @@ add_definitions(-D_HAS_ITERATOR_DEBUGGING=0)
 add_compile_definitions(_HAS_ITERATOR_DEBUGGING=0)
 target_compile_definitions(libcocos2d PUBLIC _HAS_ITERATOR_DEBUGGING=0)
 
-target_link_options(libcocos2d PRIVATE -Wl,/errorlimit:0)
+# target_link_options(libcocos2d PRIVATE -Wl,/errorlimit:0)
 
 if (PROJECT_IS_TOP_LEVEL)
 	add_subdirectory(mat-sample)
